@@ -1,0 +1,223 @@
+---
+id: https://w3id.org/linkmodel/ucolink-location
+name: ucolink-location
+description: >-
+license: https://www.apache.org/licenses/LICENSE-2.0
+
+version: 0.0.1  # sync with primary git repo release tag
+
+## ------------
+##
+## PREFIXES
+## ------------
+# CURIE namespaces (prefixes/base URI's) mappings of prefixes used in the body of
+# the UCOLink Model specification are resolved using a specific precedence order,
+# for use in the generation of the UCOLink Model context.jsonld mappings to
+# namespaces. Any prefixes encountered in the UCOLink Model but not resolved by
+# the following precedence sources, are anonymously declared by linkml as
+# http://example.org/UNKNOWN/ rooted base URI's which should ideally be repaired
+# in one of the precedence lists.
+#
+# 1. The following 'prefixes:' delimited list has first precedence in resolution.
+
+prefixes:
+  baselink: 'https://w3id.org/baselink/vocab/'
+  csrc: 'https://csrc.nist.gov/glossary/term/'    # Computer Security Resource Center
+  linkml: 'https://w3id.org/linkml/'
+  SIO: 'http://semanticscience.org/resource/SIO_'   # Semanticscience Integrated Ontology
+  sh: 'http://www.w3.org/ns/shacl#'
+
+default_prefix: ucolink-location
+default_range: string
+
+## ------------
+## ENUMS
+## ------------
+enums: {}
+
+## ------------
+## SUBSETS
+## ------------
+subsets: {}
+
+## ------------
+## TYPES
+## ------------
+imports:
+  - linkml:types
+
+types:
+
+  decimal type:
+    typeof: decimal
+    uri: xsd:decimal
+    base: float
+
+  string type:
+    typeof: string
+    uri: xsd:string
+    base: str
+
+## ------------
+## SLOTS
+## ------------
+slots:
+
+  address type:
+    name: address type
+    description: >-
+      The type of the address, for instance home or work.
+    range: string type
+    
+  altitude:
+    name: altitude
+    description: >-
+      The altitude coordinate of a geolocation.
+    range: decimal type
+    exact_mappings:
+      - SIO:000438
+      - WIKIDATA:Q190200
+    
+  country:
+    name: country
+    description: >-
+      The name of the geolocation country.
+    range: string type
+    exact_mappings:
+      - NCIT:C25464
+      - SIO:000664
+      - WIKIDATA:Q6256
+    
+  hdop:
+    name: hdop
+    description: >-
+      The horizontal dilution of precision of the GPS location.
+    range: decimal type
+    
+  latitude:
+    name: latitude
+    description: >-
+      The latitude coordinate of a geolocation.
+    range: decimal type
+    exact_mappings:
+      - NCIT:C68642
+      - SIO:000319
+      - WIKIDATA:Q34027
+    
+  locality:
+    name: locality
+    description: >-
+      The name of the geolocation locality (e.g., city).
+    range: string type
+    exact_mappings:
+      - NCIT:C87189
+    narrow_mappings:
+      - WIKIDATA:Q3257686  # locality, human settlement
+    
+  longitude:
+    name: longitude
+    description: >-
+      The longitude coordinate of a geolocation.
+    range: decimal type
+    exact_mappings:
+      - NCIT:C68643
+      - SIO:000318
+      - WIKIDATA:Q36477
+    
+  pdop:
+    name: pdop
+    description: >-
+      The positional (3D) dilution of precision of the GPS location.
+    range: decimal type
+    
+  postal code:
+    name: postal code
+    description: >-
+      The zip-code.
+    range: string type
+    exact_mappings:
+      - IAO:0000646
+      - NCIT:C25621
+    
+  region:
+    name: region
+    description: >-
+      The name of the geolocation region (e.g., state).
+    range: string type
+    broad_mappings:
+      - WIKIDATA:Q82794  # geographic region
+    exact_mappings:
+      - NCIT:C41129
+    
+  street:
+    name: street
+    description: >-
+      The name of the street.
+    range: string type
+    exact_mappings:
+      - NCIT:C80230
+      - WIKIDATA:Q79007
+      - WIKIDATA:Q34442
+    
+  tdop:
+    name: tdop
+    description: >-
+      The temporal dilution of precision of the GPS location.
+    range: decimal type
+    
+  vdop:
+    name: vdop
+    description: >-
+      The vertical dilution of precision of the GPS location.
+    range: decimal type
+    
+
+## ------------
+## CLASSES
+## ------------
+classes:
+
+  GPS coordinates facet:
+    description: >-
+      A GPS coordinates facet is a grouping of characteristics unique to the expression of quantified dilution of precision (DOP) for an asserted set of geolocation coordinates typically associated with satellite navigation such as the Global Positioning System (GPS).
+    name: GPS coordinate facet
+    is_a: core:Facet
+    slots:
+      - hdop
+      - pdop
+      - tdop
+      - vdop
+
+  lat long coordinates facet:
+    description: >-
+      A lat long coordinates facet is a grouping of characteristics unique to the expression of a geolocation as the intersection of specific latitude, longitude, and altitude values. 
+    name: lat long coordinates facet
+    is_a: core:Facet 
+    slots:
+      - altitude
+      - latitude
+      - longitude
+
+  location:
+    description: >-
+      A location is a geospatial place, site, or position.
+    name: location
+    is_a: uco object
+    exact_mappings:
+      - NCIT:C25341  # location
+      - WIKIDATA:Q2221906  # geographic location
+
+  simple address facet:
+    description: >-
+      A simple address facet is a grouping of characteristics unique to a geolocation expressed as an administrative address.
+    name: simple address facet
+    is_a: core:Facet
+    slots:
+      - address type
+      - country
+      - locality
+      - postal code
+      - region
+      - street
+
+...

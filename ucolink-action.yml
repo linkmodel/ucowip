@@ -1,0 +1,381 @@
+---
+id: https://w3id.org/linkmodel/ucolink-action
+name: ucolink-core
+description: >-
+  This ontology defines classes and properties for characterizing actions.
+license: https://www.apache.org/licenses/LICENSE-2.0
+version: 0.0.1  # sync with primary git repo release tag
+
+## ------------
+##
+## PREFIXES
+## ------------
+# CURIE namespaces (prefixes/base URI's) mappings of prefixes used in the body of
+# the UCOLink Model specification are resolved using a specific precedence order,
+# for use in the generation of the UCOLink Model context.jsonld mappings to
+# namespaces. Any prefixes encountered in the UCOLink Model but not resolved by
+# the following precedence sources, are anonymously declared by linkml as
+# http://example.org/UNKNOWN/ rooted base URI's which should ideally be repaired
+# in one of the precedence lists.
+#
+# 1. The following 'prefixes:' delimited list has first precedence in resolution.
+
+prefixes:
+  baselink: 'https://w3id.org/baselink/vocab/'
+  csrc: 'https://csrc.nist.gov/glossary/term/'    # Computer Security Resource Center
+  linkml: 'https://w3id.org/linkml/'
+  SIO: 'http://semanticscience.org/resource/SIO_'   # Semanticscience Integrated Ontology
+  sh: 'http://www.w3.org/ns/shacl#'
+
+  action: 'https://ontology.unifiedcyberontology.org/uco/action/'
+  core: 'https://ontology.unifiedcyberontology.org/uco/core/'
+  location: 'https://ontology.unifiedcyberontology.org/uco/location/'
+  pattern: 'https://ontology.unifiedcyberontology.org/uco/pattern/'
+  ucotypes: 'https://ontology.unifiedcyberontology.org/uco/types/'
+  vocabulary: 'https://ontology.unifiedcyberontology.org/uco/vocabulary/'
+
+default_prefix: ucolink-action
+default_range: string
+
+## ------------
+## ENUMS
+## ------------
+enums:
+
+  SeverityTypeEnum:
+    permissible_values:
+      info:
+        description: >-
+          A non-critical constraint violation indicating an informative message
+      warning:
+        description: >-
+          A non-critical constraint violation indicating a warning;
+      volation:
+        description: >-
+          A critical constraint violation;
+
+## ------------
+## SUBSETS
+## ------------
+subsets: {}
+
+## ------------
+## TYPES
+## ------------
+imports:
+  - linkml:types
+
+types:
+
+  non negative integer type:
+    typeof: integer
+    uri: xsd:nonNegativeInteger
+    description: >-
+      real number strictly greater than zero
+    exact_mappings:
+      - WIKIDATA:Q3176558  # positive real number
+
+  decimal type:
+    typeof: decimal
+    uri: xsd:decimal
+    base: float
+
+  string type:
+    typeof: string
+    uri: xsd:string
+    base: str
+
+  iri type:
+    typeof: uriorcurie
+    description: >-
+    uri: xsd:anyURI
+
+  time type:
+    typeof: time
+    uri: xsd:dateTime 
+
+
+## ------------
+## SLOTS
+## ------------
+slots:
+
+  action:
+    name: action
+    description: >-
+      A characterization of a single action. 
+    domain: action
+
+  action count:
+    name: action count
+    description: >-
+      The number of times that the action was performed.
+    range: non negative integer type
+
+  action status:
+    name: action status
+    description: >-
+      The current state of the action.
+    range: vocabulary:ActionStatusTypeVocab
+
+  argument name:
+    name: argument name
+    description: >-
+      The identifying label of an argument.
+    range: string type
+
+  end time:
+    name: end time
+    description: >-
+      The time at which performance of the action ended.
+    range: time type
+
+  environment:
+    name: environment
+    description: >-
+      The environment wherein an action occurs.
+    domain: core:UcoObject
+
+  error:
+    name: error
+    description: >-
+      A characterization of the differences between the expected and the actual performance of the action.
+    domain: core:UcoObject
+
+  estimated cost:
+    name: estimated cost
+    description: >-
+      An estimation of the cost if the action is performed.
+    range: string type
+
+  estimated efficacy:
+    name: estimated efficacy
+    description: >-
+      "An estimation of the effectiveness of the action at achieving its objective if the action is performed.
+    range: string type
+
+  estimated impact:
+    name: estimated impact
+    description: >-
+      An estimation of the impact if the action is performed.
+    range: string type
+
+  instrument:
+    name: instrument
+    description: >-
+      The things used to perform an action.
+    domain: core:UcoObject
+
+  location:
+    name: location
+    description: >-
+      The locations where an action occurs.
+    domain: location:location
+
+  object:
+    name: object
+    description: >-
+      The things that the action is performed on/against.
+    domain: core:UcoObject
+
+  objective:
+    name: objective
+    description: >-
+      The intended purpose for performing the action.
+    range: string type
+
+  participant:
+    name: participant
+    description: >-
+      The supporting (non-primary) performers of an action.
+    domain: core:UcoObject
+
+  performer:
+    name: performer
+    description: >-
+      The primary performer of an action.
+    domain: core:UcoObject
+
+  phase:
+    name: phase
+    description: >-
+      The ordered set of actions or sub action-lifecycles that represent the action lifecycle.
+    range: array of action
+    subproperty_of: subaction 
+
+  rate:
+    name: rate
+    description: >-
+      The frequency rate for the occurence of an action.
+    range: decimal type
+
+  result:
+    name: result
+    description: >-
+      The things resulting from performing an action.
+    domain: core:UcoObject
+
+  scale:
+    name: scale
+    description: >-
+      The time scale utilized for the frequency rate count for the occurence of an action.
+    range: string type
+
+  start time:
+    name: start time
+    description: >-
+      The time at which performance of the action began.
+    range: time type
+
+  subaction:
+    name: subaction
+    description: >-
+      References to other actions that make up part of a larger more complex action.
+    domain: action
+
+  trend:
+    name: trend
+    description: >-
+      A characterization of the frequency trend for the occurence of an action.
+    domain: vocabulary:TrendVocab
+
+  units:
+    name: units
+    description: >-
+      The units of measure utilized for the frequency rate count for the occurence of an action.
+    range: string type
+
+  value:
+    name: value
+    description: >-
+      The value of an action parameter.
+    range: string type
+
+
+## ------------
+## CLASSES
+## ------------
+classes:
+
+  # mixins
+
+  pattern:
+    mixin: true
+    description: >-
+      An arrangement of objects, facts, behaviors, or other things which have scientific, mathematical, geometric, statistical, or other meaning.
+    exact_mappings:
+      - NCIT:C25336
+      - SIO:000130
+
+  # classes
+
+  action:
+    description: >-
+      An action is something that may be done or performed.
+    name: action   # rdfs:label
+    is_a: core:UcoObject
+    slots:
+      - end time
+      - start time
+      - action count
+    slot_usage:
+      action status:
+        range: vocabulary:ActionStatusTypeVocab
+      environment:
+        range: iri type
+      error:
+        range: iri type
+      info:
+        range: SeverityTypeEnum
+      instrument:
+        range: iri type
+      location:
+        range: iri type
+      object:
+        range: iri type
+      participant:
+        range: iri type
+      performer:
+        range: iri type
+      result:
+        range: iri type
+      subaction:
+        range: iri type
+    exact_mappings:
+      - NCIT:C25404  # action, thing done
+      - WIKIDATA:Q1914636
+    narrow_mappings:
+      - NCIT:C162846  # regulatory action
+
+  action argument facet:
+    description: >-
+      An action argument facet is a grouping of characteristics unique to a single parameter of an action.
+    name: action argument facet
+    is_a: core:Facet
+    slot_usage:
+      argument name:
+        required: true
+      value:
+        required: true
+
+  action estimation facet:
+    description: >-
+      An action estimation facet is a grouping of characteristics unique to decision-focused approximation aspects for an action that may potentially be performed.
+    name: action estimation facet
+    is_a: core:Facet
+    slots:
+      - estimated cost
+      - estimated efficacy
+      - estimated impact
+      - objective
+
+  action frequency facet:
+    description: >-
+      An action frequency facet is a grouping of characteristics unique to the frequency of occurrence for an action.
+    name: action frequency facet
+    is_a: core:Facet
+    slot_usage:
+      rate:
+        required: true
+      scale:
+        required: true
+      units:
+        required: true
+      trend:
+        range: SeverityTypeEnum
+        required: true
+
+  action lifecycle:
+    description: >-
+      An action lifecycle is an action pattern consisting of an ordered set of multiple actions or subordinate action lifecycles.
+    name: action lifecycle
+    is_a: action
+    slots:
+      - end time
+      - start time
+      - action count
+      - action status
+    slot_usage:
+      error:
+        range: iri type
+      phase:
+        required: true
+      
+  action pattern:
+    description: >-
+      An action pattern is a grouping of characteristics unique to a combination of actions forming a consistent or characteristic arrangement.
+    name: action pattern
+    is_a: action
+    mixins:
+      - pattern
+
+  array of action:
+    description: >-
+      An array of action is an ordered list of references to things that may be done or performed.
+    name: array of action
+    is_a: core:UcoInherentCharacterizationThing
+    slot_usage:
+      action:
+        required: true
+
+...
