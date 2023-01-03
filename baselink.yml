@@ -1273,6 +1273,7 @@ slots:
       - dwc:eventDate
       - dwc:verbatimEventDate
       - dwc:relationshipEstablishedDate
+      - WIKIDATA:Q115748455  # date of change
 
   update date:
     is_a: node property

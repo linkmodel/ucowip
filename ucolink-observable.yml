@@ -423,6 +423,124 @@ enums:
       TASK_FLAG_ZERO:
         is_a: vocabulary:TaskFlagVocab
 
+  TaskPriorityEnum:
+    description: >-
+    permissible_values:
+      ABOVE_NORMAL_PRIORITY_CLASS:
+        is_a: vocabulary:TaskPriorityVocab
+      BELOW_NORMAL_PRIORITY_CLASS:
+        is_a: vocabulary:TaskPriorityVocab
+      HIGH_PRIORITY_CLASS:
+        is_a: vocabulary:TaskPriorityVocab
+      IDLE_PRIORITY_CLASS:
+        is_a: vocabulary:TaskPriorityVocab
+      NORMAL_PRIORITY_CLASS:
+        is_a: vocabulary:TaskPriorityVocab
+      REALTIME_PRIORITY_CLASS:
+        is_a: vocabulary:TaskPriorityVocab
+
+  TaskStatusEnum:
+    description: >-
+    permissible_values:
+      SCHED_E_ACCOUNT_DBASE_CORRUPT:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_ACCOUNT_INFORMATION_NOT_SET:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_ACCOUNT_NAME_NOT_FOUND:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_CANNOT_OPEN_TASK:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_INVALID_TASK:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_NO_SECURITY_SERVICES:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_SERVICE_NOT_INSTALLED:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_SERVICE_NOT_RUNNING:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_TASK_NOT_READY:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_TASK_NOT_RUNNING:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_TRIGGER_NOT_FOUND:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_UNKNOWN_OBJECT_VERSION:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_E_UNSUPPORTED_ACCOUNT_OPTION:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_S_EVENT_TRIGGER:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_S_TASK_DISABLED:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_S_TASK_HAS_NOT_RUN:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_S_TASK_NOT_SCHEDULED:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_S_TASK_NO_MORE_RUNS:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_S_TASK_NO_VALID_TRIGGERS:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_S_TASK_READY:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_S_TASK_RUNNING:
+        is_a: vocabulary:TaskStatusVocab
+      SCHED_S_TASK_TERMINATED:
+        is_a: vocabulary:TaskStatusVocab
+      TASK_STATE_QUEUED:
+        is_a: vocabulary:TaskStatusVocab
+      TASK_STATE_UNKNOWN:
+        is_a: vocabulary:TaskStatusVocab
+
+  WindowsDriveTypeEnum:
+    description: >-
+    permissible_values:
+      DRIVE_CDROM:
+        is_a: vocabulary:WindowsDriveTypeVocab
+      DRIVE_FIXED:
+        is_a: vocabulary:WindowsDriveTypeVocab
+      DRIVE_NO_ROOT_DIR:
+        is_a: vocabulary:WindowsDriveTypeVocab
+      DRIVE_RAMDISK:
+        is_a: vocabulary:WindowsDriveTypeVocab
+      DRIVE_REMOTE:
+        is_a: vocabulary:WindowsDriveTypeVocab
+      DRIVE_REMOVABLE:
+        is_a: vocabulary:WindowsDriveTypeVocab
+      DRIVE_UNKNOWN:
+        is_a: vocabulary:WindowsDriveTypeVocab
+
+  WindowsNetworkSecurityModeEnum:
+    description: >-
+    permissible_values:
+      None:
+        is_a: vocabulary:WirelessNetworkSecurityModeVocab
+      WEP:
+        is_a: vocabulary:WirelessNetworkSecurityModeVocab
+      WPA:
+        is_a: vocabulary:WirelessNetworkSecurityModeVocab
+      WPA2-PSK:
+        is_a: vocabulary:WirelessNetworkSecurityModeVocab
+      WPA2-Enterprise:
+        is_a: vocabulary:WirelessNetworkSecurityModeVocab
+      WPA3-PSK:
+        is_a: vocabulary:WirelessNetworkSecurityModeVocab
+      WPA3-Enterprise:
+        is_a: vocabulary:WirelessNetworkSecurityModeVocab
+
+  RegionalRegistryTypeEnum:
+    description: >-
+    permissible_values:
+      APNIC:
+        is_a: vocabulary:RegionalRegistryTypeVocab
+      ARIN:
+        is_a: vocabulary:RegionalRegistryTypeVocab
+      AfriNIC:
+        is_a: vocabulary:RegionalRegistryTypeVocab
+      LACNIC:
+        is_a: vocabulary:RegionalRegistryTypeVocab
+      RIPE NCC:
+        is_a: vocabulary:RegionalRegistryTypeVocab
+
 ## ------------
 ## SUBSETS
 ## ------------
@@ -436,26 +554,35 @@ imports:
 
 types:
 
- literal type:
+  literal type:
     uri: rdf:literal
     description: >-
       Literals are used for values such as strings, numbers, and dates.
     notes: >-
       not sure if needed or how to use if needed
 
-  non negative integer type:
+  integer type:
     typeof: integer
+    base: int
+
+  non negative integer type:
+    typeof: integer type
     uri: xsd:nonNegativeInteger
+    base: int
     description: >-
-      real number strictly greater than zero
+      "real number strictly greater than zero"
     exact_mappings:
       - WIKIDATA:Q3176558  # positive real number
 
   hex binary type:
     uri: xsd:hexBinary
-    base: int
     description: >-
       "Represents arbitrary hex-encoded binary data"
+    base: int
+
+  decimal type:
+    uri: xsd:decimal
+    base: int
 
   unsigned short type:
     uri: xsd:unsignedShort
@@ -489,6 +616,10 @@ types:
     typeof: boolean
     uri: xsd:boolean
 
+  time type:
+    typeof: time
+    uri: xsd:dateTime
+
   network socket address family:
     typeof: string type
     name: network socket address family
@@ -516,46 +647,6 @@ types:
     broad_mappings:
       - WIKIDATA:Q632343  # network socket
 
-#########
-# SLOTS #
-# #######
-
-slots:
-
-  IMEI:
-    name: IMEI
-    description: >-
-      "International Mobile Equipment Identity (IMEI)."
-    range: string type
-    exact_mappings:
-      - WIKIDATA:Q334832
-
-  IMSI:
-    name: IMSI
-    description: >-
-      "An International Mobile Subscriber Identity (IMSI) is a unique identification associated with all GSM and UMTS network mobile phone users. It is stored as a 64-bit field in the SIM inside the phone and is sent by the phone to the network."
-    range: string type
-    exact_mappings:
-      - WIKIDATA:Q2218407
-
-  PIN:
-    name: PIN
-    description: >-
-      "Personal Identification Number (PIN)."
-    range: string type
-    exact_mappings:
-      - sumo:pin
-      - WIKIDATA:Q674050
-
-  PUK:
-    name: PUK
-    description: >-
-      "Personal Unlocking Key (PUK) to unlock the SIM card."
-    range: string type
-    exact_mappings:
-      - WIKIDATA:Q942499
-
-
 ## ------------
 ## CLASSES
 ## ------------
@@ -567,10 +658,9 @@ classes:
     description: >-
       "An API (application programming interface) is a computing interface that defines interactions between multiple software or mixed hardware-software intermediaries. It defines the kinds of calls or requests that can be made, how to make them, the data formats that should be used, the conventions to follow, etc. [based on https://en.wikipedia.org/wiki/API]"
     exact_mappings:
+      - sumo:ApplicationProgrammerInterface
       - NCIT:C75301  # application program interface
       - WIKIDATA:Q165194  # ditto
-    exact_mappings:
-      - sumo:ApplicationProgrammerInterface
     narrow_mappings:
       - WIKIDATA:Q557770  # web api
 
@@ -623,11 +713,7 @@ classes:
       - modified time
       - observable created time
       - account identifier
-    slot_usage:
-      account type:
-        any_of:
-          - range: vocabulary:AccountTypeVocab
-          - range: string type
+      - account type
 
   adaptor:
     is_a: device
@@ -756,7 +842,7 @@ classes:
       - WIKIDATA:Q166142
 
   application account:
-    is_a: digital account 
+    is_a: digital account
     name: application account
     description: >-
       "An application account is an account within a particular software program designed for end users."
@@ -863,11 +949,7 @@ classes:
       - regional internet registry-shape-value-outside-default-vocabulary
       - number
       - as handle
-    slot_usage:
-      regional internet registry:
-        any_of:
-          - range: vocabulary:RegionalRegistryTypeVocab
-          - range: string type
+      - regional internet registry
 
   black berry phone:
     is_a: smart phone
@@ -1215,10 +1297,8 @@ classes:
     slot_usage:
       geolocation address:
         range: iri type
-      contact address scope:
-        any_of:
-          - range: vocabulary:ContactAddressScopeVocab
-          - range: string type
+    slots:
+      - contact address scope
 
   contact affiliation:
     is_a: core:UcoInherentCharacterizationThing
@@ -1260,10 +1340,8 @@ classes:
     slot_usage:
       email address:
         range: iri type
-      contact email scope:
-        any_of:
-          - range: vocabulary:ContactEmailScopeVocab
-          - range: string type
+    slots:
+      - contact email scope
 
   contact facet:
     is_a: core:Facet
@@ -1347,10 +1425,8 @@ classes:
     slot_usage:
       contact phone number:
         range: uri type
-      contact phone scope:
-        any_of:
-          range: vocabulary:ContactPhoneScopeVocab
-          range: string type
+    slots:
+      - contact phone scope
 
   contact profile:
     is_a: core:UcoInherentCharacterizationThing
@@ -1373,10 +1449,8 @@ classes:
     slot_usage:
       sip address:
         range: uri type
-      contact SIP scope:
-        any_of:
-          range: vocabulary:ContactSIPScopeVocab
-          range: string type
+    slots:
+      - contact SIP scope
 
   contact URL:
     is_a: core:UcoInherentCharacterizationThing
@@ -1386,10 +1460,8 @@ classes:
     slot_usage:
       url:
         range: uri type
-      contact URL scope:
-        any_of:
-          range: vocabulary:ContactURLScopeVocab
-          range: string type
+    slots:
+      - contact URL scope
 
   content data:
     is_a: observable object
@@ -1412,7 +1484,6 @@ classes:
       byte order:
         any_of:
           range: vocabulary:EndiannessTypeVocab
-          range: string type
     slots:
       - is encrypted
       - entropy
@@ -1490,7 +1561,7 @@ classes:
       - WIKIDATA:Q11019  # machine
     narrow_mappings:
       - WIKIDATA:Q3966  # computer hardware
-      - WIKIDATA:Q2858615  # electronic machine 
+      - WIKIDATA:Q2858615  # electronic machine
 
   device facet:
     is_a: core:Facet
@@ -1506,7 +1577,7 @@ classes:
       - serial number
 
   digital account:
-    is_a: account 
+    is_a: account
     name: digital account
     description: >-
       "A digital account is an arrangement with an entity to enable and control the provision of some capability or service within the digital domain."
@@ -1629,7 +1700,7 @@ classes:
       "A disk partition is a particular managed region on a storage mechanism where data is recorded by various electronic, magnetic, optical, or mechanical changes to a surface layer of one or more rotating disks. [based on https://en.wikipedia.org/wiki/disk_storage]"
     related_mappings:
       - WIKIDATA:Q624167  # disk partitioning
-      - WIKIDATA:Q79803608  # disk partitioning scheme 
+      - WIKIDATA:Q79803608  # disk partitioning scheme
     exact_mappings:
       - WIKIDATA:Q109940639
     narrow_mappings:
@@ -1677,14 +1748,13 @@ classes:
     exact_mappings:
       - WIKIDATA:Q484000  # drone
     narrow_mappings:
-      - WIKIDATA:Q6865150  # miniature drone 
+      - WIKIDATA:Q6865150  # miniature drone
 
   ESN:
     name: ESN
     description: >-
       "Electronic Serial Number."
-    range: string type
-    exact_mappings:
+        exact_mappings:
       - WIKIDATA:Q3050611
 
   EXIF facet:
@@ -1699,7 +1769,7 @@ classes:
         range: iri type
 
   email account:
-    is_a: digital account 
+    is_a: digital account
     name: email account
     description: >-
       "An email account is an arrangement with an entity to enable and control the provision of electronic mail (email) capabilities or services."
@@ -1920,7 +1990,7 @@ classes:
 
   file:
     is_a: file system object
-    name:  file
+    name: file
     description: >-
       "A file is a computer resource for recording data discretely on a computer storage device."
     exact_mappings:
@@ -1932,7 +2002,7 @@ classes:
 
   file facet:
     is_a: core:Facet
-    name:  file facet
+    name: file facet
     description: >-
       "A file facet is a grouping of characteristics unique to the storage of a file (computer resource for recording data discretely in a computer storage device) on a file system (process that manages how and where data on a storage device is stored, accessed and managed). [based on https://en.wikipedia.org/computer_file and https://www.techopedia.com/definition/5510/file-system]"
     slots:
@@ -1951,14 +2021,14 @@ classes:
 
   file permissions facet:
     is_a: core:Facet
-    name:  file permissions facet
+    name: file permissions facet
     description: >-
       "A file permissions facet is a grouping of characteristics unique to the access rights (e.g., view, change, navigate, execute) of a file on a file system."
 
 
   file system:
     is_a: observable object
-    name:  fileSystem
+    name: fileSystem
     description: >-
       "A file system is the process that manages how and where data on a storage medium is stored, accessed and managed. [based on https://www.techopedia.com/definition/5510/file-system]"
     related_mappings:
@@ -1969,7 +2039,7 @@ classes:
 
   file system facet:
     is_a: core:Facet
-    name:  fileSystem facet
+    name: fileSystem facet
     description: >-
       "A file system facet is a grouping of characteristics unique to the process that manages how and where data on a storage medium is stored, accessed and managed. [based on https://www.techopedia.com/definition/5510/file-system]"
     slots:
@@ -1978,7 +2048,7 @@ classes:
 
   file system object:
     is_a: observable object
-    name:  fileSystemObject
+    name: fileSystemObject
     description: >-
       "A file system object is an informational object represented and managed within a file system."
     exact_mappings:
@@ -2150,8 +2220,7 @@ classes:
     name: ICCID
     description: >-
       "Integrated circuit card identifier (http://www.itu.int/)."
-    range: string type
-    exact_mappings:
+        exact_mappings:
       - WIKIDATA:Q18819522
 
   ICMP connection:
@@ -2347,15 +2416,13 @@ classes:
     name: MSISDN
     description: >-
       "Mobile Station International Subscriber Directory Number (MSISDN) is a number used to identify a mobile phone number internationally. MSISDN is defined by the E.164 numbering plan. This number includes a country code and a National Destination Code which identifies the subscriber's operator."
-    range: string type
-    exact_mappings:
+        exact_mappings:
       - WIKIDATA:Q786900
 
   MSISDN type:
     name: MSISDN type
     description: >-
       "???."
-    range: string type
 
   memory:
     is_a: observable object
@@ -2388,7 +2455,6 @@ classes:
       block type:
         any_of:
           range: vocabulary:MemoryBlockTypeVocab
-          range: string type
 
   message:
     is_a: observable object
@@ -2435,7 +2501,7 @@ classes:
       message thread origin:
         description: >-
           "The contents of origin items in the Thread linked by messageThread must be Message objects."
-        range:  types:threadOriginItem
+        range: types:threadOriginItem
         domain: message
       message thread terminal:
         description: >-
@@ -2462,7 +2528,7 @@ classes:
       - mft file name accessed time
       - mft file name created time
       - mft file name modified time
-      - mft file name record change time 
+      - mft file name record change time
       - mft record change time
       - mft file ID
       - mft file name length
@@ -2486,7 +2552,7 @@ classes:
       - content type
 
   mobile account:
-    is_a: digital account 
+    is_a: digital account
     name: mobile account
     description: >-
       "A mobile account is an arrangement with an entity to enable and control the provision of some capability or service on a portable computing device. [based on https://www.lexico.com/definition/mobile_device]"
@@ -2784,16 +2850,16 @@ classes:
       Mixin class for observable things
 
   observable action:
-    is_a: action:Action 
+    is_a: action:Action
     mixins:
-      - observable mixin 
+      - observable mixin
     description: >-
       "An observable action is a grouping of characteristics unique to something that may be done or performed within the digital domain."
 
   observable object:
-    is_a: core:Item 
+    is_a: core:Item
     mixins:
-      - observable mixin 
+      - observable mixin
     description: >-
       "An observable object is a grouping of characteristics unique to a distinct article or unit within the digital domain."
     slot_usage:
@@ -2930,7 +2996,7 @@ classes:
       - WIKIDATA:Q1436963
 
   phone account:
-    is_a: digital account 
+    is_a: digital account
     name: phone account
     description: >-
       "A phone account is an arrangement with an entity to enable and control the provision of a telephony capability or service."
@@ -3172,8 +3238,7 @@ classes:
     name: SIM form
     description: >-
       "The form of SIM card such as SIM, Micro SIM, Nano SIM."
-    range: string type
-    narrow_mappings:
+        narrow_mappings:
       - WIKIDATA:Q51885558  # nano sim
       - WIKIDATA:Q3856948  # micro sim
 
@@ -3181,8 +3246,7 @@ classes:
     name: SIM type
     description: >-
       "The type of SIM card such as SIM, USIM, UICC."
-    range: string type
-    broad_mappings:
+        broad_mappings:
       - WIKIDATA:Q41349  # smart card
     narrow_mappings:
       - WIKIDATA:Q3814060  # uicc
@@ -3313,7 +3377,7 @@ classes:
     exact_mappings:
       - WIKIDATA:Q252683
 
-  socket :
+  socket:
     is_a: file system object
     name: Socket
     description: >-
@@ -3507,7 +3571,7 @@ classes:
       - user location string
 
   UNIX account:
-    is_a: digital account 
+    is_a: digital account
     name: UNIX account
     description: >-
       "A UNIX account is an account on a UNIX operating system."
@@ -3657,7 +3721,7 @@ classes:
       - visit duration
 
   user account:
-    is_a: digital account 
+    is_a: digital account
     name: user account
     description: >-
       "A user account is an account controlling a user's access to a network, system or platform."
@@ -3775,6 +3839,7 @@ classes:
       - remarks
       - sponsoring registrar
       - registrant IDs
+      - regional internet registry
     slot_usage:
       domain name:
         range: iri type
@@ -3792,8 +3857,6 @@ classes:
         range: vocabulary:WhoisDNSSECTypeVocab
       status:
         range: WhoisStatusTypeEnum
-      regional internet registry:
-        range: vocabulary:RegionalRegistryTypeVocab
 
   who is contact facet:
     is_a: contact facet
@@ -3858,7 +3921,7 @@ classes:
       - WIKIDATA:Q111279923
 
   windows account:
-    is_a: digital account 
+    is_a: digital account
     name: windows account
     description: >-
       "A Windows account is a user account on a Windows operating system."
@@ -3872,7 +3935,7 @@ classes:
       - groups
 
   windows active directory account:
-    is_a: digital account 
+    is_a: digital account
     name: windows active directory account
     description: >-
       "A Windows Active Directory account is an account managed by directory-based identity-related services of a Windows operating system."
@@ -4045,7 +4108,7 @@ classes:
       - minor image version
       - minor OS version
       - minor subsystem version
-      - subsystem 
+      - subsystem
 
   windows PE section:
     is_a: core:UcoInherentCharacterizationThing
@@ -4058,7 +4121,7 @@ classes:
     slots:
       - entropy
       - size
-      - name 
+      - name
 
   windows prefetch:
     is_a: observable object
@@ -4167,13 +4230,13 @@ classes:
     description: >-
       "A Windows service facet is a grouping of characteristics unique to a specific Windows service (a computer program that operates in the background of a Windows operating system, similar to the way a UNIX daemon runs on UNIX ). [based on https://en.wikipedia.org/wiki/Windows_service]"
     slots:
-      - displayName
-      - groupName
-      - serviceName
-      - serviceStatus
-      - serviceType
-      - startCommandLine
-      - startType
+      - display name
+      - group name
+      - service name
+      - service status
+      - service type
+      - start command line
+      - start type
       - descriptions
 
   windows service start type:
@@ -4219,6 +4282,10 @@ classes:
         range: iri type
       flags:
         range: TaskFlagEnum
+      priority:
+        range: TaskPriorityEnum
+      status:
+        range: TaskStatusEnum
     slots:
       - most recent run time
       - next run time
@@ -4231,8 +4298,6 @@ classes:
       - parameters
       - task comment
       - task creator
-      - priority
-      - status
 
   windows thread:
     is_a: process thread
@@ -4245,12 +4310,30 @@ classes:
     name: windows thread facet
     description: >-
       "A Windows thread facet is a grouping os characteristics unique to a single thread of execution within a Windows process."
+    slots:
+      - creation time
+      - parameter address
+      - start address
+      - priority
+      - stack size
+      - thread ID
+      - context
+      - running status
+      - security attributes
+      - creation flags
 
   windows volume facet:
     is_a: core:Facet
     name: windows volume facet
     description: >-
       "A Windows volume facet is a grouping of characteristics unique to a single accessible storage area (volume) with a single windows file system. [based on https://en.wikipedia.org/wiki/volume_(computing)]"
+    slot_usage:
+      drive type:
+        range: WindowsDriveTypeEnum
+      windows volume attributes:
+        maximum_count: 4
+    slots:
+      - drive letter
 
   windows waitable time:
     is_a: observable object
@@ -4269,42 +4352,134 @@ classes:
     name: wireless network connection facet
     description: >-
       "A wireless network connection facet is a grouping of characteristics unique to a connection (completed or attempted) across an IEEE 802.11 standards-conformant digital network (a group of two or more computer systems linked together). [based on https://www.webopedia.com/TERM/N/network.html]"
+    slots:
+      - base station
+      - password
+      - ssid
+    slot_usage:
+      wireless network security mode:
+        range: WirelessNetworkSecurityModeEnum
 
   write blocker:
     is_a: device
     name: write blocker
     description: >-
       "A write blocker is a device that allows read-only access to storage mediums in order to preserve the integrity of the data being analyzed. Examples include Tableau, Cellibrite, Talon, etc"
+    exact_mappings:
+      WIKIDATA:Q891064
 
   X509 certificate:
     is_a: observable object
     name: X509 certificate
     description: >-
       "A X.509 certificate is a public key digital identity certificate conformant to the X.509 PKI (Public Key Infrastructure) standard."
+    exact_mappings:
+      - WIKIDATA:Q16361936
 
   X509 certificate facet:
     is_a: core:Facet
     name: X509 certificate facet
     description: >-
       "A X.509 certificate facet is a grouping of characteristics unique to a public key digital identity certificate conformant to the X.509 PKI (Public Key Infrastructure) standard."
+    slot_usage:
+      x509v3extensions:
+        range: iri type
+      issuer hash:
+        range: iri type
+      subject hash:
+        range: iri type
+      thumbprint hash:
+        range: iri type
+      is self signed:
+        range: boolean type
+    slots:
+      - validity not after
+      - validity not before
+      - subject public key exponent
+      - issuer
+      - serial number
+      - signature
+      - signature algorithm
+      - subject
+      - subject public key algorithm
+      - subject public key modulus
+      - version
 
   X509 v3 certificate:
     is_a: observable object
     name: X509V3Certificate
     description: >-
       "An X.509 v3 certificate is a public key digital identity certificate conformant to the X.509 v3 PKI (Public Key Infrastructure) standard."
+    exact_mappings:
+      - WIKIDATA:Q105850342
 
   X509 v3 extensions facet:
     is_a: core:Facet
     name: X509 v3 extensions facet
     description: >-
       "An X.509 v3 certificate extensions facet is a grouping of characteristics unique to a public key digital identity certificate conformant to the X.509 v3 PKI (Public Key Infrastructure) standard."
+    slots:
+      - private key usage period not after
+      - private Key usage period not before
+      - authority key identifier
+      - basic constraints
+      - certificate policies
+      - crl distribution points
+      - extended key usage
+      - inhibit any policy
+      - issuer alternative name
+      - key usage
+      - name constraints
+      - policy constraints
+      - policy mappings
+      - subject alternative name
+      - subject directory attributes
+      - subject key identifier
+
+
+#########
+# SLOTS #
+# #######
+
+slots:
+
+  IMEI:
+    name: IMEI
+    description: >-
+      "International Mobile Equipment Identity (IMEI)."
+        exact_mappings:
+      - WIKIDATA:Q334832
+
+  IMSI:
+    name: IMSI
+    description: >-
+      "An International Mobile Subscriber Identity (IMSI) is a unique identification associated with all GSM and UMTS network mobile phone users. It is stored as a 64-bit field in the SIM inside the phone and is sent by the phone to the network."
+        exact_mappings:
+      - WIKIDATA:Q2218407
+
+  PIN:
+    name: PIN
+    description: >-
+      "Personal Identification Number (PIN)."
+        exact_mappings:
+      - sumo:pin
+      - WIKIDATA:Q674050
+
+  PUK:
+    name: PUK
+    description: >-
+      "Personal Unlocking Key (PUK) to unlock the SIM card."
+        exact_mappings:
+      - WIKIDATA:Q942499
 
   abbreviation:
     name: abbreviation
     description: >-
       "The abbreviation of a global flag. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff549646(v=vs.85).aspx."
-    range: string type
+        broad_mappings:
+      - NCIT:C42610
+      - sumo:abbreviation
+      - WIKIDATA:Q102786
 
   accessed directory:
     name: accessed directory
@@ -4322,22 +4497,22 @@ classes:
     name: accessed time
     description: >-
       "The date and time at which the Object was accessed."
-    range: xsd:dateTime
+    range: time type
 
   account:
     name: account
     description: >-
       "Specifies the account referenced in an event log entry or used to run the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381228(v=vs.85).aspx."
     range: observable object
+    exact_mappings:
+      - sumo:Account
 
   account identifier:
     name: account identifier
     description: >-
       "The unique identifier for the account."
-    range: string type
 
   account issuer:
-    description: >-
     name: accountIssuer
     description: >-
       "The issuer of this account."
@@ -4347,35 +4522,27 @@ classes:
     name: account login
     description: >-
       "The login identifier for the digital account."
-    range: string type
 
   account logon type:
     name: account logon type
     description: >-
       "Specifies the security logon method required to run the tasks associated with the account. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383013(v=vs.85).aspx."
-    range: string type
 
   account run level:
-    name: accountRunLevel
+    name: account run level
     description: >-
       "Specifies the permission level of the account that the task will be run at."
-    range: string type
 
   account type:
-    name: accountType
+    name: account type
     description: >-
       "The type of account, for instance bank, phone, application, service, etc."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:account TypeVocab
-                        xsd:string
+    range: vocabulary:AccountTypeVocab
 
   action ID:
     name: action ID
     description: >-
       "Specifies the user-defined identifier for the action. This identifier is used by the Task Scheduler for logging purposes. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380590(v=vs.85).aspx."
-    range: string type
 
   action list:
     name: action list
@@ -4387,45 +4554,36 @@ classes:
     name: action type
     description: >-
       "Specifies the type of the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380596(v=vs.85).aspx."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:task action typeVocab
-                        xsd:string
+    range: vocabulary:TaskActionTypeVocab
 
   active directory groups:
     name: active directory groups
-    range: string type
 
   adapter name:
     name: adapter name
     description: >-
       "Specifies the name of the network adapter used by the network interface."
-    range: string type
 
   address of entry point:
     name: address of entry point
     description: >-
       "Specifies the address of the entry point relative to the image base when the executable is loaded into memory."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   address value:
     name: address value
     description: >-
       "The value of an address."
-    range: string type
 
   advertising ID:
     name: advertising ID
     description: >-
-      "Advertising ID as a UUID. [based on https://developer.android.com/reference/androidx/ads/identifier/AdvertisingIdInfo]
-    range: string type
+      "Advertising ID as a UUID. [based on https://developer.android.com/reference/androidx/ads/identifier/AdvertisingIdInfo]"
 
   allocation status:
     name: allocation status
     description: >-
       "The allocation status of a file."
-    range: string type
 
   alternate data streams:
     description: >-
@@ -4435,26 +4593,26 @@ classes:
   android fingerprint:
     name: android fingerprint
     description: >-
-      "A string that uniquely identifies a build of the Android operating system. [based on https://developer.android.com/reference/android/os/Build#FINGERPRINT]
-    range: string type"
+      "A string that uniquely identifies a build of the Android operating system. [based on https://developer.android.com/reference/android/os/Build#FINGERPRINT]"
 
   android ID:
     name: android ID
     description: >-
       "A 64-bit number (expressed as a hexadecimal string), unique to each combination of app-signing key, user, and device. [based on https://developer.android.com/reference/android/provider/Settings.Secure#ANDROID_ID"
-    range: xsd:hexBinary
+    range: hex binary type
 
   android version:
     name: android version
     description: >-
-      "The user-visible version string. E.g., '1.0' or '3.4b5' or 'bananas'. This field is an opaque string. Do not assume that its value has any particular structure or that values of RELEASE from different releases can be somehow ordered. [based on https://developer.android.com/reference/android/os/Build.VERSION#RELEASE]
-    range: string type
+      "The user-visible version string. E.g., '1.0' or '3.4b5' or 'bananas'. This field is an opaque string. Do not assume that its value has any particular structure or that values of RELEASE from different releases can be somehow ordered. [based on https://developer.android.com/reference/android/os/Build.VERSION#RELEASE]"
+        related_mappings:
+      - WIKIDATA:Q79611  # android version history
 
   antenna height:
     name: antenna height
     description: >-
       "The height (in meters) of the antenna from the ground."
-    range: xsd:decimal
+    range: decimal type
 
   application:
     name: application
@@ -4466,31 +4624,26 @@ classes:
     name: application file name
     description: >-
       "Name of the executable of the prefetch file."
-    range: string type
 
   application identifier:
     name: application identifier
-    range: string type
 
   archive type:
     name: archive type
     description: >-
       "The type of a file archive, e.g. ZIP, GZIP or RAR."
-    range: string type
 
   arguments:
     name: arguments
     description: >-
       "A list of arguments utilized in initiating the process."
-    range: string type
 
   as handle:
     name: as handle
-    range: string type
 
   aslr enabled:
     name: aslr enabled
-    range: xsd:boolean
+    range: boolean type
 
   attendant:
     name: attendant
@@ -4502,44 +4655,51 @@ classes:
     name: audio type
     description: >-
       "The type of a audio. For example: music or speech."
-    range: string type
 
   authority key identifier:
     name: authority key identifier
-    range: string type
 
   available ram:
     name: available ram
     description: >-
       "Specifies the amount of physical memory available on the system, in bytes."
-    range: xsd:integer
+    range: integer type
 
   azimuth:
     name: azimuth
     description: >-
       "The median rotation in degrees around a vertical axis of the cell antenna sector accessed."
-    range: xsd:decimal
+    range: decimal type
+    exact_mappings:
+      - WIKIDATA:Q124274
 
   base of code:
     name: base of code
     description: >-
       "Specifies the address that is relative to the image base of the beginning-of-code section when it is loaded into memory."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   base station:
     name: base station
     description: >-
       "The base station."
-    range: string type
+        close_mappings:
+      - WIKIDATA:Q1332343  # cell site
+    exact_mappings:
+      - WIKIDATA:Q1379116  # base station
 
   basic constraints:
     name: basic constraints
-    range: string type
+    broad_mappings:
+      - WIKIDATA:Q2303305  # constraint
 
   bcc:
     description: >-
+      "Allows the sender of a message to conceal the person entered in the BCC field from the other recipients"
     name: bcc
     range: observable object
+    exact_mappings:
+      - WIKIDATA:Q11680886
 
   binary:
     description: >-
@@ -4550,67 +4710,71 @@ classes:
     name: bios date
     description: >-
       "Specifies the date of the BIOS (e.g. the datestamp of the BIOS revision)."
-    range: xsd:dateTime
+    range: time type
 
   bios manufacturer:
     name: bios manufacturer
     description: >-
       "Specifies the manufacturer of the BIOS."
-    range: string type
+    broad_mappings:
+      - WIKIDATA:Q13235160  # manufacturer
 
   bios release date:
     name: bios release date
     description: >-
       "Specifies the date the BIOS was released."
-    range: xsd:dateTime
+    range: time type
 
   bios serial number:
     name: bios serial number
     description: >-
       "Specifies the serial number of the BIOS."
-    range: string type
+    broad_mappings:
+      - WIKIDATA:Q1198578  # serial number
 
   bios version:
     name: bios version
     description: >-
       "Specifies the version of the BIOS."
-    range: string type
+    narrow_mappings:
+      - WIKIDATA:Q10397513  # ABIOS
 
   bit rate:
     name: bit rate
     description: >-
       "The bitrate of the audio in bits per second."
-    range: xsd:integer
+    range: integer type
+    exact_mappings:
+      - WIKIDATA:Q194158
+    close_mappings:
+      - sumo:BitsPerSecond
 
   bitness:
     name: bitness
     description: >-
       "Specifies the bitness of the operating system (i.e. 32 or 64). Note that this is potentially different from the word size of the underlying hardware or CPU. A 32-bit operating system can be installed on a machine running a 64-bit processor."
-    range: string type
 
   bits per pixel:
     name: bitsPerPixel
-    range: xsd:integer
+    range: integer type
 
   block type:
     name: block type
     description: >-
       "The blockType property specifies the block type of a particular memory object."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:memoryBlockTypeVocab
-                        xsd:string
+    range: vocabulary:memoryBlockTypeVocab
 
   bluetooth device name:
     name: bluetooth device name
     description: >-
       "Name configured withing Bluetooth settings on a device."
-    range: string type
 
   body:
     name: body
-    range: string type
+    description: >-
+      "Text forming the main content of a printed or digital work (as opposed to additional elements such as headlines, images, charts, footnotes)"
+    exact_mappings:
+      - WIKIDATA:Q1378314  # text body
 
   body multipart:
     name: body multipart
@@ -4627,7 +4791,8 @@ classes:
     name: bookmark path
     description: >-
       "The folder containing the bookmark."
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q201456  # directory path
 
   browser information:
     name: browser information
@@ -4639,18 +4804,13 @@ classes:
     name: browser user profile
     description: >-
       "Specifies the web browser user profile for which the URL history entry was created."
-    range: string type
 
   byte order:
     name: byte order
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:EndiannessTypeVocab
-                        xsd:string
+    range: vocabulary:EndiannessTypeVocab
 
   byte string value:
-    name: byteStringValue
+    name: byte string value
     description: >-
       "Specifies the raw, byte-string representation of the extracted string."
 
@@ -4658,7 +4818,6 @@ classes:
     name: call type
     description: >-
       "The type of a phone call,for example incoming, outgoing, missed."
-    range: string type
 
   camera:
     name: camera
@@ -4668,7 +4827,7 @@ classes:
 
   can escalate privs:
     name: can escalate privs
-    range: xsd:boolean
+    range: boolean type
 
   capture cell site:
     name: capture cell site
@@ -4686,42 +4845,43 @@ classes:
     name: categories
     description: >-
       "Categories applied to the object."
-    range: string type
+    related_mappings:
+      - WIKIDATA:Q17155032  # software categories
 
   cc:
     description: >-
+      "Carbon copy: technique of producing one or more copies simultaneously."
     name: cc
     range: observable object
+    exact_mappings:
+      - WIKIDATA:Q660898
 
   cell site country code:
     name: cell site country code
     description: >-
       "The country code represents the country of the cell site. For GSM, this is the Mobile Country Code (MCC)."
-    range: string type
+    broad_mappings:
+      - WIKIDATA:Q906278  # country code
 
   cell site identifier:
     name: cell site identifier
     description: >-
       "Specifies the unique number used to identify each Cell Site within a location area code."
-    range: string type
 
   cell site location area code:
     name: cell site location area code
     description: >-
       "The location area code is a unique number of current location area of the cell site. A location area is a set of cell site that are grouped together to optimize signalling. For GSM, this is the LAC."
-    range: string type
 
   cell site network code:
     name: cell site network code
     description: >-
       "This code identifies the mobile operator of the cell site. For GSM, this is the Mobile network  Code (MNC) and for CMDA this is the network identifier (NID)."
-    range: string type
 
-  cell Site type:
+  cell site type:
     name: cell site type
     description: >-
       "Specifies the technology used by the Cell Site (e.g., GSM, CDMA, or LTE)."
-    range: string type
 
   certificate issuer:
     description: >-
@@ -4730,7 +4890,8 @@ classes:
 
   certificate policies:
     name: certificate policies
-    range: string type
+    description: >-
+      "Object identifiers (OIDS), comma separated"
 
   certificate subject:
     description: >-
@@ -4741,81 +4902,82 @@ classes:
     name: characteristics
     description: >-
       "Specifies the flags that indicate the fileâ€™s characteristics."
-    range: xsd:unsignedShort
+    range: unsigned short type
 
   checksum:
     name: checksum
     description: >-
       "Specifies the checksum of the PE binary."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   clock setting:
     name: clock setting
     description: >-
       "The generalizedTime value on the mobile device when it was processed."
-    range: xsd:dateTime
+    range: time type
 
   cluster size:
     name: cluster size
     description: >-
       "The size of cluster allocation units in a file system."
-    range: xsd:integer
+    range: integer type
 
   column name:
     name: column name
-    range: string type
+    description: >-
+      "Identifier, Column name expressions"
 
-  com Class ID:
+  com class ID:
     name: com class ID
     description: >-
       "Specifies the ID of the COM action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380613(v=vs.85).aspx."
-    range: string type
 
   com data:
     name: com data
     description: >-
       "Specifies the data associated with the COM handler. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380613(v=vs.85).aspx."
-    range: string type
 
   comment:
     name: comment
-    range: string type
     exact_mappings:
       - sumo:DigitalComment
+      - WIKIDATA:Q25345994
+    narrow_mappings:
+      - WIKIDATA:Q1141067  # comment; programming
 
   compression method:
     name: compression method
     description: >-
       "The algorithm used to compress the data."
-    range: string type
 
   compression ratio:
     name: compression ratio
     description: >-
       "The compression ratio of the compressed data."
-    range: xsd:decimal
+    range: decimal type
 
   contact:
     name: contact
     description: >-
       "contact specifies information characterizing contact details for a single entity."
     range: observable object
+    close_mappings:
+      - sumo:ContactSite
 
   contact address:
     name: contact address
     description: >-
       "contact address specifies information characterizing a geolocation address of a contact entity."
     range: contact address
+    close_mappings:
+      - sumo:ContactSite
 
   contact address scope:
     name: contact address scope
     description: >-
       "contact address scope specifies the relevant scope (home, work, school, etc) for a geolocation address of a contact entity."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        xsd:string
-                        vocabulary:contact address scope vocab
+    range: vocabulary:ContactAddressScopeVocab
+
   contact affiliation:
     name: contact affiliation
     description: >-
@@ -4827,37 +4989,32 @@ classes:
     description: >-
       "contact email specifies information characterizing details for contacting a contact entity by email."
     range: contact email
+    close_mappings:
+      - WIKIDATA:P968  # email address
 
   contact email scope:
     name: contact email scope
     description: >-
       "contact email scope specifies the relevant scope (home, work, school, etc) of details for contacting a contact entity by email."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        xsd:string
-                        vocabulary:contact email scope vocab
+    range: vocabulary:ContactEmailScopeVocab
+
   contact group:
     name: contact group
     description: >-
       "contact group specifies the name/tag of a particular named/tagged grouping of contacts."
-    range: string type
 
   contact ID:
     name: contact ID
     description: >-
       "Specifies an ID for the contact."
-    range: string type
 
   contact messaging:
-    description: >-
     name: contact messaging
     description: >-
       "contact messaging specifies information characterizing details for contacting a contact entity by digital messaging."
     range: contact messaging
 
   contact messaging platform:
-    description: >-
     name: contact messaging platform
     description: >-
       "A contact messaging platform specifies a digital messaging platform associated with a contact."
@@ -4867,13 +5024,12 @@ classes:
     name: contact note
     description: >-
       "contact note specifies a comment/note associated with a given contact."
-    range: string type
 
   contact organization:
     name: contact organization
     description: >-
       "The name of the organization a contact works for or is assocciated with."
-    range: identity: organization
+    range: identity:Organization
 
   contact phone:
     name: contact phone
@@ -4891,11 +5047,8 @@ classes:
     name: contact phone scope
     description: >-
       "contact phone scope specifies the relevant scope (home, work, school, etc) of details for contacting a contact entity by telephone."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        xsd:string
-                        vocabulary:contact phoneScopeVocab
+    range: vocabulary:ContactPhoneScopeVocab
+
   contact profile:
     name: contact profile
     description: >-
@@ -4903,7 +5056,6 @@ classes:
     range: contact profile
 
   contact profile platform:
-    description: >-
     name: contact profile platform
     description: >-
       "A contact profile platform specifies an online service platform associated with a contact."
@@ -4919,11 +5071,8 @@ classes:
     name: contact SIP scope
     description: >-
       "contact SIP scope specifies the relevant scope (home, work, school, etc) of details for contacting a contact entity by Session Initiation Protocol (SIP)."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        xsd:string
-                        vocabulary:contact SIP scopeVocab
+    range: vocabulary:ContactSIPScopeVocab
+
   contact URL:
     name: contact URL
     description: >-
@@ -4934,93 +5083,119 @@ classes:
     name: contact URL scope
     description: >-
       "contact url scope specifies the relevant scope (homepage, home, work, school, etc) of details for contacting a contact entity by Uniform Resource Locator (URL)."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        xsd:string
-                        vocabulary:contact URL scopeVocab
+    range: vocabulary:ContactURLScopeVocab
+
   content disposition:
     name: content disposition
-    range: string type
+    broad_mappings:
+      - WIKIDATA:Q1149305  # diposition
 
   content recovered status:
     name: content recovered status
     description: >-
       "Specifies the recoverability status of the content of an object."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:recovered objectStatusVocab
-                        xsd:string
+    range: vocabulary:recovered objectStatusVocab
+
   content type:
     name: content type
-    range: string type
+    close_mappings:
+      - WIKIDATA:P1163  # mime type
+    narrow_mappings:
+      - NCIT:C114549  # content type name
 
   context:
     name: context
-    range: string type
+    exact_mappings:
+      - NCIT:C63325
+      - WIKIDATA:Q196626
 
   control code:
     name: control code
     description: >-
       "Specifies the actual control code that was sent to the observable object."
-    range: string type
+    related_mappings:
+      - sumo:ControlKey
 
   cookie domain:
     name: cookie domain
     description: >-
       "The domain for which the cookie is stored, for example nfi.minjus.nl."
     range: observable object
+    broad_mappings:
+      - sumo:InternetDomain
+      - NCIT:C54076  # domain name
 
   cookie name:
     name: cookie name
     description: >-
       "The name of the cookie."
-    range: string type
 
   cookie path:
     name: cookie path
     description: >-
       "String representation of the path of the cookie."
-    range: string type
+    broad_mappings:
+      - sumo:FilePath
+      - NCIT:C47922  # pathname
 
   cpeid:
     name: cpeid
     description: >-
       "Specifies the Common Platform Enumeration identifier for the software."
-    range: string type
+    broad_mappings:
+      - WIKIDATA:Q1116184  # cpe
 
   cpu:
     name: cpu
     description: >-
       "Specifies the name of the CPU used by the system."
-    range: string type
+    exact_mappings:
+      - sumo:CPU
+      - WIKIDATA:Q5300
+    narrow_mappings:
+      - NCIT:C64194  # processor core
 
   cpu family:
     name: cpu family
     description: >-
       "Specifies the name of the CPU family used by the system."
-    range: string type
+    narrow_mappings:
+      - WIKIDATA:Q108043774  # intel core i9
+      - WIKIDATA:Q1044821  # intel core i3
+      - WIKIDATA:Q386903  # intel core i7
+      - WIKIDATA:Q1668251  # umc green cpu
+      - WIKIDATA:Q5036251  # capricorn
+      - WIKIDATA:Q294982   # amd 10h
+      - WIKIDATA:Q3274608  # macintosh 68k
+      - WIKIDATA:Q96416011  # zen series
+      - WIKIDATA:Q615955  # loongson
+      - WIKIDATA:Q216334  # intel core 2
+      - WIKIDATA:Q433285  # arm9
+      - WIKIDATA:Q1890727  # powerpc 7xx
 
   creation date:
     name: creation date
     description: >-
       "Specifies the date in which the registered domain was created."
-    range: xsd:dateTime
+    range: time type
+    exact_mappings:
+      - baselink:CreationDate
 
   creation flags:
     name: creation flags
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   creation time:
     name: creation time
-    range: xsd:dateTime
+    range: time type
 
   creator:
     name: creator
     description: >-
       "Specifies the name of the creator of the registry key."
     range: observable object
+    exact_mappings:
+      - baselink:Author
 
   creator user:
     name: creator user
@@ -5030,20 +5205,23 @@ classes:
 
   crl distribution points:
     name: crl distribution points
-    range: string type
 
   current system date:
     name: current system date
     description: >-
       "Specifies the current date on the system."
-    range: xsd:dateTime
+    range: time type
+    broad_mappings:
+      - sumo:date
+    related_mappings:
+      - WIKIDATA:Q114499981  # GNU date
 
   current working directory:
     name: current working directory
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q1192634  # working directory
 
   cyber action:
-    description: >-
     name: cyber action
     description: >-
       "The action taken in response to the event."
@@ -5051,13 +5229,17 @@ classes:
 
   data:
     name: data
-    range: string type
     exact_mappings:
+      - baselink:Dataset
       - sumo:DigitalData
 
   data payload:
     name: data payload
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q1424639  # payload
+    narrow_mappings:
+      - WIKIDATA:Q726868  # datagram
+      - WIKIDATA:Q55106975  # payload (malware)
 
   data payload reference URL:
     description: >-
@@ -5066,93 +5248,104 @@ classes:
 
   data type:
     name: data type
-    range: string type
+    exact_mappings:
+      - NCIT:C42645
+      - WIKIDATA:Q190087
 
   dep enabled:
     name: dep enabled
-    range: xsd:boolean
+    range: boolean type
 
   descriptions:
     name: descriptions
-    range: string type
+    broad_mappings:
+      - sumo:describes
 
   destination:
     name: destination
     description: >-
       "The destination of a global flag. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff549646(v=vs.85).aspx."
-    range: string type
 
   destination flags:
     name: destination flags
     description: >-
-      """Specifies the destination TCP flags.
-          """
+      "Specifies the destination TCP flags. "
 
   destination port:
     name: destination port
     description: >-
       "Specifies the destination port used in the connection, as an integer in the range of 0 - 65535."
-    range: xsd:integer
+    range: integer type
 
   device type:
     name: device type
-    range: string type
+    narrow_mappings:
+      - NCIT:C53265  # type of device (medical)
 
   dhcp lease expires:
     name: dhcp lease expires
     description: >-
       "Specifies the date/time that the DHCP lease obtained on the network interface expires."
-    range: xsd:dateTime
+    range: time type
+    broad_mappings:
+      - WIKIDATA:Q11166  # dhcp
 
   dhcp lease obtained:
     name: dhcp lease obtained
     description: >-
       "Specifies the date/time that the DHCP lease was obtained on the network interface."
-    range: xsd:dateTime
+    range: time type
+    broad_mappings:
+      - WIKIDATA:Q11166  # dhcp
 
   dhcp server:
     name: dhcp server
     description: >-
       "Specifies the list of DHCP server IP Addresses used by the network interface."
     range: observable object
+    broad_mappings:
+      - WIKIDATA:Q11166  # dhcp
+    narrow_mappings:
+      - WIKIDATA:Q5205009  # isc dhcp server
 
   disk partition type:
     name: disk partition type
     description: >-
       "Specifies the type of partition being characterized."
-    range: string type
+    close_mappings:
+      - WIKIDATA:Q17042692  # partition type
 
   disk size:
     name: disk size
     description: >-
       "The size of the disk, in bytes."
-    range: xsd:integer
+    range: integer type
 
   disk type:
     name: disk type
     description: >-
       "The type of disk being characterized, e.g., removable."
-    range: string type
 
   display name:
     name: display name
     description: >-
       "Display name specifies the name to display for some entity within a user interface."
-    range: string type
+    broad_mappings:
+      - NCIT:C70896  # display name
 
   dll characteristics:
-    aliases:
-      - 'dll Characteristics'
     name: dll characteristics
     description: >-
       "Specifies the flags that characterize the PE binary."
-    range: xsd:unsignedShort
+    range: unsigned short type
 
   dnssec:
     name: dnssec
     description: >-
       "Specifies the DNSSEC property associated with a Whois entry. Acceptable values are: 'Signed' or 'Unsigned'."
     range: vocabulary:WhoisDNSSECTypeVocab
+    broad_mappings:
+      - WIKIDATA:Q41609
 
   document information dictionary:
     description: >-
@@ -5163,13 +5356,11 @@ classes:
     name: domain
     description: >-
       "The domain(s) that the system belongs to."
-    range: string type
 
   domain ID:
     name: domain ID
     description: >-
       "Specifies the domain id for the domain associated with a Whois entry."
-    range: string type
 
   domain name:
     name: domain name
@@ -5181,17 +5372,15 @@ classes:
     name: drive letter
     description: >-
       "Specifies the drive letter of a windows volume."
-    range: string type
+    broad_mappings:
+      - WIKIDATA:Q1135777  # drive letter assignment
 
   drive type:
     name: drive type
     description: >-
       "Specifies the drive type of a windows volume."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:WindowsDriveTypeVocab
-                        xsd:string
+    range: vocabulary:WindowsDriveTypeVocab
+
   dst:
     name: dst
     description: >-
@@ -5200,11 +5389,11 @@ classes:
 
   dst bytes:
     name: dst bytes
-    range: xsd:integer
+    range: integer type
 
   dst packets:
     name: dst packets
-    range: xsd:integer
+    range: integer type
 
   dst payload:
     description: >-
@@ -5215,22 +5404,21 @@ classes:
     name: duration
     description: >-
       "The duration of the phone call in seconds."
-    range: xsd:integer
+    range: integer type
+    exact_mappings:
+      - baselink:Duration  # timepoint
 
   effective group:
     name: effective group
     description: >-
       "Specifies the name of the effective group used in the user session."
-    range: string type
 
   effective group ID:
     name: effective group ID
     description: >-
       "Specifies the effective group ID of the group used in the user session."
-    range: string type
 
   effective user:
-    description: >-
     name: effective user
     description: >-
       "Specifies the effective user details used in the user session."
@@ -5240,67 +5428,77 @@ classes:
     name: elevation
     description: >-
       "The angle in degrees of the antenna from the local horizontal plane."
-    range: xsd:decimal
+    range: decimal type
 
   email address:
     name: email address
     description: >-
       "An email address."
     range: observable object
+    exact_mappings:
+      - EDAM_DATA:1691
+      - IAO:0000429
+      - SIO:001323
+      - sumo:EmailAddress
+      - WIKIDATA:Q1273217  # email address
 
   encoding:
     name: encoding
     description: >-
       "The encoding method used for the extracted string."
-    range: string type
+    exact_mappings:
+      - sumo:Encoding
+      - WIKIDATA:Q184759
 
   encoding method:
     name: encoding method
-    range: string type
+    exact_mappings:
+      - sumo:EncodingProcedure
 
   encryption IV:
     name: encryption IV
-    range: string type
 
-  encryption Key:
+  encryption key:
     name: encryption key
-    range: string type
 
   encryption method:
     name: encryption method
-    range: string type
 
   encryption mode:
     name: encryption mode
-    range: string type
 
-  end Time:
+  end time:
     name: end time
-    range: xsd:dateTime
+    range: time type
 
   english translation:
     name: english translation
     description: >-
       "Specifies the English translation of the string, if it is not written in English."
-    range: string type
 
   entropy:
     name: entropy
     description: >-
       "Shannon entropy (a measure of randomness) of the data."
-    range: xsd:decimal
+    range: decimal type
+    exact_mappings:
+      - WIKIDATA:Q4205093
 
   entry ID:
     name: entry ID
     description: >-
       "A unique identifier for the file within the filesystem."
-    range: xsd:integer
+    range: integer type
 
   environment variables:
     name: environment variables
     description: >-
       "A list of environment variables associated with the process."
     range: types:Dictionary
+    exact_mappings:
+      - WIKIDATA:Q400857
+    narrow_mappings:
+      - WIKIDATA:Q530480  # windows environment variable
 
   event record device:
     name: event record device
@@ -5312,43 +5510,38 @@ classes:
     name: event record ID
     description: >-
       "The identifier of the event record."
-    range: string type
 
   event record raw:
     name: event record raw
     description: >-
       "The complete raw content of the event record."
-    range: string type
 
   event record service name:
     name: event service name
     description: >-
       "The service that generated the event record. A single application can have multiple services generating event records."
-    range: string type
 
   event record text:
     name: event record text
     description: >-
       "The textual representation of the event."
-    range: string type
 
   event status:
     name: event status
     description: >-
       "The status of the event, for instance accepted, pending or cancelled."
-    range: string type
+    narrow_mappings:
+      - NCIT:C41202  # completion status
 
   event type:
     name: event type
     description: >-
       "The type of the event, for example 'information', 'warning' or 'error'."
-    range: string type
 
   exec arguments:
     name: exec arguments
     description: >-
       "Specifies the arguments associated with the command-line operation launched by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380715(v=vs.85).aspx."
-    range: string type
 
   exec program hashes:
     name: exec program hashes
@@ -5360,13 +5553,16 @@ classes:
     name: exec program path
     description: >-
       "Specifies the path to the executable file launched by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380715(v=vs.85).aspx."
-    range: string type
+    broad_mappings:
+      - sumo:FilePath
 
   exec working directory:
     name: exec working directory
     description: >-
       "Specifies the directory that contains either the executable file or the files that are used by the executable file launched by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380715(v=vs.85).aspx."
-    range: string type
+    broad_mappings:
+      - sumo:FilePath
+      - WIKIDATA:Q1192634  # working directory
 
   exif data:
     description: >-
@@ -5377,110 +5573,118 @@ classes:
     name: exit code
     description: >-
       "Specifies the last exit code of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381245(v=vs.85).aspx."
-    range: xsd:integer
+    range: integer type
 
   exit status:
     name: exit status
     description: >-
       "A small number passed from the process to the parent process when it has finished executing. In general, 0 indicates successful termination, any other number indicates a failure."
-    range: xsd:integer
+    range: integer type
+    exact_mappings:
+      - WIKIDATA:Q2553232
 
   exit time:
     name: exit time
     description: >-
       "The time at which the process exited."
-    range: xsd:dateTime
+    range: time type
 
   expiration date:
     name: expiration date
     description: >-
       "Specifies the date in which the registered domain will expire."
-    range: xsd:dateTime
+    range: time type
+    exact_mappings:
+      - WIKIDATA:Q898931
 
   expiration time:
     name: expiration time
     description: >-
       "The date and time at which the validity of the object expires."
-    range: xsd:dateTime
+    range: time type
 
   ext deletion time:
     name: ext deletion time
     description: >-
       "Specifies the time at which the file represented by an Inode was 'deleted'."
-    range: xsd:dateTime
+    range: time type
 
   ext file type:
     name: ext file type
     description: >-
       "Specifies the EXT file type (FIFO, Directory, Regular file, Symbolic link, etc) for the Inode."
-    range: xsd:integer
+    range: integer type
 
   ext flags:
     name: ext flags
     description: >-
       "Specifies user flags to further protect (limit its use and modification) the file represented by an Inode."
-    range: xsd:integer
+    range: integer type
 
   ext hard link count:
     name: ext hard link count
     description: >-
       "Specifies a count of how many hard links point to an Inode."
-    range: xsd:integer
+    range: integer type
 
   ext inode change time:
     name: ext inode change time
     description: >-
       "The date and time at which the file Inode metadata was last modified."
-    range: xsd:dateTime
+    range: time type
 
   ext inode ID:
     name: ext inode ID
     description: >-
       "Specifies a single Inode identifier."
-    range: xsd:integer
+    range: integer type
 
   ext permissions:
     name: ext permissions
     description: >-
       "Specifies the read/write/execute permissions for the file represented by an EXT Inode."
-    range: xsd:integer
+    range: integer type
 
   ext SGID:
     name: ext SGID
     description: >-
       "Specifies the group ID for the file represented by an Inode."
-    range: xsd:integer
+    range: integer type
+    broad_mappings:
+      - WIKIDATA:Q656307  # unix file permissions
+      - WIKIDATA:Q269582  # sgid
 
   ext SUID:
     name: ext SUID
     description: >-
       "Specifies the user ID that 'owns' the file represented by an Inode."
-    range: xsd:integer
+    range: integer type
+    broad_mappings:
+      - WIKIDATA:Q656307  # unix file permissions
 
   extended key usage:
     name: extended key usage
-    range: string type
 
   extension:
     name: extension
     description: >-
       "The file name extension: everything after the last dot. Not present if the file has no dot in its name."
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q186157  # filename extension
 
   favorites count:
     name: favorites count
     description: >-
-      "Specifies the number of times that this profile has favorited a tweet
-    range: xsd:nonNegativeInteger
+      "Specifies the number of times that this profile has favorited a tweet"
+    range: non negative integer type
 
   file alignment:
     name: file alignment
     description: >-
       "Specifies the factor (in bytes) that is used to align the raw data of sections in the image file."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   file header hashes:
-    description: >-
     name: file header hashes
     description: >-
       "Specifies any hashes that were computed for the file header."
@@ -5490,95 +5694,133 @@ classes:
     name: file name
     description: >-
       "Specifies the name associated with a file in a file system."
-    range: string type
+    exact_mappings:
+      - EDAM_DATA:1050
+      - sumo:filename
+      - WIKIDATA:Q1144928
 
   file path:
     name: file path
     description: >-
       "Specifies the file path for the location of a file within a filesystem."
-    range: string type
+    exact_mappings:
+      - NCIT:C47922
+      - sumo:FilePath
+      - WIKIDATA:Q817765
 
   file system type:
     name: file system type
     description: >-
       "The specific type of a file system."
-    range: string type
+    broad_mappings:
+      - sumo:FileSystem
+    narrow_mappings:
+      - WIKIDATA:Q579047  # journaling file system
+      - WIKIDATA:Q6055546  # parallel virtual file system
+      - WIKIDATA:Q394011  # xfs
+      - WIKIDATA:Q687074  # reiserfs
+      - WIKIDATA:Q136113  # zfs
+      - WIKIDATA:Q183205  # ntfs
+      - WIKIDATA:Q623494  # nfs
+      - WIKIDATA:Q190167  # vfat
+      - WIKIDATA:Q5103611  # lustre
+      - WIKIDATA:Q283527  # ext2
+      - WIKIDATA:Q283390  # ext3
+      - WIKIDATA:Q283827  # ext4
+      - WIKIDATA:Q1058465  # hfs
+      - WIKIDATA:Q24577174  # apple file system
+      - WIKIDATA:Q306233  # exFAT
+      - WIKIDATA:Q4038737  # files-11
+      - WIKIDATA:Q190167  # fat
+      - WIKIDATA:Q725779  # plan9
+      - WIKIDATA:Q127319  # hpfs
+      - WIKIDATA:Q1046338  # ufs
+      - WIKIDATA:Q4043554  # macintosh file system
+      - WIKIDATA:Q6553401  # ltfs
+      - WIKIDATA:Q283820  # btrfs
+      - WIKIDATA:Q2064372  # veritas fs
 
   first login time:
     name: first login time
     description: >-
       "The date and time of the first login of the account."
-    range: xsd:dateTime
+    range: time type
 
   first name:
     name: first name
     description: >-
       "The first name of a person."
-    range: string type
+    exact_mappings:
+      - NCIT:C40974
+      - WIKIDATA:Q202444  # given name
 
   first run:
     name: first run
     description: >-
       "Timestamp of when the prefetch application was first run."
-    range: xsd:dateTime
+    range: time type
 
   first visit time:
     name: first visit time
     description: >-
-      "Specifies the date/time that the URL referred to by the URL field was first visited
-    range: xsd:dateTime
+      "Specifies the date/time that the URL referred to by the URL field was first visited"
+    range: time type
 
   flags:
     name: flags
     description: >-
       "Specifies any flags that modify the behavior of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381248(v=vs.85).aspx."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:TaskFlagVocab
-                        xsd:string
+    range: vocabulary:TaskFlagVocab
+
   followers count:
     name: followers count
     description: >-
-      "Specifies the followers count associated with the twitter profile
-    range: xsd:nonNegativeInteger
+      "Specifies the followers count associated with the twitter profile"
+    range: non negative integer type
+    narrow_mappings:
+      - WIKIDATA:Q114771100
 
   format:
     name: format
     description: >-
       "The format of the audio. For example: mp3 or flac."
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q758871  # audio coding format
 
   fragment:
     name: fragment
     description: >-
       "fragment pointing to a specific part in the resource."
-    range: string type
+    exact_mappings:
+      - NCIT:C48295
+      - WIKIDATA:Q11086567
 
   fragment index:
     name: fragment index
-    range: xsd:integer
+    range: integer type
 
   free space:
     name: free space
     description: >-
       "The amount of free space on the disk, in bytes."
-    range: xsd:integer
+    range: integer type
 
   friends count:
     name: friends count
     description: >-
-      "Specifies the friends count associated with the twitter profile
-    range: xsd:nonNegativeInteger
+      "Specifies the friends count associated with the twitter profile"
+    range: non negative integer type
 
   from:
     name: from
     description: >-
       "The phone number of the initiating party."
     range: observable object
+    broad_mappings:
+      - sumo:phoneNumber
+      - WIKIDATA:Q214995  # phone number
 
   from URL visit:
-    description: >-
     name: from URL visit
     description: >-
       "Specifies the URL visit origination point (i.e., URL) of the URL captured in the URL history entry, if applicable."
@@ -5588,7 +5830,6 @@ classes:
     name: full value
     description: >-
       "The full string value of the URL."
-    range: string type
 
   geo location entry:
     description: >-
@@ -5603,10 +5844,11 @@ classes:
 
   gid:
     name: gid
-    range: xsd:integer
+    range: integer type
+    exact_mappings:
+      - WIKIDATA:Q975373
 
   global flag list:
-    description: >-
     name: global flag list
     description: >-
       "A list of global flags. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff549557(v=vs.85).aspx."
@@ -5616,31 +5858,37 @@ classes:
     name: gpu
     description: >-
       "Specifies the name of the GPU used by the system."
-    range: string type
+    related_mappings:
+      - WIKIDATA:P2560  # gpu
 
   gpu family:
     name: gpu family
     description: >-
       "Specifies the name of the GPU family used by the system."
-    range: string type
+    related_mappings:
+      - WIKIDATA:P2560  # gpu
+    narrow_mappings:
+      - WIKIDATA:Q633182  # shader
+      - WIKIDATA:Q17042806  # rcuda
+      - WIKIDATA:Q2713634  # unified shader model
 
   group name:
     name: group name
-    range: string type
 
   groups:
     name: groups
-    range: string type
 
   has changed:
     name: has changed
-    range: xsd:boolean
+    range: boolean type
 
   hash:
     name: hash
     description: >-
       "Hash values of the data."
     range: types:Hash
+    broad_mappings:
+      - WIKIDATA:Q183427  # hash function
 
   hashes:
     name: hashes
@@ -5657,42 +5905,44 @@ classes:
     name: hexadecimal value
     description: >-
       "The hexadecimal value of a global flag. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff549646(v=vs.85).aspx."
-    range: xsd:hexBinary
+    range: hex binary type
 
   hive type:
     name: hive type
     description: >-
       "The type of a registry hive."
-    range: string type
 
   home directory:
     name: home directory
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q818391  # home directory
 
   horizontal beam width:
     name: horizontal beam width
     description: >-
       "The width of the antenna beam in degrees."
-    range: string type
 
   host:
-    description: >-
     name: host
     description: >-
       "Domain name or IP address where the resource is located."
     range: observable object
+    exact_mappings:
+      - WIKIDATA:Q829281  # network host
+      - WIKIDATA:Q11135  # ip address
 
   hostname:
     name: hostname
     description: >-
       "Specifies the hostname of the system."
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q1073408
 
   http mesage body length:
     name: http mesage body length
     description: >-
       "Specifies the length of an HTTP message body in bytes."
-    range: xsd:integer
+    range: integer type
 
   http message body data:
     name: http message body data
@@ -5703,32 +5953,28 @@ classes:
   http request header:
     name: http request header
     description: >-
-      "Specifies all of the HTTP header fields that may be found in the HTTP client request
+      "Specifies all of the HTTP header fields that may be found in the HTTP client request"
     range: types:Dictionary
 
   i com handler action:
-    description: >-
     name: i com handler action
     description: >-
       "Specifies the data associated with the task action-fired COM handler."
     range: i com handler action type
 
   i email action:
-    description: >-
     name: i email action
     description: >-
       "Specifies an action that sends an e-mail, which in this context refers to actual email message sent. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380693(v=vs.85).aspx."
     range: observable object
 
   i exec action:
-    description: >-
     name: i exec action
     description: >-
       "Specifies an action that executes a command-line operation. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380715(v=vs.85).aspx."
     range: i exec action type
 
   i show message action:
-    description: >-
     name: i show message action
     description: >-
       "Specifies an action that shows a message box when a task is activated. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381302(v=vs.85).aspx."
@@ -5738,67 +5984,69 @@ classes:
     name: icmp code
     description: >-
       "Specifies the ICMP code byte."
-    range: xsd:hexBinary
+    range: hex binary type
 
   icmp type:
     name: icmp type
     description: >-
       "Specifies the ICMP type byte."
-    range: xsd:hexBinary
+    range: hex binary type
 
   image base:
     name: image base
     description: >-
       "Specifies the address that is relative to the image base of the beginning-of-data section when it is loaded into memory."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   image compression method:
     name: image compression method
-    range: string type
+    broad_mappings:
+      - WIKIDATA:Q412438  # image compresion
+    narrow_mappings:
+      - WIKIDATA:Q1361381  # transform coding
+      - WIKIDATA:Q2877  # dct
+      - WIKIDATA:Q1396414  # color quantization
+      - WIKIDATA:Q355236  # chroma subsampling
+      - WIKIDATA:Q2872  # factual compression
 
   image name:
     name: image name
     description: >-
       "Specifies the image name for the task."
-    range: string type
 
   image type:
     name: image type
     description: >-
       "The type of the image, e.g. EnCase, RAW or LocalFolder."
-    range: string type
+    narrow_mappings:
+      - WIKIDATA:Q3435415  # encase
 
   imp hash:
     name: imp hash
     description: >-
       "Specifies the special import hash, or â€˜imphashâ€™, calculated for the PE Binary based on its imported libraries and functions."
-    range: string type
 
   in reply to:
     name: in reply to
     description: >-
       "One of more unique identifiers for identifying the email(s) this email is a reply to."
-    range: string type
 
   inet location:
-    description: >-
     name: inet location
     description: >-
-      "Specifies a location on the Internet
+      "Specifies a location on the Internet"
     range: observable object
 
   inhibit any policy:
     name: inhibit any policy
-    range: string type
 
   install date:
     name: install date
     description: >-
       "Specifies the date the operating system or application was installed."
-    range: xsd:dateTime
+    range: time type
 
   installed version history:
-    description: >-
     name: installed version history
     description: >-
       "Specifies the history of installed application version(s)."
@@ -5808,31 +6056,26 @@ classes:
     name: intercepted call state
     description: >-
       "State of the call in a call Detail Record (e.g. idle)."
-    range: string type
 
   ip:
-    description: >-
     name: ip
     description: >-
       "Specifies the list of IP addresses used by the network interface."
     range: observable object
 
   ip address:
-    description: >-
     name: ip address
     description: >-
       "Specifies the corresponding ip address for a Whois entry. Usually corresponds to a name server lookup."
     range: observable object
 
   ip gateway:
-    description: >-
     name: ipGateway
     description: >-
       "Specifies the list of IP Gateway IP Addresses used by the network interface."
     range: observable object
 
   ipfix:
-    description: >-
     name: ipfix
     description: >-
       "Specifies any IP Flow Information Export (IPFIX) data for the network traffic flow."
@@ -5841,138 +6084,137 @@ classes:
   is ADB root enabled:
     name: is ADB root enabled
     description: >-
-      "Root access through the Android Debug Bridge (ADB) daemon observed to be enabled. [based on https://developer.android.com/studio/command-line/adb]
-    range: xsd:boolean
+      "Root access through the Android Debug Bridge (ADB) daemon observed to be enabled. [based on https://developer.android.com/studio/command-line/adb]"
+    range: boolean type
 
   is active:
     name: is active
     description: >-
       "Indicates whether the network connection is still active."
-    range: xsd:boolean
+    range: boolean type
 
   is directory:
     name: is directory
     description: >-
       "Specifies whether a file entry represents a directory."
-    range: xsd:boolean
+    range: boolean type
 
   is disabled:
     name: is disabled
     description: >-
-      "Is the digital account disabled?
-    range: xsd:boolean
+      "Is the digital account disabled?"
+    range: boolean type
 
   is enabled:
     name: is enabled
     description: >-
       "Specifies whether the trigger is enabled."
-    range: xsd:boolean
+    range: boolean type
 
   is encrypted:
     name: is encrypted
-    range: xsd:boolean
+    range: boolean type
 
   is hidden:
     name: is hidden
     description: >-
-      """The isHidden property specifies whether the process is hidden or not.
-          ""
-    range: xsd:boolean
+      "The isHidden property specifies whether the process is hidden or not."
+    range: boolean type
 
   is injected:
     name: is injected
     description: >-
       "The isInjected property specifies whether or not the particular memory object has had data/code injected into it by another process."
-    range: xsd:boolean
+    range: boolean type
 
   is limit ad tracking enabled:
     name: is limit ad tracking enabled
     description: >-
-      "Limits advertising tracking if enabled. [based on https://developer.android.com/reference/androidx/ads/identifier/AdvertisingIdInfo]
-    range: xsd:boolean
+      "Limits advertising tracking if enabled. [based on https://developer.android.com/reference/androidx/ads/identifier/AdvertisingIdInfo]"
+    range: boolean type
 
   is mapped:
     name: is mapped
     description: >-
       "The isMapped property specifies whether or not the particular memory object has been assigned a byte-for-byte correlation with some portion of a file or file-like resource."
-    range: xsd:boolean
+    range: boolean type
 
   is mime encoded:
     name: is mime encoded
-    range: xsd:boolean
+    range: boolean type
 
   is multipart:
     name: is multipart
-    range: xsd:boolean
+    range: boolean type
 
   is named:
     name: is named
-    range: xsd:boolean
+    range: boolean type
 
   is optimized:
     name: is optimized
-    range: xsd:boolean
+    range: boolean type
 
   is private:
     name: is private
     description: >-
-      "Is the event marked as private?
-    range: xsd:boolean
+      "Is the event marked as private?"
+    range: boolean type
 
   is privileged:
     name: is privileged
-    range: xsd:boolean
+    range: boolean type
 
   is protected:
     name: is protected
     description: >-
       "The isProtected property specifies whether or not the particular memory object is protected (read/write only from the process that allocated it)."
-    range: xsd:boolean
+    range: boolean type
 
   is read:
     name: is read
-    range: xsd:boolean
+    range: boolean type
 
   is SU root enabled:
     name: is SU root enabled
     description: >-
-      "Root access through Linux SU binary observed to be enabled. [based on https://en.wikipedia.org/wiki/Rooting_(Android)]
-    range: xsd:boolean
+      "Root access through Linux SU binary observed to be enabled. [based on https://en.wikipedia.org/wiki/Rooting_(Android)]"
+    range: boolean type
 
   is secure:
     name: is secure
     description: >-
       "Is the cookie secure? If the cookie is secure it cannot be delivered over an unencrypted session such as http."
-    range: xsd:boolean
+    range: boolean type
 
   is self signed:
     name: is self signed
-    range: xsd:boolean
+    range: boolean type
 
-  is serviceaccount:
-    name: is serviceaccount
-    range: xsd:boolean
+  is service account:
+    name: is service account
+    range: boolean type
 
   is TLD:
     name: is TLD
-    range: xsd:boolean
+    range: boolean type
 
   is volatile:
     name: is volatile
     description: >-
       "The isVolatile property specifies whether or not the particular memory object is volatile."
-    range: xsd:boolean
+    range: boolean type
 
   issuer:
     name: issuer
-    range: string type
+    exact_mappings:
+      - OM:issuer
+      - sumo:issuedBy
 
   issuer alternative name:
     name: issuer alternative name
-    range: string type
 
   issuer hash:
-    description: >-
     name: issuer hash
     description: >-
       "A hash calculated on the certificate issuer name."
@@ -5980,102 +6222,114 @@ classes:
 
   key:
     name: key
-    range: string type
+    broad_mappings:
+      - WIKIDATA:Q4818718  # attribute-value pair
+    exact_mappings:
+      - WIKIDATA:Q937228  # property
+    narrow_mappings:
+      - WIKIDATA:Q934729  # primary key
 
   key usage:
     name: key usage
-    range: string type
 
   keypad unlock code:
     name: keypad unlock code
     description: >-
       "A code or password set on a device for security that must be entered to gain access to the device."
-    range: string type
 
   keyword search term:
     name: Keyword Search Term
     description: >-
       "Specifies a string representing a keyword search term contained within the URL field."
-    range: string type
 
   labels:
     name: labels
     description: >-
       "Named and colored label."
-    range: string type
 
   language:
     name: language
     description: >-
-      """Specifies the language the string is written in, e.g. English.
-          For consistency, it is strongly recommended to use the ISO 639-2 language code, if available. Please see http://www.loc.gov/standards/iso639-2/php/code_list.php for a list of ISO 639-2 codes.""
-    range: string type
+      "Specifies the language the string is written in, e.g. English.
+          For consistency, it is strongly recommended to use the ISO 639-2 language code, if available. Please see http://www.loc.gov/standards/iso639-2/php/code_list.php for a list of ISO 639-2 codes."
+    exact_mappings:
+      - NCIT:C16779
+      - SIO:000104
+      - sumo:language
+      - WIKIDATA:Q2092812  # language identifier
+      - WIKIDATA:Q75488338
+      - WIKIDATA:Q315
+      - WIKIDATA:Q34770
 
   last login time:
     name: last login time
     description: >-
       "The date and time of the last login of the account."
-    range: xsd:dateTime
+    range: time type
 
   last name:
     name: last name
     description: >-
       "The last name of a person."
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q101352
+      - WIKIDATA:Q4116295  # after-name
 
   last run:
     name: last run
     description: >-
       "Timestamp of when the prefetch application was last run."
-    range: xsd:dateTime
+    range: time type
 
   last shutdown date:
     name: last shutdown date
     description: >-
       "Specifies the date on which the device was last shutdown."
-    range: xsd:dateTime
+    range: time type
 
   last time contacted:
     name: last time contacted
     description: >-
       "Last time contacted specifies the date and time that a particular contact was last contacted."
-    range: xsd:dateTime
+    range: time type
 
   last visit:
     name: last visit
     description: >-
       "Specifies the date/time that the URL referred to by the URL field was last visited."
-    range: xsd:dateTime
+    range: time type
 
   length:
     name: length
     description: >-
       "Specifies the length, in characters, of the extracted string."
-    range: xsd:integer
+    range: integer type
+    exact_mappings:
+      - NCIT:C25334
+      - WIKIDATA:Q110382671  # string length
 
   library type:
     name: library type
     description: >-
       "Specifies the type of library being characterized."
-    range: string type
 
   listed count:
     name: listed count
     description: >-
       "Specifies the number of public lists that this profile is associated with."
-    range: xsd:integer
+    range: integer type
 
   loader flags:
     name: loader flags
     description: >-
-      "Specifies the reserved loader flags
-    range: xsd:unsignedInt
+      "Specifies the reserved loader flags"
+    range: unsigned integer type
 
   local time:
     name: local time
     description: >-
       "Specifies the local time on the system."
-    range: xsd:dateTime
+    range: time type
 
   location:
     name: location
@@ -6087,48 +6341,47 @@ classes:
     name: login time
     description: >-
       "Specifies the date/time of the login for the user session."
-    range: xsd:dateTime
+    range: time type
 
   logout time:
     name: logout time
     description: >-
       "Specifies the date/time of the logout for the user session."
-    range: xsd:dateTime
+    range: time type
 
   lookup date:
     name: lookup date
     description: >-
       "Specifies the date and time that the Whois record was queried."
-    range: xsd:dateTime
+    range: time type
 
   mac address:
-    description: >-
     name: mac address
     description: >-
       "Specifies the MAC or hardware address of the physical network card."
     range: observable object
+    exact_mappings:
+      - WIKIDATA:Q20484
 
   machine:
     name: machine
     description: >-
       "Specifies the type of target machine."
-    range: string type
 
   magic:
     name: magic
     description: >-
       "Specifies the value that indicates the type of the PE binary."
-    range: xsd:unsignedShort
+    range: unsigned short type
 
   magic number:
     name: magic number
-    range: string type
 
   major image version:
     name: major image version
     description: >-
       "Specifies the major version number of the image."
-    range: xsd:unsignedShort
+    range: unsigned short type
 
   major linker version:
     name: major linker version
@@ -6140,19 +6393,19 @@ classes:
     name: major OS version
     description: >-
       "Specifies the major version number of the required operating system."
-    range: xsd:unsignedShort
+    range: unsigned short type
 
   major subsystem version:
     name: major subsystem version
     description: >-
       "Specifies the major version number of the subsystem."
-    range: xsd:unsignedShort
+    range: unsigned short type
 
   manually entered count:
     name: Manually-Entered Count
     description: >-
       "Specifies the number of times the URL referred to by the URL field was manually entered into the browser's address field by the user. This field is only applicable for URL history entries generated by Google's Chrome browser."
-    range: xsd:nonNegativeInteger
+    range: non negative integer type
 
   manufacturer:
     description: >-
@@ -6163,19 +6416,17 @@ classes:
     name: max run time
     description: >-
       "Specifies the maximum run time of the scheduled task before terminating, in milliseconds. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381874(v=vs.85).aspx."
-    range: xsd:integer
+    range: integer type
 
   message ID:
     name: message ID
     description: >-
       "An unique identifier for the message."
-    range: string type
 
   message text:
     name: messageText
     description: >-
       "The contents of the message."
-    range: string type
 
   message thread:
     description: >-
@@ -6186,10 +6437,8 @@ classes:
     name: message type
     description: >-
       "message type specifies what sort of message (email, chat, SMS, etc) a message is."
-    range: string type
 
   messaging address:
-    description: >-
     name: messaging address
     description: >-
       "A messaging address specifies details of an identifier for digital messsaging communication."
@@ -6199,149 +6448,142 @@ classes:
     name: metadata change time
     description: >-
       "The date and time at which the file metadata was last modified."
-    range: xsd:dateTime
+    range: time type
 
   metadata recovered status:
     name: metadata recovered status
     description: >-
       "Specifies the recoverability status of the metadata of an object."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:recovered objectStatusVocab
-                        xsd:string
+    range: vocabulary:recovered objectStatusVocab
+
   mft file ID:
     name: mft file ID
     description: >-
       "Specifies the record number for the file within an NTFS Master file Table."
-    range: xsd:integer
+    range: integer type
 
   mft file name accessed time:
     name: mft file name accessed time
     description: >-
       "The access date and time recorded in an MFT entry $ file_Name attribute."
-    range: xsd:dateTime
+    range: time type
 
   mft file name created time:
     name: mft file name created time
     description: >-
       "The creation date and time recorded in an MFT entry $ file_Name attribute."
-    range: xsd:dateTime
+    range: time type
 
   mft file name length:
     name: mft file name length
     description: >-
       " Specifies the length of an NTFS file name, in unicode characters."
-    range: xsd:integer
+    range: integer type
 
   mft file name modified time:
     name: mft file name modified time
     description: >-
       "The modification date and time recorded in an MFT entry $ file_Name attribute."
-    range: xsd:dateTime
+    range: time type
 
   mft file name record change time:
     name: mft file name record change time
     description: >-
       "The metadata modification date and time recorded in an MFT entry $ file_Name attribute."
-    range: xsd:dateTime
+    range: time type
 
   mft flags:
     name: mft flags
     description: >-
       "Specifies basic permissions for the file (Read-Only, Hidden, Archive, Compressed, etc.)."
-    range: xsd:integer
+    range: integer type
 
   mft parent ID:
     name: mft parent ID
     description: >-
       "Specifies the record number within an NTFS Master file Table for parent directory of the file."
-    range: xsd:integer
+    range: integer type
 
   mft record change time:
     name: mft record change time
     description: >-
       "The date and time at which an NTFS file metadata was last modified."
-    range: xsd:dateTime
+    range: time type
 
   middle name:
     name: middle name
     description: >-
       "The middle name of a person."
-    range: string type
+    exact_mappings:
+      - NCIT:C188268
+      - SIO:001317
+      - WIKIDATA:Q245025  # middle name
 
   mime class:
     name: mime class
-    range: string type
 
   mime type:
     name: mime type
     description: >-
       "MIME type of the data. For example 'text/html' or 'audio/mp3'."
-    range: string type
+    exact_mappings:
+      - EDAM:media_type
+      - sumo:mimeType
+      - WIKIDATA:Q1667978
 
   minor image version:
     name: minor image version
     description: >-
       "Specifies the minor version number of the image."
-    range: xsd:unsignedShort
+    range: unsigned short type
 
   minor linker version:
-    aliases:
-      - 'minorLinkerVersion'
     name: minor linker version
     description: >-
       "Specifies the linker minor version number."
     range: xsd:byte
 
   minor os version:
-    aliases:
-      - 'minorOSVersion'
     name: minor os version
     description: >-
       "Specifies the minor version number of the required operating system."
-    range: xsd:unsignedShort
+    range: unsigned short type
 
   minor subsystem version:
-    aliases:
-      - 'minorSubsystemVersion'
     name: minor subsystem version
     description: >-
-      """Specifies the minor version number of the subsystem.
-          ""
-    range: xsd:unsignedShort
+      "Specifies the minor version number of the subsystem."
+    range: unsigned short type
 
   mock locations allowed:
-    aliases:
-      - 'mockLocationsAllowed'
     name: mock locations allowed
     description: >-
       "???."
-    range: xsd:boolean
+    range: boolean type
 
   model:
     name: model
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q62008942
 
   modified time:
-    aliases:
-      - 'modifiedTime'
     name: modified time
     description: >-
       "The date and time at which the Object was last modified."
-    range: xsd:dateTime
+    range: time type
 
   most recent run time:
     name: most recent run time
     description: >-
       "Specifies the most recent run date/time of this scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381254(v=vs.85).aspx."
-    range: xsd:dateTime
+    range: time type
 
   mount point:
     name: mount point
     description: >-
       "Specifies the mount point of the partition."
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q63524048
 
   ms product ID:
     aliases:
@@ -6349,7 +6591,6 @@ classes:
     name: ms product ID
     description: >-
       "The Microsoft Product ID. See also: http://support.microsoft.com/gp/pidwin."
-    range: string type
 
   ms product name:
     aliases:
@@ -6357,41 +6598,35 @@ classes:
     name: ms product name
     description: >-
       "The Microsoft ProductName of the current installation of Windows. This is typically found in HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion!ProductName."
-    range: string type
 
   mutex name:
     name: mutex name
     description: >-
       "Specifies the name identifier for a specific instance of a mechanism that enforces limits on access to a resource when there are many threads of execution ."
-    range: string type
 
   name constraints:
     name: name constraints
-    range: string type
 
   name phonetic:
     name: name phonetic
     description: >-
       "Name phonetic specifies the phonetic pronunciation of the name of a person."
-    range: string type
 
   name prefix:
     name: name prefix
     description: >-
       "Name prefix specifies an honorific prefix (coming ordinally before first/given name) for the name of a person."
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q115859699  # honorific prefix
+      - WIKIDATA:Q108376599
 
   name recovered status:
     name: name recovered status
     description: >-
       "Specifies the recoverability status of the name of an object."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:recovered objectStatusVocab
-                        xsd:string
+    range: vocabulary:recovered objectStatusVocab
+
   name server:
-    description: >-
     name: name server
     description: >-
       "Specifies a list of name server entries for a Whois entry."
@@ -6401,29 +6636,28 @@ classes:
     name: name suffix
     description: >-
       "Name suffix specifies an suffix (coming ordinally after last/family name) for the name of a person."
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q1964223
 
   netBIOS name:
     name: netBIOS name
     description: >-
       "Specifies the NetBIOS (network  Basic Input/Output System) name of the Windows system. This is not the same as the host name."
-    range: string type
+    exact_mappings:
+      - WIKIDATA:Q1122519
 
   network:
     name: network
     description: >-
       "???."
-    range: string type
 
   network interface:
-    description: >-
     name: network interface
     description: >-
       "Specifies the list of network interfaces present on the system."
     range: observable object
 
   new object:
-    description: >-
     name: new object
     description: >-
       "Specifies the observable object and its properties as they are after the state change effect occurred."
@@ -6433,77 +6667,77 @@ classes:
     name: next run time
     description: >-
       "Specifies the next run date/time of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381257(v=vs.85).aspx."
-    range: xsd:dateTime
+    range: time type
 
   nickname:
     name: nickname
     description: >-
       "Nickname specifies an alternate, unofficial and typically informal name for a person independent of their official name."
-    range: string type
+    exact_mappings:
+      - NCIT:C80243
+      - WIKIDATA:Q49614
+      - WIKIDATA:Q15622880
 
   ntfs hard link count:
     name: ntfs hard link count
     description: >-
       "Specifies the number of directory entries that reference an NTFS file record."
-    range: xsd:integer
+    range: integer type
 
   ntfs owner ID:
     name: ntfs owner ID
     description: >-
       "Specifies the identifier of the file owner, from the security index."
-    range: string type
 
   ntfs owner SID:
     name: ntfs owner SID
     description: >-
       "Specifies the security ID (key in the $SII Index and $SDS DataStream in the file $Secure) for an NTFS file."
-    range: string type
 
   number:
     name: number
-    range: xsd:integer
+    range: integer type
 
   number of launches:
     name: number of Launches
-    range: xsd:integer
+    range: integer type
 
   number of RVA and sizes:
     name: number of RVA and sizes
     description: >-
       "Specifies the number of data-directory entries in the remainder of the optional header."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   number of sections:
     name: number of sections
     description: >-
       "Specifies the number of sections in the PE binary, as a non-negative integer."
-    range: xsd:integer
+    range: integer type
 
   number of subkeys:
     name: number of subkeys
-    range: xsd:integer
+    range: integer type
 
   number of symbols:
     name: number of symbols
     description: >-
       "Specifies the number of entries in the symbol table of the PE binary, as a non-negative integer."
-    range: xsd:integer
+    range: integer type
 
   number times contacted:
     name: number times contacted
     description: >-
       "Number times contacted specifies the number of times a particular contact has been contacted."
-    range: xsd:integer
+    range: integer type
 
   object GUID:
     name: object GUID
-    range: string type
 
   observable created time:
     name: observable created time
     description: >-
       "The date and time at which the observable object being characterized was created. This time pertains to an intrinsic characteristic of the observable object, and would be consistent across independent characterizations or observations of the observable object."
-    range: xsd:dateTime
+    range: time type
 
   old object:
     name: old object
@@ -6515,7 +6749,7 @@ classes:
     name: open file descriptor
     description: >-
       "Specifies a listing of the current file descriptors used by the Unix process."
-    range: xsd:integer
+    range: integer type
 
   operating system:
     description: >-
@@ -6532,16 +6766,13 @@ classes:
     name: options
     description: >-
       "Specifies any options used when mounting the volume."
-    range: string type
 
   organization department:
     name: organization department
     description: >-
       "Specifies a particular suborganization (division, branch, office, etc.) that exists within a larger organization."
-    range: string type
 
   organization location:
-    description: >-
     name: organization location
     description: >-
       "Specifies a geolocation address of an organization."
@@ -6551,19 +6782,18 @@ classes:
     name: organization position
     description: >-
       "Specifies the title or role that a person plays within an organization."
-    range: string type
 
   os install date:
     name: os install date
     description: >-
       "Specifies the date on which the operating system (OS) was installed."
-    range: xsd:dateTime
+    range: time type
 
   os last upgrade date:
     name: os last upgrade date
     description: >-
       "Specifies the date on which the operating system (OS) was last upgraded."
-    range: xsd:dateTime
+    range: time type
 
   other headers:
     description: >-
@@ -6571,7 +6801,6 @@ classes:
     range: types:Dictionary
 
   owner:
-    description: >-
     name: owner
     description: >-
       "Specifies the owner of an observable Object."
@@ -6579,23 +6808,20 @@ classes:
 
   owner SID:
     name: owner SID
-    range: string type
 
   page title:
     name: page title
     description: >-
       "Specifies the title of a web page."
-    range: string type
 
   parameter address:
     name: parameter address
-    range: xsd:hexBinary
+    range: hex binary type
 
   parameters:
     name: parameters
     description: >-
       "Specifies the command line parameters used to launch the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381875(v=vs.85).aspx."
-    range: string type
 
   parent:
     name: parent
@@ -6613,158 +6839,152 @@ classes:
     description: >-
       "The partitions that reside on the disk."
     range: observable object
+    exact_mappings:
+      - WIKIDATA:Q1125653
 
   partition ID:
     name: partition ID
     description: >-
       "Specifies the identifier of the partition, as provided by the containing partition table.  This identifier is the index value within the partition table, and is expected to be an incrementing alphanumeric value (numeric in most partition systems), not a GUID or UUID.  Sorting partitions by this index should first attempt to sort a numeric cast of the value."
-    range: string type
 
   partition length:
     name: partition length
     description: >-
       "Specifies the length of the partition, in bytes."
-    range: xsd:integer
+    range: integer type
 
   partition offset:
     name: partition offset
     description: >-
       "Specifies the starting offset of the partition, in bytes."
-    range: xsd:integer
+    range: integer type
 
   password:
     name: password
     description: >-
       "Specifies an authentication password."
-    range: string type
+    exact_mappings:
+      - EDAM_DATA:1690
+      - NCIT:C42710
+      - sumo:password
+      - WIKIDATA:Q161157
 
   password last changed:
     name: password last changed
     description: >-
       "The date and time that the password was last changed."
-    range: xsd:dateTime
+    range: time type
 
   password type:
     name: password type
     description: >-
       "The type of password, for instance plain-text or encrypted."
-    range: string type
 
   path:
     name: path
     description: >-
       "Specifies the location of one object within another containing object."
-    range: string type
 
   pdf creation date:
     name: pdf creation date
     description: >-
       "The PDF CreationDate property is defined in ISO 32000-1:2008 as 'The date and time the document was created, in human-readable form' (Table 317).  As a UCO property, its value is converted to xsd:dateTime."
-    range: xsd:dateTime
+    range: time type
 
-  pdf Id0:
-    name: pdfId0
-    range: string type
+  pdf id0:
+    name: pdf id0
 
-  pdf Id1:
-    name: pdf Id1
-    range: string type
+  pdf id1:
+    name: pdf id1
 
   pdf mod date:
     name: pdfModDate
     description: >-
       "The PDF ModDate property is defined in ISO 32000-1:2008 as 'The date and time the document was most recently modified, in human-readable form' (Table 317).  As a UCO property, its value is converted to xsd:dateTime."
-    range: xsd:dateTime
+    range: time type
 
   PE type:
     name: PE type
     description: >-
       "Specifies the type of the PE binary."
-    range: string type
 
   phone activation time:
     name: phone activation time
     description: >-
       "The date and time that a device was activated."
-    range: xsd:dateTime
+    range: time type
 
   phone number:
     name: phoneNumber
     description: >-
       "A phone number(account)."
-    range: string type
 
   picture height:
     name: picture height
-    range: xsd:integer
+    range: integer type
 
   picture type:
     name: picture type
     description: >-
       "The type of a picture, for example a thumbnail."
-    range: string type
 
   picture width:
     name: picture width
     description: >-
       "The width of the picture in pixels."
-    range: xsd:integer
+    range: integer type
 
   pid:
     name: pid
     description: >-
       "The process ID, or PID, of the process."
-    range: xsd:integer
+    range: integer type
+    exact_mappings:
+      - WIKIDATA:Q1541645
 
   pointer to symbol table:
     name: pointer to symbol table
     description: >-
       "Specifies the file offset of the COFF symbol table."
-    range: xsd:hexBinary
+    range: hex binary type
 
   policy constraints:
     name: policy constraints
-    range: string type
 
   policy mappings:
     name: policy mappings
-    range: string type
 
   port:
     name: port
     description: >-
       "Port on which communication takes place."
-    range: xsd:integer
+    range: integer type
+    exact_mappings:
+      - WIKIDATA:Q858321
 
   prefetch hash:
     name: prefetch hash
     description: >-
       "An eight character hash of the location from which the application was run."
-    range: string type
 
   priority:
     name: priority
     description: >-
       "The priority of the email."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        xsd:integer
-                        xsd:string
+    range: string type
 
   private key usage period not after:
     name: private key usage period not after
-    range: xsd:dateTime
+    range: time type
 
   private key usage period not before:
     name: private key usage period not before
-    range: xsd:dateTime
+    range: time type
 
   processor architecture:
     name: processor architecture
     description: >-
       "Specifies the specific architecture (e.g. x86) used by the CPU of the system."
-    range: string type
 
   profile:
     name: profile
@@ -6775,103 +6995,95 @@ classes:
   profile account:
     name: profile account
     description: >-
-      "Specifies the online service account associated with the profile
+      "Specifies the online service account associated with the profile"
     range: observable object
 
   profile background hash:
     name: profile background hash
     description: >-
-      "Specifies hashes of the background associated with the profile
+      "Specifies hashes of the background associated with the profile"
     range: types:Hash
 
   profile background location:
     name: profile background location
     description: >-
-      "Specifies the network location of the background associated with the profile
+      "Specifies the network location of the background associated with the profile"
     range: observable object
 
   profile banner hash:
     name: profile banner hash
     description: >-
-      "Specifies hashes of the banner associated with the profile
+      "Specifies hashes of the banner associated with the profile"
     range: types:Hash
 
   profile banner location:
-    description: >-
     name: profile banner location
     description: >-
-      "Specifies the network location of the banner associated with the profile
+      "Specifies the network location of the banner associated with the profile"
     range: observable object
 
   profile created:
     name: profile created
     description: >-
-      "Specifies the date and time the profile was created
-    range: xsd:dateTime
+      "Specifies the date and time the profile was created"
+    range: time type
 
   profile identity:
-    description: >-
     name: profile identity
     description: >-
-      "Specifies the identity associated with the profile
+      "Specifies the identity associated with the profile"
     range: identity:Identity
 
   profile image hash:
-    description: >-
     name: profile image hash
     description: >-
-      "Specifies hashes of the profile image associated with the profile
+      "Specifies hashes of the profile image associated with the profile"
     range: types:Hash
 
   profile image location:
-    description: >-
     name: profile image location
     description: >-
-      "Specifies the network location of the profile image associated with the profile
+      "Specifies the network location of the profile image associated with the profile"
     range: observable object
 
   profile is protected:
     name: Is_Protected
     description: >-
-      "Specifies whether the twitter profile is protected
-    range: xsd:boolean
+      "Specifies whether the twitter profile is protected"
+    range: boolean type
 
   profile is verified:
     name: Is_Verified
     description: >-
-      "Specifies whether the twitter profile is verified
-    range: xsd:boolean
+      "Specifies whether the twitter profile is verified"
+    range: boolean type
 
   profile language:
     name: profile language
     description: >-
-      "Specifies the language associated with the profile. When present, it MUST be a language code conformant to RFC 5646/BCP47
-    range: string type
+      "Specifies the language associated with the profile. When present, it MUST be a language code conformant to RFC 5646/BCP47"
 
   profile service:
-    description: >-
     name: profile service
     description: >-
-      "Specifies the online service associated with the profile
+      "Specifies the online service associated with the profile"
     range: observable object
 
   profile website:
     name: profile website
     description: >-
-      "Specifies the website URL associated with the profile
+      "Specifies the website URL associated with the profile"
     range: observable object
 
   properties:
     name: properties
     description: >-
       "Specifies the properties that were enumerated as a result of the action on the observable object."
-    range: string type
 
   property name:
     name: property name
     description: >-
       "Specifies the Name of the property being read."
-    range: string type
 
   protocols:
     name: protocols
@@ -6883,51 +7095,45 @@ classes:
     name: query
     description: >-
       "Query passed to the resource."
-    range: string type
 
   range offset:
     name: range offset
     description: >-
       "The offset at which the start of data can be found, relative to the rangeOffsetType defined."
-    range: xsd:integer
+    range: integer type
 
   range offset type:
     name: range offset type
     description: >-
       "The type of offset defined for the range (e.g., image, file, address)."
-    range: string type
 
   range size:
     name: range size
     description: >-
       "The size of the data in bytes."
-    range: xsd:integer
+    range: integer type
 
   received lines:
     name: received lines
-    range: string type
 
   received time:
     name: receivedTime
     description: >-
       "The date and time at which the message received."
-    range: xsd:dateTime
+    range: time type
 
   recurrence:
     name: recurrence
     description: >-
       "Recurrence of the event."
-    range: string type
 
   references:
-    description: >-
     name: references
     description: >-
       "A list of email message identifiers this email relates to."
     range: observable object
 
   referral URL:
-    description: >-
     name: referral URL
     description: >-
       "Specifies the corresponding referral URL for a registrar."
@@ -6943,62 +7149,50 @@ classes:
     name: region end address
     description: >-
       "The regionEndAddress property specifies the ending address of the particular memory region."
-    range: xsd:hexBinary
+    range: hex binary type
 
   region size:
     name: region size
     description: >-
       "The regionSize property specifies the size of the particular memory region, in bytes."
-    range: xsd:integer
+    range: integer type
 
   region start address:
     name: region start address
     description: >-
       """The regionStartAddress property specifies the starting address of the particular memory region.
           """
-    range: xsd:hexBinary
+    range: hex binary type
 
   regional internet registry:
     name: regional internet registry
     description: >-
       "specifies the name of the Regional Internet Registry (RIR) which allocated the IP address contained in a WHOIS entry."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:RegionalRegistryTypeVocab
-                        xsd:string
+    range: RegionalRegistryTypeEnum
 
   regional internet registry-shape-value-not-vocabulary-member:
-        a        sh:message "Value is not member of the vocabulary RegionalRegistryTypeVocab."
-        sh:or (
-                [
-                        sh:datatype vocabulary:RegionalRegistryTypeVocab
-                        sh:in (
-                                "APNIC"^^vocabulary:RegionalRegistryTypeVocab
-                                "ARIN"^^vocabulary:RegionalRegistryTypeVocab
+    description: >-
+      "Value is not member of the vocabulary RegionalRegistryTypeVocab."
+    range: RegionalRegistryTypeEnum
 
   regional internet registry-shape-value-outside-default-vocabulary:
-        a        sh:datatype vocabulary:RegionalRegistryTypeVocab
-        sh:message "Value is outside the default vocabulary RegionalRegistryTypeVocab."
-        sh:path observable:regional internet registry
-        sh:severity sh:Info
+    is_a: vocabulary:RegionalRegistryTypeVocab
+    description: >-
+      "Value is outside the default vocabulary RegionalRegistryTypeVocab."
 
   registered organization:
-    description: >-
     name: registered organization
     description: >-
       "The organization that this copy of Windows is registered to."
     range: identity:Identity
 
   registered owner:
-    description: >-
     name: registered owner
     description: >-
       "The person or organization that is the registered owner of this copy of Windows."
     range: identity:Identity
 
   registrant contact info:
-    description: >-
     name: registrant contact info
     description: >-
       "Specifies contact info for the registrant of a domain within a WHOIS entity."
@@ -7008,22 +7202,18 @@ classes:
     name: registrant IDs
     description: >-
       "Specifies the registrant IDs associated with a domain lookup."
-    range: string type
 
   registrar GUID:
     name: registrar GUID
     description: >-
       "Specifies the Registrar GUID field of a Whois entry."
-    range: string type
 
   registrar ID:
     name: registrar ID
     description: >-
       "Specifies the Registrar ID field of a Whois entry."
-    range: string type
 
   registrar info:
-    description: >-
     name: registrarInfo
     description: >-
       "Specifies registrar info that would be returned from a registrar lookup."
@@ -7033,10 +7223,8 @@ classes:
     name: registrar name
     description: >-
       "The name of the registrar organization."
-    range: string type
 
   registry values:
-    description: >-
     name: registry values
     description: >-
       "The values that were enumerated as a result of the action on the object."
@@ -7046,34 +7234,28 @@ classes:
     name: remarks
     description: >-
       "Specifies any remarks associated with this Whois entry."
-    range: string type
 
   remind time:
     name: remind time
-    range: xsd:dateTime
+    range: time type
 
   request method:
     name: request method
     description: >-
-      """Specifies the HTTP method portion of the HTTP request line, as a lowercase string.
-          ""
-    range: string type
+      "Specifies the HTTP method portion of the HTTP request line, as a lowercase string."
 
   request value:
     name: request value
     description: >-
       "Specifies the value (typically a resource path) portion of the HTTP request line."
-    range: string type
 
   request version:
     name: request version
     description: >-
       "Specifies the HTTP version portion of the HTTP request line, as a lowercase string."
-    range: string type
 
   row condition:
     name: row condition
-    range: string type
 
   row index:
     name: row index
@@ -7083,26 +7265,23 @@ classes:
     name: ruid
     description: >-
       "Specifies the real user ID, which represents the Unix user who created the process."
-    range: xsd:nonNegativeInteger
+    range: non negative integer type
 
   running status:
     name: runningStatus
-    range: string type
 
   scheme:
     name: scheme
     description: >-
       "Identifies the type of URL."
-    range: string type
 
- section alignment:
+  section alignment:
     name: section alignment
     description: >-
       "Specifies the alignment (in bytes) of PE sections when they are loaded into memory."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   sections:
-    description: >-
     name: sections
     description: >-
       "Specifies metadata about the sections in the PE file."
@@ -7112,11 +7291,10 @@ classes:
     name: sector size
     description: >-
       "The sector size of the volume in bytes."
-    range: xsd:integer
+    range: integer type
 
   security attributes:
     name: security attributes
-    range: string type
 
   sender:
     description: >-
@@ -7127,14 +7305,12 @@ classes:
     name: sent time
     description: >-
       "The date and time at which the message sent."
-    range: xsd:dateTime
+    range: time type
 
   serial number:
     name: serial number
-    range: string type
 
   server name:
-    description: >-
     name: server name
     description: >-
       "Specifies the corresponding server name for a Whois entry. This usually corresponds to a name server lookup."
@@ -7142,74 +7318,61 @@ classes:
 
   service name:
     name: service name
-    range: string type
 
   service status:
     name: service status
-    range: string type
 
   service type:
     name: service type
-    range: string type
 
   session ID:
     name: session ID
     description: >-
       "An identifier for the session from which the message originates."
-    range: string type
 
   shell:
     name: shell
-    range: string type
 
   show message body:
     name: show message body
     description: >-
       "Specifies the message text that is displayed in the body of the message box by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381302(v=vs.85).aspx."
-    range: string type
 
   show message title:
     name: show message title
     description: >-
       "Specifies the title of the message box shown by the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381302(v=vs.85).aspx."
-    range: string type
 
   sid:
     name: sid
-    range: string type
 
   signal strength:
     name: signal strength
     description: >-
       "The strength of the antenna signal."
-    range: string type
 
   signature:
     name: signature
     description: >-
       "A"
-    range: string type
     exact_mappings:
       - sumo:DigitalSignature
 
   signature algorithm:
     name: signature algorithm
-    range: string type
 
   signature description:
     name: signature description
-    range: string type
 
   signature exists:
     name: signature exists
-    range: xsd:boolean
+    range: boolean type
 
   signature verified:
     name: signature verified
-    range: xsd:boolean
+    range: boolean type
 
   sip address:
-    description: >-
     name: sip address
     description: >-
       "A SIP address specifies Session Initiation Protocol (SIP) identifier."
@@ -7219,82 +7382,81 @@ classes:
     name: size
     description: >-
       "Specifies the size of the section, in bytes."
-    range: xsd:integer
+    range: integer type
 
   size in bytes:
     name: sizeInBytes
     description: >-
       "The size of the data in bytes."
-    range: xsd:integer
+    range: integer type
 
   size of code:
     name: size ofCode
     description: >-
       "Specifies the size of the code (text) section. If there are multiple such sections, this refers to the sum of the sizes of each section."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   size of headers:
     name: size ofHeaders
     description: >-
       "Specifies the combined size of the MS-DOS, PE header, and section headers, rounded up a multiple of the value specified in the file_alignment header."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   size of heap commit:
     name: size of heap commit
     description: >-
       "Specifies the size of the local heap space to commit."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   size of heap reserve:
     name: size of heap reserve
     description: >-
       "Specifies the size of the local heap space to reserve."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   size of image:
     name: size of image
     description: >-
       "Specifies the size, in bytes, of the image, including all headers, as the image is loaded in memory."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   size of initialized data:
     name: size of initialized data
     description: >-
       "Specifies the size of the initialized data section. If there are multiple such sections, this refers to the sum of the sizes of each section."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   size of optional header:
     name: size of optional header
     description: >-
       "Specifies the size of the optional header of the PE binary."
-    range: xsd:integer
+    range: integer type
 
   size of stack commit:
     name: size of stack commit
     description: >-
       "Specifies the size of the stack to commit."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   size of stack reserve:
     name: size of stack reserve
     description: >-
       "Specifies the size of the stack to reserve."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   size of uninitialized data:
     name: size of uninitialized data
     description: >-
       "Specifies the size of the uninitialized data section. If there are multiple such sections, this refers to the sum of the sizes of each section."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   skew:
     name: skew
     description: >-
       "The angle in degrees of the radial rotation around its main beam direction."
-    range: xsd:decimal
+    range: decimal type
 
   source application:
-    description: >-
     name: source application
     description: >-
       "Source application specifies the software application that a particular contact or contact list is associated with."
@@ -7304,35 +7466,32 @@ classes:
     name: source flags
     description: >-
       "Specifies the source TCP flags."
-    range: xsd:hexBinary
+    range: hex binary type
 
   source port:
     name: source port
     description: >-
-      """Specifies the source port used in the connection, as an integer in the range of 0 - 65535.
-          ""
-    range: xsd:integer
+      "Specifies the source port used in the connection, as an integer in the range of 0 - 65535."
+    range: integer type
 
   space left:
     name: space left
     description: >-
       "Specifies the amount of space left on the partition, in bytes."
-    range: xsd:integer
+    range: integer type
 
   space used:
     name: space used
     description: >-
       "Specifies the amount of space used on the partition, in bytes."
-    range: xsd:integer
+    range: integer type
 
   sponsoring registrar:
     name: sponsoring registrar
     description: >-
       "Specifies the name of the sponsoring registrar for a domain."
-    range: string type
 
   src:
-    description: >-
     name: src
     description: >-
       "Specifies the source(s) of the network connection."
@@ -7340,11 +7499,11 @@ classes:
 
   src bytes:
     name: src bytes
-    range: xsd:integer
+    range: integer type
 
   src packets:
     name: srcPackets
-    range: xsd:integer
+    range: integer type
 
   src payload:
     description: >-
@@ -7355,27 +7514,24 @@ classes:
     name: ssid
     description: >-
       "network  identifier."
-    range: string type
 
   stack size:
     name: stack size
-    range: xsd:nonNegativeInteger
+    range: non negative integer type
 
   start address:
     name: start address
-    range: xsd:hexBinary
+    range: hex binary type
 
   start command line:
     name: startCommandLine
-    range: string type
 
   start time:
     name: start time
-    range: xsd:dateTime
+    range: time type
 
   start type:
     name: start type
-    range: string type
 
   startup info:
     description: >-
@@ -7384,34 +7540,29 @@ classes:
 
   state:
     name: State
-    range: string type
 
   status:
     name: status
     description: >-
       "Specifies a list of statuses for a given Whois entry."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        xsd:string
-                        vocabulary:TaskStatusVocab
+    range: vocabulary:TaskStatusVocab
+
   statuses count:
     name: statuses count
     description: >-
-      "Specifies the number of tweets that this profile has issued
-    range: xsd:nonNegativeInteger
+      "Specifies the number of tweets that this profile has issued"
+    range: non negative integer type
 
   storage capacity in bytes:
     name: storage capacity in bytes
     description: >-
       "The number of bytes that can be stored on a SIM card."
-    range: xsd:integer
+    range: integer type
 
   string value:
     name: string value
     description: >-
       "Specifies the actual value of the extracted string."
-    range: string type
 
   strings:
     description: >-
@@ -7422,18 +7573,14 @@ classes:
     name: subject
     description: >-
       "The subject of the email."
-    range: string type
 
   subject alternative name:
     name: subject alternative name
-    range: string type
 
   subject directory attributes:
     name: subject directory attributes
-    range: string type
 
   subject hash:
-    description: >-
     name: subject hash
     description: >-
       "A hash calculated on the certificate subject name."
@@ -7441,48 +7588,41 @@ classes:
 
   subject key identifier:
     name: subject key identifier
-    range: string type
 
   subject public key algorithm:
     name: subject public key algorithm
-    range: string type
 
   subject public key exponent:
     name: subject public key exponent
-    range: xsd:integer
+    range: integer type
 
   subject public key modulus:
     name: subject public key modulus
-    range: string type
 
   subsystem:
     name: subsystem
     description: >-
       "Specifies the subsystem (e.g., GUI, device driver, etc.) that is required to run this image."
-    range: xsd:unsignedShort
+    range: unsigned short type
 
   swid:
     name: swid
     description: >-
       "Specifies the SWID tag for the software."
-    range: string type
 
   symbolic name:
     name: symbolicName
     description: >-
       "The symbolic name of a global flag. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff549646(v=vs.85).aspx."
-    range: string type
 
   system time:
     name: systemTime
-    range: xsd:dateTime
+    range: time type
 
   table name:
     name: table name
-    range: string type
 
   target file:
-    description: >-
     name: target file
     description: >-
       "Specifies the file targeted by a symbolic link."
@@ -7492,24 +7632,20 @@ classes:
     name: taskComment
     description: >-
       "Specifies a comment for the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381232(v=vs.85).aspx."
-    range: string type
 
   task creator:
     name: task creator
     description: >-
       "Specifies the name of the creator of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381235(v=vs.85).aspx."
-    range: string type
 
   text:
     name: text
-    range: string type
 
   thread ID:
     name: thread ID
-    range: xsd:nonNegativeInteger
+    range: non negative integer type
 
   thumbprint hash:
-    description: >-
     name: thumbprint hash
     description: >-
       "A hash calculated on the entire certificate including signature."
@@ -7519,28 +7655,25 @@ classes:
     name: time date stamp
     description: >-
       "Specifies the time when the PE binary was created."
-    range: xsd:dateTime
+    range: time type
 
   times executed:
     name: times executed
     description: >-
       "The number of times the prefetch application has executed."
-    range: xsd:integer
+    range: integer type
 
   timezone DST:
     name: timezone DST
     description: >-
       "Specifies the time zone used by the system, taking daylight savings time (DST) into account."
-    range: string type
 
   timezone standard:
     name: timezone standard
     description: >-
       "Specifies the time zone used by the system, without taking daylight savings time (DST) into account."
-    range: string type
 
   to:
-    description: >-
     name: to
     description: >-
       "The receiver's phone number."
@@ -7548,49 +7681,44 @@ classes:
 
   total fragments:
     name: total fragments
-    range: xsd:integer
+    range: integer type
 
   total ram:
     name: total ram
     description: >-
       "Specifies the total amount of physical memory present on the system, in bytes."
-    range: xsd:integer
+    range: integer type
 
   total space:
     name: total space
     description: >-
       "Specifies the total amount of space available on the partition, in bytes."
-    range: xsd:integer
+    range: integer type
 
   trigger begin time:
     name: trigger begin time
     description: >-
       "Specifies the date/time that the trigger is activated."
-    range: xsd:dateTime
+    range: time type
 
   trigger delay:
     name: trigger delay
     description: >-
       "Specifies the delay that takes place between when the task is registered and when the task is started."
-    range: string type
 
   trigger end time:
     name: trigger end time
     description: >-
       "Specifies the date/time that the trigger is deactivated."
-    range: xsd:dateTime
+    range: time type
 
   trigger frequency:
     name: triggerFrequency
     description: >-
       "Specifies the frequency at which the trigger repeats."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:TriggerFrequencyVocab
-                        xsd:string
+    range: vocabulary:TriggerFrequencyVocab
+
   trigger list:
-    description: >-
     name: trigger list
     description: >-
       "Specifies a set of triggers used by the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383264(v=vs.85).aspx."
@@ -7600,62 +7728,54 @@ classes:
     name: trigger max run time
     description: >-
       "The maximum amount of time that the task launched by the trigger is allowed to run. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa383868(v=vs.85).aspx."
-    range: string type
 
   trigger session change type:
     name: trigger session change type
     description: >-
       "Specifies the type of Terminal Server session change that would trigger a task launch. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381298(v=vs.85).aspx."
-    range: string type
 
   trigger type:
     name: trigger type
     description: >-
       "Specifies the type of the task trigger."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        vocabulary:trigger typeVocab
-                        xsd:string
+    range: vocabulary:trigger typeVocab
+
   twitter handle:
     name: twitter handle
     description: >-
-      "Specifies the twitter handle associated with the profile
-    range: string type
+      "Specifies the twitter handle associated with the profile"
+    exact_mappings:
+      - WIKIDATA:Q918
 
   twitter ID:
     name: Twitter ID
     description: >-
-      "Specifies the twitter id associated with the profile
-    range: string type
+      "Specifies the twitter id associated with the profile"
 
   uninstall date:
     name: uninstall date
     description: >-
       "Specifies the date the operating system or application was uninstalled."
-    range: xsd:dateTime
+    range: time type
 
   updated date:
     name: updated date
     description: >-
       "Specifies the date in which the registered domain information was last updated."
-    range: xsd:dateTime
+    range: time type
 
   uptime:
     name: uptime
     description: >-
       "Specifies the duration that represents the current amount of time that the system has been up."
-    range: string type
 
   url:
-    description: >-
     name: url
     description: >-
       "Specifies a URL associated with a particular observable object or facet."
     range: observable object
 
   URL history entry:
-    description: >-
     name: URL History Entries
     description: >-
       "Specifies a URL history record stored in the browser's history."
@@ -7671,54 +7791,46 @@ classes:
     name: transition type
     description: >-
       "Specifies how a browser navigated to a particular URL on a particular visit."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        xsd:string
-                        vocabulary:URLTransitionTypeVocab
+    range: vocabulary:URLTransitionTypeVocab
+
   user location string:
     name: user location string
     description: >-
-      "Specifies the user-provided location string associated with the profile
-    range: string type
+      "Specifies the user-provided location string associated with the profile"
 
   user name:
     name: user name
     description: >-
       "Username used to authenticate to this resource."
-    range: string type
 
   validity not after:
     name: validity not after
-    range: xsd:dateTime
+    range: time type
 
   validity not before:
     name: validity not before
-    range: xsd:dateTime
+    range: time type
 
   value:
     name: value
-    range: string type
 
   values:
     name: values
     description: >-
       "The values that were enumerated as a result of the action on the object."
-    range: string type
 
   version:
     name: version
-    range: string type
 
   visibility:
     name: visibility
-    range: xsd:boolean
+    range: boolean type
 
   visit count:
     name: visit count
     description: >-
       "Specifies the number of times a URL has been visited by a particular web browser."
-    range: xsd:integer
+    range: integer type
 
   visit duration:
     name: visit duration
@@ -7730,7 +7842,7 @@ classes:
     name: visit time
     description: >-
       "Specifies the date/time of a specific visit of a URL within a particular browser."
-    range: xsd:dateTime
+    range: time type
 
   volume:
     name: volume
@@ -7742,19 +7854,14 @@ classes:
     name: volume ID
     description: >-
       "The unique identifier of the volume."
-    range: string type
 
   who is contact type:
     name: who is contact type
     description: >-
       "Specifies what type of WHOIS contact this is."
-    range: [
-                a rdfs:Datatype
-                owl:unionOf (
-                        xsd:string
-                        vocabulary:WhoiscontactTypeVocab
+    range: vocabulary:WhoiscontactTypeVocab
+
   who is server:
-    description: >-
     name: who is server
     description: >-
       "Specifies the corresponding Whois server for a registrar."
@@ -7764,11 +7871,10 @@ classes:
     name: win32 version value
     description: >-
       "Specifies the reserved win32 version value."
-    range: xsd:unsignedInt
+    range: unsigned integer type
 
   window title:
     name: window title
-    range: string type
 
   windows directory:
     name: windows directory
@@ -7798,28 +7904,21 @@ classes:
     name: wireless network security mode
     description: >-
       "Specifies the security mode of a wireless network (None, WEP, WPA, etc)."
-    range: [
-                a rdfs:DataType
-                owl:unionOf (
-                        vocabulary:wireless network securityModeVocab
-                        xsd:string
+    range: vocabulary:wireless network securityModeVocab
+
   work item data:
-    description: >-
     name: work item data
     description: >-
       "Specifies application defined data associated with the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381271(v=vs.85).aspx."
     range: observable object
 
   working directory:
-    description: >-
     name: working directory
     description: >-
-      "Specifies the working directory for the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381878(v=vs.85).aspx."
+      'Specifies the working directory for the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381878(v=vs.85).aspx'
     range: observable object
 
   x509v3 extensions:
-    aliases:
-      - 'x509 V3 extensions'
     description: >-
     name: x509 v3 extensions
     range: X509V3 extensions facet
@@ -7829,7 +7928,6 @@ classes:
       - 'xMailer'
     description: >-
     name: x mailer
-    range: string type
 
   x originating IP:
     aliases:
@@ -7838,3 +7936,4 @@ classes:
     name: x originating IP
     range: observable object
 
+...
