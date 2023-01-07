@@ -45,6 +45,27 @@ default_range: string
 ## ------------
 enums:
 
+  AccountTypeEnums:
+    description: >-
+      "An account type represents the endpoint type where the account is located; for example, ADS for an ActiveDirectory endpoint type, or LDAP for an LDAP, etc."
+    permissible_values:
+      ldap:
+        is_a: vocabulary:AccountTypeVocab
+      nis:
+        is_a: vocabulary:AccountTypeVocab
+      openid:
+        is_a: vocabulary:AccountTypeVocab
+      radius:
+        is_a: vocabulary:AccountTypeVocab
+      tacacs:
+        is_a: vocabulary:AccountTypeVocab
+      unix:
+        is_a: vocabulary:AccountTypeVocab
+      windows_domain:
+        is_a: vocabulary:AccountTypeVocab
+      windows_local:
+        is_a: vocabulary:AccountTypeVocab
+
   NetworkSocketAddressFamilyEnum:
     description: >-
       From https://www.freepascal.org/daily/doc/rtl/sockets/index-2.html
@@ -688,6 +709,8 @@ classes:
     exact_mappings:
       - sumo:Account
     narow_mappings:
+      - sumo:AccountID
+      - sumo:deviceAccount
       - WIKIDATA:Q28378282  # verified account
 
   account authentication facet:
@@ -705,9 +728,12 @@ classes:
     name: account facet
     description: >-
       "An account facet is a grouping of characteristics unique to an arrangement with an entity to enable and control the provision of some capability or service."
+    slot_usage:
+      accountIssuer:
+        range: iri type
+      owner:
+        range: iri type
     slots:
-      - accountIssuer
-      - owner
       - isActive
       - expirationDate
       - modifiedTime
@@ -750,10 +776,13 @@ classes:
     name: alternate data stream facet
     description: >-
       "An alternate data stream facet is a grouping of characteristics unique to data content stored within an NTFS file that is independent of the standard content stream of the file and isHidden from access by default NTFS file viewing mechanisms."
+    slot_usages:
+      hashes:
+        range: iri type
+      name:
+        is_a: core:Name
     slots:
-      - hashes
       - size
-      - name
 
   android device:
     is_a: device
@@ -799,9 +828,12 @@ classes:
       - antennaHeight
       - azimuth
       - elevation
-      - horizontalBeamWidth
-      - signalStrength
       - skew
+    slot_usage:
+      horizontalBeamWidth:
+        range: decimal type
+      signalStrength:
+        range: decimal type
 
   apple device:
     is_a: device
@@ -839,6 +871,7 @@ classes:
     exact_mappings:
       - NCIT:C42608  # computer application
       - schema:Softwareapplication
+      - sumo:ComputerProgram
       - WIKIDATA:Q166142
 
   application account:
@@ -855,8 +888,9 @@ classes:
     name: application account facet
     description: >-
       "An application account facet is a grouping of characteristics unique to an account within a particular software program designed for end users."
-    slots:
-      - application
+    slot_usage:
+      application:
+        range: iri type
 
   application facet:
     is_a: core:Facet
@@ -865,9 +899,11 @@ classes:
       "An application facet is a grouping of characteristics unique to a particular software program designed for end users."
     slot_usage:
       installedVersionHistory:
+        range: iri type
         multivalued: true
+      operatingSystem:
+        range: iri type
     slots:
-      - operatingSystem
       - numberOfLaunches
       - applicationIdentifier
       - version
@@ -1073,6 +1109,7 @@ classes:
         range: uri type
       attendant:
         range: uri type
+        multivalued: true
       location:
         range: uri type
       application:
@@ -1239,6 +1276,7 @@ classes:
     slot_usage:
       networkInterface:
         range: iri type
+        multivalued: true
     slots:
       - biosDate
       - biosReleaseDate
@@ -1266,9 +1304,11 @@ classes:
     description: >-
       "A configured software is a Software that is known to be configured to run in a more specified manner than some unconfigured or less-configured Software."
     slot_usage:
-      uses configuration:
+      usesConfiguration:
+        is_a: configuration:usesConfiguration
         range: iri type
-      is configuration of:
+      isConfigurationOf:
+        is_a: configuration:isConfigurationOf
         range: iri type
     exact_mappings:
       - WIKIDATA:Q28812506  # configured software environment
@@ -1993,12 +2033,21 @@ classes:
     name: file
     description: >-
       "A file is a computer resource for recording data discretely on a computer storage device."
+    broad_mappings:
+      - sumo:DigitalData
     exact_mappings:
       - SIO:000396
       - sumo:ComputerFile
       - WIKIDATA:Q82753   # computer file
     related_mappings:
       - WIKIDATA:Q37787110  # file system object
+    narrow_mappings:
+      - sumo:AudioFile
+      - sumo:ComputerDirectory
+      - sumo:ImageFile
+      - sumo:MultimediaFile
+      - sumo:SoftwareFile
+      - sumo:XMLFile
 
   file facet:
     is_a: core:Facet
@@ -4537,7 +4586,7 @@ slots:
     name: accountType
     description: >-
       "The type of account, for instance bank, phone, application, service, etc."
-    range: vocabulary:AccountTypeVocab
+    range: AccountTypeEnum
 
   actionID:
     name: actionID
@@ -7456,6 +7505,8 @@ slots:
     description: >-
       "The angle in degrees of the radial rotation around its main beam direction."
     range: decimal type
+    close_mappings:
+      - WIKIDATA:Q7534783  # skew
 
   sourceApplication:
     name: sourceApplication
@@ -7786,7 +7837,7 @@ slots:
     name: urlTargeted
     description: >-
       "The target of the bookmark."
-    range: xsd:anyURI
+    range: iri type
 
   urlTransitionType:
     name: transition type
