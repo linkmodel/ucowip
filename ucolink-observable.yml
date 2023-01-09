@@ -22,10 +22,19 @@ version: 0.0.1  # sync with primary git repo release tag
 
 prefixes:
   baselink: 'https://w3id.org/baselink/vocab/'
-  csrc: 'https://csrc.nist.gov/glossary/term/'    # computer Security Resource Center
+  co: 'http://purl.org/co/'
+  EDAM_DATA: 'http://edamontology.org/data_'
+  EDAM_FORMAT: 'http://edamontology.org/format_'
+  EDAM_OPERATION: 'http://edamontology.org/operation_'
+  EDAM_TOPIC: 'http://edamontology.org/topic_
   linkml: 'https://w3id.org/linkml/'
+  metasat: 'https://schema.space/metasat/'
+  SAN: 'https://www.irit.fr/recherches/MELODI/ontologies/SAN.html#'  # System Actuator device
   SIO: 'http://semanticscience.org/resource/SIO_'   # Semanticscience Integrated Ontology
   sh: 'http://www.w3.org/ns/shacl#'
+  sosa: 'http://www.w3.org/ns/sosa/'         # Sensor, Observation, Sample, and Actuator
+  ssn: 'https://www.w3.org/TR/vocab-ssn/#'   # Semantic sensor network ontology
+  ssn-system: 'http://www.w3.org/ns/ssn/systems/'
   sumo: 'w3id.org/sumo/kb/'
 
   action: 'https://ontology.unifiedcyberontology.org/uco/action/'
@@ -65,6 +74,84 @@ enums:
         is_a: vocabulary:AccountTypeVocab
       windows_local:
         is_a: vocabulary:AccountTypeVocab
+
+  ContactAddressScopeEnum:
+    description: >-
+    permissible_values:
+      home:
+        is_a: vocabulary:ContactAddressScopeVocab
+      work:
+        is_a: vocabulary:ContactAddressScopeVocab
+      school:
+        is_a: vocabulary:ContactAddressScopeVocab
+      cloud:
+        is_a: vocabulary:ContactAddressScopeVocab
+
+  ContactPhoneScopeEnum:
+    description: >-
+    permissible_values:
+      home:
+        is_a: vocabulary:ContactPhoneScopeVocab
+      work:
+        is_a: vocabulary:ContactPhoneScopeVocab
+      school:
+        is_a: vocabulary:ContactPhoneScopeVocab
+      mobile:
+        is_a: vocabulary:ContactPhoneScopeVocab
+      main:
+        is_a: vocabulary:ContactPhoneScopeVocab
+      home fax:
+        is_a: vocabulary:ContactPhoneScopeVocab
+      work fax:
+        is_a: vocabulary:ContactPhoneScopeVocab
+      pager:
+        is_a: vocabulary:ContactPhoneScopeVocab
+
+  ContactSIPScopeEnum:
+    description: >-
+    permissible_values:
+      home:
+        is_a: vocabulary:ContactSIPScopeVocab
+      work:
+        is_a: vocabulary:ContactSIPScopeVocab
+      school:
+        is_a: vocabulary:ContactSIPScopeVocab
+
+  ContactURLScopeEnum:
+    description: >-
+    permissible_values:
+      home:
+        is_a: vocabulary:ContactURLScopeVocab
+      work:
+        is_a: vocabulary:ContactURLScopeVocab
+      school:
+        is_a: vocabulary:ContactURLScopeVocab
+      homepage:
+        is_a: vocabulary:ContactURLScopeVocab
+
+  EndiannessTypeEnum:
+    description: >-
+    permissible_values:
+    Big-endian:
+      is_a: vocabulary:EndiannessTypeVocab
+    Little-endian:
+      is_a: vocabulary:EndiannessTypeVocab
+    Middle-endian:
+      is_a: vocabulary:EndiannessTypeVocab
+
+  MemoryBlockTypeEnum:
+    description: >-
+    permissible_values:
+      Bit-mapped:
+        is_a: vocabulary:MemoryBlockTypeVocab
+      Byte-mapped:
+        is_a: vocabulary:MemoryBlockTypeVocab
+      Initialized:
+        is_a: vocabulary:MemoryBlockTypeVocab
+      Overlay:
+        is_a: vocabulary:MemoryBlockTypeVocab
+      Uninitialized:
+        is_a: vocabulary:MemoryBlockTypeVocab
 
   NetworkSocketAddressFamilyEnum:
     description: >-
@@ -385,6 +472,8 @@ enums:
       dll:
       exe:
       sys:
+    in_subset:
+      - microsoft
 
   WindowsServiceStartTypeEnum:
     description: >-
@@ -394,6 +483,8 @@ enums:
       service_demand_start:
       service_disabled:
       service_system_alert:
+    in_subset:
+      - microsoft
 
   WindowsServiceStatusEnum:
     description: >-
@@ -405,6 +496,8 @@ enums:
       service_start_pending:
       service_stop_pending:
       service_stopped:
+    in_subset:
+      - microsoft
 
   WindowsServiceTypeEnum:
     description: >-
@@ -413,6 +506,8 @@ enums:
       service_kernel_driver:
       service_win32_own_process:
       service_win32_share_process:
+    in_subset:
+      - microsoft
 
   TaskFlagEnum:
     description: >-
@@ -529,6 +624,8 @@ enums:
         is_a: vocabulary:WindowsDriveTypeVocab
       DRIVE_UNKNOWN:
         is_a: vocabulary:WindowsDriveTypeVocab
+    in_subset:
+      - microsoft
 
   WindowsNetworkSecurityModeEnum:
     description: >-
@@ -547,6 +644,8 @@ enums:
         is_a: vocabulary:WirelessNetworkSecurityModeVocab
       WPA3-Enterprise:
         is_a: vocabulary:WirelessNetworkSecurityModeVocab
+    in_subset:
+      - microsoft
 
   RegionalRegistryTypeEnum:
     description: >-
@@ -565,7 +664,19 @@ enums:
 ## ------------
 ## SUBSETS
 ## ------------
-subsets: {}
+subsets:
+
+  microsoft:
+    description: >-
+      Microsoft Corp technologies
+
+  linux:
+    description: >-
+      Linux OS technology
+
+  android:
+    description: >-
+      Android OS technology
 
 ## ------------
 ## TYPES
@@ -770,6 +881,8 @@ classes:
     name: alternate data stream
     description: >-
       "An alternate data stream is data content stored within an NTFS file that is independent of the standard content stream of the file and isHidden from access by default NTFS file viewing mechanisms."
+    in_subset:
+      - microsoft
 
   alternate data stream facet:
     is_a: core:Facet
@@ -783,12 +896,16 @@ classes:
         is_a: core:Name
     slots:
       - size
+    in_subset:
+      - microsoft
 
   android device:
     is_a: device
     name: android device
     description: >-
       "An Android device is a device running the Android operating system. [based on https://en.wikipedia.org/wiki/Android_(operating_system)]"
+    in_subset:
+      - android
     broad_mappings:
       - sumo:AndroidOS
       - WIKIDATA:Q94  # android software
@@ -808,6 +925,8 @@ classes:
         range: boolean type
       isSURootEnabled:
         range: boolean type
+    in_subset:
+      - android
 
   android phone:
     name: android phone
@@ -816,6 +935,8 @@ classes:
     is_a: android device
     mixins:
       - smart phone
+    in_subset:
+      - android
     exact_mappings:
       - WIKIDATA:Q94
 
@@ -840,12 +961,20 @@ classes:
     name: apple device
     description: >-
       "An apple device is a smart device that applies either the MacOS or iOS operating system"
-    related_mappings:
-      - WIKIDATA:Q312  # apple corp
-    narrow_mappings:
+    broad_mappings:
       - sumo:AppleComputer
       - sumo:AppleIPad
       - sumo:AppleIPhone
+      - WIKIDATA:Q2796  # ipad
+      - WIKIDATA:Q39510168  # iphone x
+      - WIKIDATA:Q3065317  # macbook
+      - WIKIDATA:Q486053  # macbook
+    related_mappings:
+      - WIKIDATA:Q312  # apple corp
+    narrow_mappings:
+      - WIKIDATA:Q26831164  # iphone7
+      - WIKIDATA:Q214276  # macbook pro
+      - WIKIDATA:Q488192  # macbook air
 
   appliance:
     is_a: device
@@ -853,6 +982,7 @@ classes:
     description: >-
       "An appliance is a purpose-built computer with software or firmware that is designed to provide a specific computing capability or resource. [based on https://en.wikipedia.org/wiki/computer_appliance]"
     related_mappings:
+      - WIKIDATA:HomeAppliance
       - WIKIDATA:Q2425052  # electrial appliance
     close_mappings:
       - WIKIDATA:Q1183543  # appliance
@@ -870,7 +1000,7 @@ classes:
       - IAO:0000591    # software procedure
     exact_mappings:
       - NCIT:C42608  # computer application
-      - schema:Softwareapplication
+      - schema:SoftwareApplication
       - sumo:ComputerProgram
       - WIKIDATA:Q166142
 
@@ -882,6 +1012,9 @@ classes:
     exact_mappings:
       - SIO:001165  # user account
       - sumo:UserAccount
+    related_mapppings:
+      - NCIT:C51795  # account administrator
+      - sumo:AccountID
 
   application account facet:
     is_a: core:Facet
@@ -919,9 +1052,8 @@ classes:
       - version
     close_mappings:
       - baselink:Version
-    exact_mappings:
       - NCIT:C111093  # software version
-      - WIKIDATA_PROPERTY:P348  # app version, etc
+      - schema:softwareVersion
 
   archive file:
     is_a: file
@@ -1145,6 +1277,10 @@ classes:
       "A call is a connection as part of a realtime cyber communication between one or more parties."
     exact_mappings:
       - NCIT:C64924  # call
+    broad_mappings:
+      - WIKIDATA:Q6887084  # mobile comms over ip
+    narrow_mappings:
+      - WIKIDATA:Q2296401  # phone call
 
   call facet:
     is_a: core:Facet
@@ -1232,9 +1368,10 @@ classes:
     broad_mappings:
       - NCIT:C25162  # code (symbols)
       - sumo:ComputerLanguage
+      - sumo:Software
     exact_mappings:
       - NCIT:C47901  # source code
-      - sumo:Software
+      - sumo:ComputerProgram
       - WIKIDATA:Q7397  # software
     narrow_mappings:
       - IAO:0000096  # source code module
@@ -1267,6 +1404,8 @@ classes:
       "A computer specification is the hardware and software of a programmable electronic device that can store, retrieve, and process data. {based on merriam-webster.com/dictionary/computer]"
     broad_mappings:
       - sumo:ComputerSystem
+    close_mappings:
+      - WIKIDATA:Q20819677  # technical specification
 
   computer specification facet:
     is_a: core:Facet
@@ -1319,15 +1458,18 @@ classes:
     description: >-
       "A contact is a set of identification and communication related details for a single entity."
     exact_mappings:
-      - sumo:ContactSite
+      - WIKIDATA:Q2996679  # contact information
     narrow_mappings:
       - NCIT:C25461  # contact person
+      - sumo:ContactSite
+    related_mappings:
+      - WIKIDATA:Q38183514  # physical contact
 
-  contactAddress:
+  contact address:
     is_a: core:UcoInherentCharacterizationThing
-    name: contactAddress
+    name: contact address
     description: >-
-      "A contactAddress is a grouping of characteristics unique to a geolocation address of a contact entity."
+      "A contact address is a grouping of characteristics unique to a geolocation address of a contact entity."
     related_mappings:
       - WIKIDATA_PROPERTY:P2918  # PO Box
     close_mappings:
@@ -1335,16 +1477,16 @@ classes:
     exact_mappings:
       - baselink:Address
     slot_usage:
-      geolocation address:
+      geolocationAddress:
         range: iri type
-    slots:
-      - contactAddressScope
+      contactAddressScope:
+          range: contactAddressScopeEnum
 
-  contactAffiliation:
+  contact affiliation:
     is_a: core:UcoInherentCharacterizationThing
-    name: contact list affiliation
+    name: contact affiliation
     description: >-
-      "A contactAffiliation is a grouping of characteristics unique to details of an organizational affiliation for a single contact entity."
+      "A contact affiliation is a grouping of characteristics unique to details of an organizational affiliation for a single contact entity."
     close_mappings:
       - baselink:Affiliation
     slot_usage:
@@ -1365,12 +1507,16 @@ classes:
     slots:
       - organizationDepartment
       - organizationPosition
+    broad_mappings:
+      - NCIT:C25412   # affiliation
+      - schema:affiliation
+      - SIO:000173    # affiliation
 
-  contactEmail:
+  contact email:
     is_a: core:UcoInherentCharacterizationThing
-    name: contactEmail
+    name: contact email
     description: >-
-      "A contactEmail is a grouping of characteristics unique to details for contacting a contact entity by email."
+      "A contact email is a grouping of characteristics unique to details for contacting a contact entity by email."
     broad_mappings:
       - EDAM_DATA:1691  # emailAddress
       - IAO:0000429  # emailAddress
@@ -1381,7 +1527,8 @@ classes:
       emailAddress:
         range: iri type
     slots:
-      - contactEmailScope
+      contactEmailScope:
+        range: ContactEmailScopeEnum
 
   contact facet:
     is_a: core:Facet
@@ -1397,7 +1544,7 @@ classes:
         range: iri type
       contactMessaging:
         range: iri type
-      contact Phone:
+      contactPhone:
         range: iri type
       contactProfile:
         range: iri type
@@ -1408,7 +1555,7 @@ classes:
       sourceApplication:
         range: iri type
     slots:
-      - birth date
+      - birthDate
       - lastTimeContacted
       - numberTimesContacted
       - contactID
@@ -1443,10 +1590,11 @@ classes:
         range: uri type
       contact:
         range: uri type
+        multivalued: true
 
-  contactMessaging:
+  contact messaging:
     is_a: core:UcoInherentCharacterizationThing
-    name: contactMessaging
+    name: contact messaging
     description: >-
       "A contactMessaging is a grouping of characteristics unique to details for contacting a contact entity by digital messaging."
     slot_usage:
@@ -1455,9 +1603,9 @@ classes:
       messagingAddress:
         range: uri type
 
-  contactPhone:
+  contact phone:
     is_a: core:UcoInherentCharacterizationThing
-    name: contactPhone
+    name: contact phone
     description: >-
       "A contactPhone is a grouping of characteristics unique to details for contacting a contact entity by telephone."
     close_mappings:
@@ -1465,43 +1613,43 @@ classes:
     slot_usage:
       contactPhoneNumber:
         range: uri type
-    slots:
-      - contactPhoneScope
+      contactPhoneScope:
+        range: contactPhoneScopeEnum
 
-  contactProfile:
+  contact profile:
     is_a: core:UcoInherentCharacterizationThing
-    name: contactProfile
+    name: contact profile
     description: >-
       "A contactProfile is a grouping of characteristics unique to details for contacting a contact entity by online service."
     narrow_mappings:
       - WIKIDATA:Q252500  # user profile
     slot_usage:
-      contactMessagingPlatform:
+      contactProfilePlatform:
         range: uri type
       profile:
         range: uri type
 
-  contactSIP:
+  contact SIP:
     is_a: core:UcoInherentCharacterizationThing
-    name: contactSIP
+    name: contact SIP
     description: >-
       "A contactSIP is a grouping of characteristics unique to details for contacting a contact entity by Session Initiation Protocol (SIP)."
     slot_usage:
       sipAddress:
         range: uri type
-    slots:
-      - contactSIP scope
+      contactSIPScope:
+        range: contactSIPScopeEnum
 
-  contactURL:
+  contact URL:
     is_a: core:UcoInherentCharacterizationThing
-    name: contactURL
+    name: contact URL
     description: >-
       "A contactURL is a grouping of characteristics unique to details for contacting a contact entity by Uniform Resource Locator (URL)."
     slot_usage:
       url:
         range: uri type
-    slots:
-      - contactURLScope
+      contactURLScope:
+        range: ContactURLScopeEnum
 
   content data:
     is_a: observable object
@@ -1521,9 +1669,10 @@ classes:
         range: uri type
       hash:
         range: uri type
+        multivalued: true
       byteOrder:
         any_of:
-          range: vocabulary:EndiannessTypeVocab
+          range: EndiannessTypeEnum
     slots:
       - isEncrypted
       - entropy
@@ -1597,11 +1746,31 @@ classes:
       "A device is a piece of equipment or a mechanism designed to serve a special purpose or perform a special function. [based on https://www.merriam-webster.com/dictionary/device]"
     exact_mappings:
       - baselink:Device
+      - metasat:device
+      - NCIT:C62103    # device
+      - SAN:device
+      - schema:device
+      - SIO:000956    # device
+      - ssn:device
+      - sumo:Device
+      - WIKIDATA:Q1183543    # device
     broad_mappings:
       - WIKIDATA:Q11019  # machine
-    narrow_mappings:
       - WIKIDATA:Q3966  # computer hardware
       - WIKIDATA:Q2858615  # electronic machine
+    narrow_mappings:
+      - NCIT:C16830    # computer engineering device
+      - NCIT:C49831    # Device Backpanel Device
+      - NCIT:C49927    # Device Display Device
+      - NCIT:C49918    # Device Deployer Device
+      - sosa:Actuator
+      - sosa:Sensor
+      - sumo:CommunicationDevice
+      - sumo:DataStorageDevice
+      - sumo:FlashDrive
+      - sumo:HardwareSystem
+      - WIKIDATA:Q2858615    # electronic machine
+      - WIKIDATA_PROPERTY:P6948    # video device
 
   device facet:
     is_a: core:Facet
@@ -1636,7 +1805,9 @@ classes:
       - firstLoginTime
       - lastLoginTime
       - displayName
-      - accountLogin
+    slot_usage:
+      accountLogin:
+        multivalued: true
 
   digital address:
     is_a: address
@@ -1728,6 +1899,7 @@ classes:
     slot_usage:
       partition:
         range: iri type
+        multivalued: true
     slots:
       - diskSize
       - freeSpace
@@ -1861,6 +2033,7 @@ classes:
     slot_usage:
       bodyMultipart:
         range: iri type
+        multivalued: true
       application:
         range: iri type
       bodyRaw:
@@ -1875,21 +2048,28 @@ classes:
         range: iri type
       bcc:
         range: iri type
+        multivalued: true
       cc:
         range: iri type
+        multivalued: true
       references:
         range: iri type
+        multivalued: true
       to:
         range: iri type
+        multivalued: true
       otherHeaders:
         range: iri type
-      isMimeEncoded:
-        range: boolean type
-      isMultipart:
-        range: boolean type
-      isRead:
-        range: boolean type
+      categories:
+        multivalued: true
+      labels:
+        multivalued: true
+      receivedLines:
+        multivalued: true
     slots:
+      - isMimeEncoded
+      - isMultipart
+      - isRead
       - modifiedTime
       - receivedTime
       - sentTime
@@ -1901,9 +2081,6 @@ classes:
       - priority
       - subject
       - xMailer
-      - categories
-      - labels
-      - receivedLines
 
   embedded device:
     is_a: device
@@ -2005,6 +2182,8 @@ classes:
       - extPermissions
       - extSGID
       - extSUID
+    in_subset:
+      - linux
 
   extracted string:
     is_a: core:UcoInherentCharacterizationThing
@@ -2017,7 +2196,9 @@ classes:
       - englishTranslation
       - language
       - stringValue
-      - byteStringValue
+    slot_usage:
+      byteStringValue:
+        multivalued: true
 
   extracted strings facet:
     is_a: core:Facet
@@ -2054,17 +2235,23 @@ classes:
     name: file facet
     description: >-
       "A file facet is a grouping of characteristics unique to the storage of a file (computer resource for recording data discretely in a computer storage device) on a file system (process that manages how and where data on a storage device is stored, accessed and managed). [based on https://en.wikipedia.org/computer_file and https://www.techopedia.com/definition/5510/file-system]"
+    slot_usage:
+      isDirectory:
+        multivalued: true
+      sizeInBytes:
+        description: >-
+          "When used to characterize a file the sizeInBytes property conveys the recorded size of a file in a file system."
+      fileName:
+        multivalued: true
+      filePath:
+        multivalued: true
     slots:
-      - isDirectory
       - accessedTime
       - metadataChangeTime
       - modifiedTime
       - observableCreatedTime
-      - sizeInBytes
       - allocationStatus
-      - extention
-      - fileName
-      - filePath
+      - extension
     exact_mappings:
       - WIKIDATA:Q82753   # computer file
 
@@ -2073,11 +2260,13 @@ classes:
     name: file permissions facet
     description: >-
       "A file permissions facet is a grouping of characteristics unique to the access rights (e.g., view, change, navigate, execute) of a file on a file system."
-
+    slot_usage:
+      owner:
+        range: iri type
 
   file system:
     is_a: observable object
-    name: fileSystem
+    name: file system
     description: >-
       "A file system is the process that manages how and where data on a storage medium is stored, accessed and managed. [based on https://www.techopedia.com/definition/5510/file-system]"
     related_mappings:
@@ -2088,16 +2277,16 @@ classes:
 
   file system facet:
     is_a: core:Facet
-    name: fileSystem facet
+    name: file system facet
     description: >-
       "A file system facet is a grouping of characteristics unique to the process that manages how and where data on a storage medium is stored, accessed and managed. [based on https://www.techopedia.com/definition/5510/file-system]"
     slots:
       - clusterSize
-      - fileSystem type
+      - fileSystemType
 
   file system object:
     is_a: observable object
-    name: fileSystemObject
+    name: file system object
     description: >-
       "A file system object is an informational object represented and managed within a file system."
     exact_mappings:
@@ -2124,9 +2313,11 @@ classes:
     name: fragment facet
     description: >-
       "A fragment facet is a grouping of characteristics unique to an individual piece of the content of a file."
-    slots:
-      - fragmentIndex
-      - totalFragments
+    slot_usage:
+      fragmentIndex:
+        multivalued: true
+      totalFragments:
+        multivalued: true
 
   GUI:
     is_a: observable object
@@ -2156,9 +2347,9 @@ classes:
     exact_mappings:
       - WIKIDATA:Q30241068  # observable entity
 
-  geoLocationEntry:
+  geo location entry:
     is_a: observable object
-    name: geoLocationEntry
+    name: geo location entry
     description: >-
       "A geolocation entry is a single application-specific geolocation entry."
     broad_mappings:
@@ -2167,9 +2358,9 @@ classes:
     exact_mappings:
       - WIKIDATA:Q2221906  # geographic location
 
-  geoLocationEntry facet:
+  geo location entry facet:
     is_a: core:Facet
-    name: geoLocationEntry facet
+    name: geo location entry facet
     description: >-
       "A geolocation entry facet is a grouping of characteristics unique to a single application-specific geolocation entry."
     slot_usage:
@@ -2217,18 +2408,21 @@ classes:
       - endTime
       - startTime
 
-  globalFlagType:
+  global flag type:
     is_a: core:UcoInherentCharacterizationThing
-    name: globalFlagType
+    name: global flag type
     description: >-
       'A globalFlagType is a grouping of characteristics unique to the Windows systemwide global variable named NtGlobalFlag that enables various internal debugging, tracing, and validation support in the operating system. [based on "Windows Global Flags, Chapter 3: System Mechanisms of Windows Internals by Solomon, Russinovich, and Ionescu]'
     slot_usage:
       hexadecimalValue:
         range: hex binary type
+        multivalued: true
     slots:
       - abbreviation
       - destination
       - symbolicName
+    in_subset:
+      - microsoft
 
   HTTP connection:
     is_a: network connection
@@ -2286,30 +2480,37 @@ classes:
     slot_usage:
       icmpCode:
         range: hex binary type
+        multivalued: true
       icmpType:
         range: hex binary type
+        multivalued: true
 
-  iComHandlerActionType:
+  IComHandlerAction Type:
     is_a: core:UcoInherentCharacterizationThing
-    name: iComHandlerActionType
+    name: IComHandlerAction type
     description: >-
       "An IComHandler action type is a grouping of characteristics unique to a Windows Task-related action that fires a Windows COM handler (smart code in the client address space that can optimize calls between a client and server). [based on https://docs.microsoft.com/en-us/windows/win32/taskschd/comhandleraction]"
     slots:
       - comClassID
       - comData
+    in_subset:
+      - microsoft
 
-  iExecActionType:
+  IExecAction type:
     is_a: core:UcoInherentCharacterizationThing
-    name: iExecActionType
+    name: IExecAction type
     description: >-
       "An IExec action type is a grouping of characteristics unique to an action that executes a command-line operation on a Windows operating system. [based on https://docs.microsoft.com/en-us/windows/win32/api/taskschd/nn-taskschd-iexecaction?redirectedfrom=MSDN]"
     slot_usage:
       execProgramHashes:
         range: iri type
+        multivalued: true
     slots:
       - execArguments
       - execProgramPath
       - execWorkingDirectory
+    in_subset:
+      - microsoft
 
   IP address:
     is_a: digital address
@@ -2333,10 +2534,11 @@ classes:
     description: >-
       "An IP netmask is a 32-bit 'mask' used to divide an IP address into subnets and specify the network's available hosts."
     exact_mappings:
-      - WIKIDATA:Q1245638  # ip subnet
+      - WIKIDATA:Q1245638  # subnet mask
 
-  i phone:
+  IPhone:
     is_a: apple device
+    name: IPhone
     mixins:
       - smart phone mixin
     exact_mappings:
@@ -2374,9 +2576,9 @@ classes:
     description: >-
       "An IPv6 (Internet Protocol version 6) address facet is a grouping of characteristics unique to an IPv6 standards conformant identifier assigned to a device to enable routing and management of IPv6 standards conformant communication to or from that device."
 
-  iShowMessageActionType:
+  IShowMessageAction type:
     is_a: core:UcoInherentCharacterizationThing
-    name: iShowMessageActionType
+    name: IShowMessageAction type
     description: >-
       "An IShow message action type is a grouping of characteristics unique to an action that shows a message box when a task is activate. [based on https://docs.microsoft.com/en-us/windows/win32/api/taskschd/nn-taskschd-ishowmessageaction?redirectedfrom=MSDN]"
     slots:
@@ -2402,15 +2604,15 @@ classes:
     slots:
       - imageType
 
-  instant messagingAddress:
+  instant messaging address:
     is_a: digital address
-    name: instant messagingAddress
+    name: instant messaging address
     description: >-
       ""
 
-  instant messagingAddress facet:
+  instant messaging address facet:
     is_a: digital address facet
-    name: instant messagingAddress facet
+    name: instant messaging address facet
     description: >-
       "An instant messagingAddress facet is a grouping of characteristics unique to an identifier assigned to enable routing and management of instant messaging digital communication."
 
@@ -2419,6 +2621,8 @@ classes:
     name: junction
     description: >-
       "A junction is a specific NTFS (New Technology file System) reparse point to redirect a directory access to another directory which can be on the same volume or another volume. A junction is similar to a directory symbolic link but may differ on whether they are processed on the local system or on the remote file server. [based on https://jp-andre.pagesperso-orange.fr/junctions.html]"
+    in_subset:
+      - microsoft
 
   laptop:
     is_a: computer
@@ -2461,18 +2665,6 @@ classes:
     description: >-
       "A MAC address facet is a grouping of characteristics unique to a media access control standards conformant identifier assigned to a networkInterface to enable routing and management of communications at the data link layer of a network segment."
 
-  MSISDN:
-    name: MSISDN
-    description: >-
-      "Mobile Station International Subscriber Directory Number (MSISDN) is a number used to identify a mobile phone number internationally. MSISDN is defined by the E.164 numbering plan. This number includes a country code and a National Destination Code which identifies the subscriber's operator."
-        exact_mappings:
-      - WIKIDATA:Q786900
-
-  MSISDN type:
-    name: MSISDN type
-    description: >-
-      "???."
-
   memory:
     is_a: observable object
     name: memory
@@ -2497,13 +2689,14 @@ classes:
       - isMapped
       - isProtected
       - isVolatile
-      - regionEndAddress
-      - regionStartAddress
       - regionSize
     slot_usage:
+      regionEndAddress:
+        multivalued: true
+      regionStartAddress:
+        multivalued: true
       blockType:
-        any_of:
-          range: vocabulary:MemoryBlockTypeVocab
+        range: MemoryBlockTypeEnum
 
   message:
     is_a: observable object
@@ -2527,6 +2720,7 @@ classes:
         range: iri type
       to:
         range: iri type
+        multivalued: true
     slots:
       - sentTime
       - messageID
@@ -2534,39 +2728,46 @@ classes:
       - messageType
       - sessionID
 
-  messageThread facet:
+  message thread facet:
     is_a: core:Facet
-    name: messageThread facet
+    name: message thread facet
     description: >-
       "A messageThread facet is a grouping of characteristics unique to a running commentary of electronic messages pertaining to one topic or question."
-    slots:
-      - visibility
     slot_usage:
-      messageThread ordered:
+      messageThreadOrderedItemsContent:
+        is_a: message thread
         description: >-
           "The contents of ordered items in the Thread linked by messageThread must be Message objects."
+        multivalued: true
         range: co:item
-        domain: message
-      messageThread origin:
+        domain: co:ItemContent
+      messageThreadOriginItemsContent:
+        is_a: message thread
         description: >-
           "The contents of origin items in the Thread linked by messageThread must be Message objects."
+        multivalued: true
         range: types:threadOriginItem
-        domain: message
-      messageThread terminal:
+        domain: co:ItemContent
+      messageThreadTerminalItemsContent:
+        is_a: message thread
         description: >-
           "The contents of terminal items in the Thread linked by messageThread must be Message objects."
+        multivalued: true
         range: types:threadTerminalItem
-        domain: message
-      messageThread unordered:
+        domain: co:ItemContent
+      messageThreadUnorderedItemsContent:
+        is_a: message thread
         description: >-
           "The contents of unordered items in the Thread linked by messageThread must be Message objects."
-        range: co:element
-        domain: message
+        multivalued: true
+        domain: co:element
       participant:
         range: iri type
+        multivalued: true
       messageThread:
         range: iri type
-
+    slots:
+      - visibility
 
   mft record facet:
     is_a: core:Facet
@@ -2586,6 +2787,8 @@ classes:
       - ntfsHardLinkCount
       - ntfsOwnerID
       - ntfsOwnerSID
+    in_subset:
+      - microsoft
 
   mime part type:
     is_a: core:UcoInherentCharacterizationThing
@@ -2614,7 +2817,7 @@ classes:
     slots:
       - IMSI
       - MSISDN
-      - MSISDN type
+      - MSISDNType
 
   mobile device:
     is_a: device
@@ -2636,7 +2839,7 @@ classes:
       - mockLocationsAllowed
       - clockSetting
       - phoneActivationTime
-      - storageCapacityInBtes
+      - storageCapacityInBytes
       - ESN
       - IMEI
       - bluetoothDeviceName
@@ -2666,10 +2869,8 @@ classes:
     name: mutex facet
     description: >-
       "A mutex facet is a grouping of characteristics unique to a mechanism that enforces limits on access to a resource when there are many threads of execution. A mutex is designed to enforce a mutual exclusion concurrency control policy, and with a variety of possible methods there exists multiple unique implementations for different applications. [based on https://en.wikipedia.org/wiki/Lock_(computer_science)]"
-    slot_usage:
-      isNamed:
-        range: boolean type
     slots:
+      - isNamed
       - mutexName
 
   NTFS file:
@@ -2679,6 +2880,8 @@ classes:
       "An NTFS file is a New Technology file System (NTFS) file."
     related_mappings:
       - WIKIDATA:Q183205  # ntfs
+    in_subset:
+      - microsoft
 
   NTFS file facet:
     is_a: core:Facet
@@ -2688,15 +2891,20 @@ classes:
     slot_usage:
       alternateDataStreams:
         range: iri type
+        multivalued: true
     slots:
       - entryID
       - sid
+    in_subset:
+      - microsoft
 
   NTFS file permissions facet:
     is_a: core:Facet
     name: NTFS file permissions facet
     description: >-
       "An NTFS file permissions facet is a grouping of characteristics unique to the access rights (e.g., view, change, navigate, execute) of a file on an NTFS (new technology filesystem) file system."
+    in_subset:
+      - microsoft
 
   named pipe:
     is_a: file system object
@@ -2734,13 +2942,14 @@ classes:
     slot_usage:
       src:
         range: iri type
+        multivalued: true
       dst:
         range: iri type
+        multivalued: true
       protocols:
         range: iri type
-      isActive:
-        range: boolean type
     slots:
+      - isActive
       - endTime
       - startTime
       - destinationPort
@@ -2795,10 +3004,13 @@ classes:
         range: iri type
       dhcpServer:
         range: iri type
+        multivalued: true
       ip:
         range: iri type
+        multivalued: true
       ipGateway:
         range: iri type
+        multivalued: true
     slots:
       - dhcpLeaseExpires
       - dhcpLeaseObtained
@@ -2862,10 +3074,10 @@ classes:
     exact_mappings:
       - NCIT:C42619
       - sumo:Note
+      - WIKIDATA:Q12823770
     close_mappings:
       - WIKIDATA:Q857525  # annotation
     narrow_mappings:
-      - WIKIDATA:Q12823770
       - WIKIDATA:Q133492  # letter
 
   note facet:
@@ -2991,13 +3203,13 @@ classes:
         range: iri type
       environmentVariables:
         range: iri type
-      isLimitAdTrackingEnabled:
-        range: boolean type
+      advertisingID:
+        multivalued: true
     slots:
+      - isLimitAdTrackingEnabled
       - installDate
       - bitness
       - version
-      - advertisingID
 
   PDF file:
     is_a: file
@@ -3019,22 +3231,23 @@ classes:
     slot_usage:
       documentInformationDictionary:
         range: iri type
-      isOptimized:
-        range: boolean type
+      pdfId0:
+        multivalued: true
     slots:
+      - isOptimized
       - pdfCreationDate
       - pdfModDate
       - pdfId1
       - version
-      - pdfId0
 
   path relation facet:
     is_a: core:Facet
     name: path relation facet
     description: >-
       "A path relation facet is a grouping of characteristics unique to the location of one object within another containing object."
-    slots:
-      - path
+    slot_usage:
+      path:
+        multivalued: true
 
   payment card:
     is_a: observable object
@@ -3102,16 +3315,16 @@ classes:
         range: iri type
       environmentVariables:
         range: iri type
-      isHidden:
-        range: boolean type
+      arguments:
+        multivalued: true
     slots:
+      - isHidden
       - exitTime
       - observableCreatedTime
       - exitStatus
       - pid
       - currentWorkingDirectory
       - status
-      - arguments
 
   process thread:
     is_a: observable object
@@ -3211,13 +3424,10 @@ classes:
     slot_usage:
       camera:
         range: iri type
-      bitsPerPixel:
-        range: integer type
-      pictureHeight:
-        range: integer type
-      pictureWidth:
-        range: integer type
     slots:
+      - bitsPerPixel
+      - pictureHeight
+      - pictureWidth
       - imageCompressionMethod
       - pictureType
 
@@ -3238,7 +3448,7 @@ classes:
       metadataRecoveredStatus:
         range: RecoveredObjectStatusEnum
       nameRecoveredStatus:
-        range: vocabulary:RecoveredObjectStatusVocab
+        range: RecoveredObjectStatusEnum
 
   registry datatype:
     range: RegistryDatatypeEnum
@@ -3248,12 +3458,16 @@ classes:
       - WIKIDATA:Q463244  # windows registry
     narrow_mappings:
       - WIKIDATA:Q5635793  # hresult
+    in_subset:
+      - microsoft
 
   reparse point:
     is_a: file system object
     name: reparse point
     description: >-
       "A reparse point is a type of NTFS (New Technology file System) object which is an optional attribute of files and directories meant to define some sort of preprocessing before accessing the said file or directory. For instance reparse points can be used to redirect access to files which have been moved to long term storage so that some application would retrieve them and make them directly accessible. A reparse point contains a reparse tag and data that are interpreted by a filesystem filter identified by the tag. [based on https://jp-andre.pagesperso-orange.fr/junctions.html ; https://en.wikipedia.org/wiki/NTFS_reparse_point]"
+    in_subset:
+      - microsoft
     exact_mappings:
       - WIKIDATA:Q1472856  # ntfs reparse point
 
@@ -3273,33 +3487,14 @@ classes:
     slot_usage:
       carrier:
         range: iri type
-      storageCapacityInBtes:
-        range: non negative integer type
     slots:
+      - storageCapacityInBytes
       - ICCID
       - IMSI
       - PIN
       - PUK
-      - SIM form
-      - SIM type
-
-  SIM form:
-    name: SIM form
-    description: >-
-      "The form of SIM card such as SIM, Micro SIM, Nano SIM."
-        narrow_mappings:
-      - WIKIDATA:Q51885558  # nano sim
-      - WIKIDATA:Q3856948  # micro sim
-
-  SIM type:
-    name: SIM type
-    description: >-
-      "The type of SIM card such as SIM, USIM, UICC."
-        broad_mappings:
-      - WIKIDATA:Q41349  # smart card
-    narrow_mappings:
-      - WIKIDATA:Q3814060  # uicc
-      - WIKIDATA:Q2362986  # usim
+      - SIMForm
+      - SIMType
 
   SIP address:
     is_a: digital address
@@ -3329,9 +3524,8 @@ classes:
     name: SMS message facet
     description: >-
       "A SMS message facet is a grouping of characteristics unique to a message conformant to the short message service (SMS) communication protocol standards."
-    slot_usage:
-      isRead:
-        range: boolean type
+    slots:
+      - isRead
 
   SQLite blob:
     is_a: observable object
@@ -3348,7 +3542,7 @@ classes:
       "An SQLite blob facet is a grouping of characteristics unique to a blob (binary large object) of data within an SQLite database. [based on https://en.wikipedia.org/wiki/SQLite]"
     slot_usage:
       rowIndex:
-        range: non negative integer type
+        multivalued: true
     slots:
       - columnName
       - rowCondition
@@ -3372,9 +3566,9 @@ classes:
     exact_mappings:
       - WIKIDATA:Q221682
 
-  send controlCode effect facet:
+  send control code effect facet:
     is_a: defined effect facet
-    name: send controlCode effect facet
+    name: send control code effect facet
     description: >-
       "A send controlCode effect facet is a grouping of characteristics unique to the effects of actions upon observable objects where a controlCode, or other control-oriented communication signal, is sent to the observable object. An example of this would be an action sending a controlCode changing the running state of a process."
     slots:
@@ -3518,9 +3712,9 @@ classes:
       "A TCP connection facet is a grouping of characteristics unique to portions of a network connection that are conformant to the Transmission Control Protocl (TCP) standard."
     slot_usage:
       sourceFlags:
-        range: hex binary type
-    slots:
-      - destinationFlags
+        multivalued: true
+      destinationFlags:
+        multivalued: true
 
   tablet:
     is_a: computer
@@ -3553,9 +3747,9 @@ classes:
     slots:
       - actionID
 
-  triggerType:
+  trigger type:
     is_a: core:UcoInherentCharacterizationThing
-    name: triggerType
+    name: trigger type
     description: >-
       "A triggerType is a grouping of characterizes unique to a set of criteria that, when met, starts the execution of a task within a Windows operating system. [based on https://docs.microsoft.com/en-us/windows/win32/taskschd/task-triggers]"
     slot_usage:
@@ -3571,8 +3765,8 @@ classes:
       - triggerDelay
       - triggerMaxRunTime
       - triggerSessionChangeType
-      - triggerFrequency
-      - triggerType
+    in_subset:
+      - microsoft
 
   tweet:
     is_a: message
@@ -3600,23 +3794,18 @@ classes:
         range: iri type
       profileBannerHash:
         range: iri type
-      profileIsProtected:
-        range: boolean type
-      profileIsVerified:
-        range: boolean type
-      favoritesCount:
-        range: non negative integer type
-      followersCount:
-        range: non negative integer type
-      friendsCount:
-        range: non negative integer type
-      statusesCount:
-        range: non negative integer type
+      profileImageHash:
+        range: iri type
     slots:
-      - profileImageHash
+      - profileIsProtected
+      - profileIsVerified
+      - favoritesCount
+      - followersCount
+      - friendsCount
+      - statusesCount
       - listedCount
       - twitterHandle
-      - twitter id
+      - twitterId
       - userLocationString
 
   UNIX account:
@@ -3664,10 +3853,10 @@ classes:
     description: >-
       "A UNIX process facet is a grouping of characteristics unique to an instance of a computer program executed on a UNIX operating system."
     slots:
-      - openFileDescriptor
-    slot_usage:
+      openFileDescriptor:
+        multivalued: true
       ruid:
-        range: non negative integer type
+        multivalued: true
 
   UNIX volume facet:
     is_a: core:Facet
@@ -3722,13 +3911,12 @@ classes:
         range: iri type
       referrerURL:
         range: iri type
-      manuallyEnteredCount:
-        range: non negative integer type
     slots:
       - expirationTime
-      - first time
+      - firstVisit
       - lastVisit
       - visitCount
+      - manuallyEnteredCount
       - browserUserProfile
       - hostname
       - pageTitle
@@ -3744,6 +3932,7 @@ classes:
         range: iri type
       urlHistoryEntry:
         range: iri type
+        multivalued: true
 
   URL visit:
     is_a: observable object
@@ -3786,14 +3975,10 @@ classes:
     name: user account facet
     description: >-
       "A user account facet is a grouping of characteristics unique to an account controlling a user's access to a network, system, or platform."
-    slot_usage:
-      canEscalatePrivs:
-        range: boolean type
-      isPrivileged:
-        range: boolean type
-      isServiceAccount:
-        range: boolean type
     slots:
+      - canEscalatePrivs
+      - isPrivileged
+      - isServiceAccount
       - homeDirectory
 
   user session:
@@ -3887,7 +4072,6 @@ classes:
       - domainID
       - remarks
       - sponsoringRegistrar
-      - registrantIDs
       - regionalInternetRegistry
     slot_usage:
       domainName:
@@ -3900,8 +4084,11 @@ classes:
         range: iri type
       nameServer:
         range: iri type
+        multivalued: true
       registrarInfo:
         range: iri type
+      registrantIDs:
+        multivalued: true
       dnssec:
         range: vocabulary:WhoisDNSSECTypeVocab
       status:
@@ -3916,13 +4103,13 @@ classes:
       whois contact type:
         range: WhoisContactTypeEnum
 
-  who is registrarInfo type:
+  who is registrar info type:
     is_a: core:UcoInherentCharacterizationThing
-    name: who is registrarInfo type
+    name: who is registrar info type
     description: >-
       "A Whois registrarInfo type is a grouping of characteristics unique to registrar-related information present in a response record conformant to the WHOIS protocol standard (RFC 3912). [based on https://en.wikipedia.org/wiki/WHOIS]"
     slot_usage:
-      geolocation address:
+      geolocationAddress:
         range: iri type
       contactPhoneNumber:
         range: iri type
@@ -3930,7 +4117,7 @@ classes:
         range: iri type
       referralURL:
         range: iri type
-      whois server:
+      whoisServer:
         range: iri type
     slots:
       - registrarGUID
@@ -3974,20 +4161,27 @@ classes:
     name: windows account
     description: >-
       "A Windows account is a user account on a Windows operating system."
+    in_subset:
+      - microsoft
 
   windows account facet:
     is_a: core:Facet
     name: windows account facet
     description: >-
       "A Windows account facet is a grouping of characteristics unique to a user account on a Windows operating system."
-    slots:
-      - groups
+    slot_usage:
+      groups:
+        multivalued: true
+    in_subset:
+      - microsoft
 
   windows active directory account:
     is_a: digital account
     name: windows active directory account
     description: >-
       "A Windows Active Directory account is an account managed by directory-based identity-related services of a Windows operating system."
+    in_subset:
+      - microsoft
 
   windows active directory account facet:
     is_a: core:Facet
@@ -3996,13 +4190,19 @@ classes:
       "A Windows Active Directory account facet is a grouping of characteristics unique to an account managed by directory-based identity-related services of a Windows operating system."
     slots:
       - objectGUID
-      - activeDirectoryGroups
+    slot_usage:
+      activeDirectoryGroups:
+        multivalued: true
+    in_subset:
+      - microsoft
 
   windows computer specification:
     is_a: observable object
     name: windows computer specification
     description: >-
       "A Windows computer specification is the hardware ans software of a programmable electronic device that can store, retrieve, and process data running a Microsoft Windows operating system. [based on merriam-webster.com/dictionary/computer]"
+    in_subset:
+      - microsoft
 
   windows computer specification facet:
     is_a: core:Facet
@@ -4016,32 +4216,40 @@ classes:
         range: iri type
       globalFlagList:
         range: iri type
+        multivalued: true
       windowsDirectory:
         range: iri type
       windowsSystemDirectory:
         range: iri type
       windowsTempDirectory:
         range: iri type
+      domain:
+        multivalued: true
     slots:
       - lastShutdownDate
       - osInstallDate
       - osLastUpgradeDate
       - msProductID
       - msProductName
-      - net BIOS name
-      - domain
+      - netBIOSName
+    in_subset:
+      - microsoft
 
   windows critical section:
     is_a: observable object
     name: windows critical section
     description: >-
       "A Windows critical section is a Windows object that provides synchronization similar to that provided by a mutex object, except that a critical section can be used only by the threads of a single process. Critical section objects cannot be shared across processes. Event, mutex, and semaphore objects can also be used in a single-process application, but critical section objects provide a slightly faster, more efficient mechanism for mutual-exclusion synchronization (a processor-specific test and set instruction). Like a mutex object, a critical section object can be owned by only one thread at a time, which makes it useful for protecting a shared resource from simultaneous access. Unlike a mutex object, there is no way to tell whether a critical section has been abandoned. [based on https://docs.microsoft.com/en-us/windows/win32/sync/critical-section-objects]"
+    in_subset:
+      - microsoft
 
   windows event:
     is_a: observable object
     name: windows event
     description: >-
       "A Windows event is a notification record of an occurance of interest (system, security, application, etc.) on a Windows operating system."
+    in_subset:
+      - microsoft
     related_mappings:
       - WIKIDATA:Q5416692  # event
       - WIKIDATA:Q10855502  # eventlog
@@ -4052,30 +4260,40 @@ classes:
     name: windows file mapping
     description: >-
       "A windows file mapping is the association of a file's contents with a portion of the virtual address space of a process within a Windows operating system. The system creates a file mapping object (also known as a section object) to maintain this association. A file view is the portion of virtual address space that a process uses to access the file's contents. file mapping allows the process to use both random input and output (I/O) and sequential I/O. It also allows the process to work efficiently with a large data file, such as a database, without having to map the whole file into memory. Multiple processes can also use memory-mapped files to share data. processes read from and write to the file view using pointers, just as they would with dynamically allocated memory. The use of file mapping improves efficiency because the file resides on disk, but the file view resides in memory.[based on https://docs.microsoft.com/en-us/windows/win32/memory/file-mapping]"
+    in_subset:
+      - microsoft
 
   windows handle:
     is_a: observable object
     name: windows handle
     description: >-
       "A Windows handle is an abstract reference to a resource within the Windows operating system, such as a window, memory, an open file or a pipe. It is the mechanism by which applications interact with such resources in the Windows operating system."
+    in_subset:
+      - microsoft
 
   windows hook:
     is_a: observable object
     name: windows hook
     description: >-
       "A Windows hook is a mechanism by which an application can intercept events, such as messages, mouse actions, and keystrokes within the Windows operating system. A function that intercepts a particular type of event is known as a hook procedure. A hook procedure can act on each event it receives, and then modify or discard the event. [based on https://docs.microsoft.com/en-us/windows/win32/winmsg/about-hooks]"
+    in_subset:
+      - microsoft
 
   windows mail slot:
     is_a: observable object
     name: windows mail slot
     description: >-
       "A Windows mailslot is is a pseudofile that resides in memory, and may be accessed using standard file functions. The data in a mailslot message can be in any form, but cannot be larger than 424 bytes when sent between computers. Unlike disk files, mailslots are temporary. When all handles to a mailslot are closed, the mailslot and all the data it contains are deleted. [based on https://docs.microsoft.com/en-us/windows/win32/ipc/about-mailslots]"
+    in_subset:
+      - microsoft
 
   windows network share:
     is_a: observable object
     name: windows network share
     description: >-
       "A Windows network share is a Windows computer resource made available from one host to other hosts on a computer network. It is a device or piece of information on a computer that can be remotely accessed from another computer transparently as if it were a resource in the local machine. network  sharing is made possible by inter-process communication over the network. [based on https://en.wikipedia.org/wiki/Shared_resource]"
+    in_subset:
+      - microsoft
     close_mappings:
       - WIKIDATA:Q1172305  # network share
 
@@ -4084,6 +4302,8 @@ classes:
     name: windows PE binary file
     description: >-
       "A Windows PE binary file is a Windows portable executable (PE) file."
+    in_subset:
+      - microsoft
     exact_mappings:
       - WIKIDATA:Q1076355  # pe
 
@@ -4097,12 +4317,16 @@ classes:
         range: iri type
       sections:
         range: iri type
+        multivalued: true
       fileHeaderHashes:
         range: iri type
+        multivalued: true
       pointerToSymbolTable:
-        range: hex binary type
+        multivalued: true
+      machine:
+        multivalued: true
       characteristics:
-        range: unsigned short type
+        multivalued: true
     slots:
       - timeDateStamp
       - numberOfSections
@@ -4110,10 +4334,13 @@ classes:
       - sizeOfOptionalHeader
       - impHash
       - peType
-      - machine
+    in_subset:
+      - microsoft
 
   windows PE binary type:
     range: WindowsPEBinaryTypeEnum
+    in_subset:
+      - microsoft
 
   windows PE file header:
     is_a: core:UcoInherentCharacterizationThing
@@ -4122,42 +4349,75 @@ classes:
       "A Windows PE file header is a grouping of characteristics unique to the 'header' of a Windows PE (Portable Executable) file, consisting of a collection of metadata about the overall nature and structure of the file."
     slots:
       - timeDateStamp
+    in_subset:
+      - microsoft
 
   windows PE optionalHeader:
     is_a: core:UcoInherentCharacterizationThing
     name: windows PE optionalHeader
     description: >-
       "A Windows PE optionalHeader is a grouping of characteristics unique to the 'optionalHeader' of a Windows PE (Portable Executable) file, consisting of a collection of metadata about the executable code structure of the file."
-    slots:
-      - majorLinkerVersion
-      - minorLinkerVersion
-      - addressOfEntryPoint
-      - baseOfCode
-      - checksum
-      - fileAlignment
-      - imageBase
-      - loaderFlags
-      - numberOfRVAAndSizes
-      - sectionAlignment
-      - sizeOfCode
-      - sizeOfHeaders
-      - sizeOfHeapCommit
-      - sizeOfHeapReserve
-      - sizeOfImage
-      - sizeOfInitializedData
-      - sizeOfStackCommit
-      - sizeOfStackReserve
-      - sizeOfUninitializedData
-      - win32VersionValue
-      - dllCharacteristics
-      - magic
-      - majorImageVersion
-      - majorOSVersion
-      - majorSubsystemVersion
-      - minorImageVersion
-      - minor OS version
-      - minorSubsystemVersion
-      - subsystem
+    slot_usage:
+      majorLinkerVersion:
+        multivalued: true
+      minorLinkerVersion:
+        multivalued: true
+      addressOfEntryPoint:
+        multivalued: true
+      baseOfCode:
+        multivalued: true
+      checksum:
+        multivalued: true
+      fileAlignment:
+        multivalued: true
+      imageBase:
+        multivalued: true
+      loaderFlags:
+        multivalued: true
+      numberOfRVAAndSizes:
+        multivalued: true
+      sectionAlignment:
+        multivalued: true
+      sizeOfCode:
+        multivalued: true
+      sizeOfHeaders:
+        multivalued: true
+      sizeOfHeapCommit:
+        multivalued: true
+      sizeOfHeapReserve:
+        multivalued: true
+      sizeOfImage:
+        multivalued: true
+      sizeOfInitializedData:
+        multivalued: true
+      sizeOfStackCommit:
+        multivalued: true
+      sizeOfStackReserve:
+        multivalued: true
+      sizeOfUninitializedData:
+        multivalued: true
+      win32VersionValue:
+        multivalued: true
+      dllCharacteristics:
+        multivalued: true
+      magic:
+        multivalued: true
+      majorImageVersion:
+        multivalued: true
+      majorOSVersion:
+        multivalued: true
+      majorSubsystemVersion:
+        multivalued: true
+      minorImageVersion:
+        multivalued: true
+      minorOSVersion:
+        multivalued: true
+      minorSubsystemVersion:
+        multivalued: true
+      subsystem:
+        multivalued: true
+    in_subset:
+      - microsoft
 
   windows PE section:
     is_a: core:UcoInherentCharacterizationThing
@@ -4167,16 +4427,22 @@ classes:
     slot_usage:
       hashes:
         range: iri type
+        multivalued: true
+      name:
+        is_a: core:Name
     slots:
       - entropy
       - size
-      - name
+    in_subset:
+      - microsoft
 
   windows prefetch:
     is_a: observable object
     name: windows prefetch
     description: >-
       "The Windows prefetch contains entries in a Windows prefetch file (used to speed up application startup starting with Windows XP)."
+    in_subset:
+      - microsoft
 
   windows prefetch facet:
     is_a: core:Facet
@@ -4188,20 +4454,26 @@ classes:
         range: iri type
       accessedDirectory:
         range: iri type
+        multivalued: true
       accessedFile:
         range: iri type
+        multivalued: true
     slots:
       - firstRun
       - lastRun
       - timesExecuted
       - applicationFileName
       - prefetchHash
+    in_subset:
+      - microsoft
 
   windows process:
     is_a: process
     name: windows process
     description: >-
       "A Windows process is a program running on a Windows operating system."
+    in_subset:
+      - microsoft
 
   windows process facet:
     is_a: core:Facet
@@ -4209,20 +4481,24 @@ classes:
     description: >-
       "A Windows process facet is a grouping of characteristics unique to a program running on a Windows operating system."
     slots_usage:
-      aslrEnabled:
-        range: boolean type
+      startupInfo:
+        range: iri type
     slots:
-      - startupInfo
+      - aslrEnabled
       - depEnabled
       - ownerSID
       - priority
       - windowTitle
+    in_subset:
+      - microsoft
 
   windows registry hive:
     is_a: observable object
     name: windows registry hive
     description: >-
       "The Windows registry hive is a particular logical group of keys, subkeys, and values in a Windows registry (a hierarchical database that stores low-level settings for the Microsoft Windows operating sytem and for applications that opt to use the registry). [based on https://en.wikipedia.org/wiki/Windows_Registry]"
+    in_subset:
+      - microsoft
     broad_mappings:
       - WIKIDATA:Q463244  # windows registry
 
@@ -4233,12 +4509,16 @@ classes:
       "A Windows registry hive facet is a grouping of characteristics unique to a particular logical group of keys, subkeys, and values in a Windows registry (a hierarchical database that stores low-level settings for the Microsoft Windows operating sytem and for applications that opt to use the registry). [based on https://en.wikipedia.org/wiki/Windows_Registry]"
     slots:
       - hiveType
+    in_subset:
+      - microsoft
 
   windows registry key:
     is_a: observable object
     name: windows registry key
     description: >-
       "A Windows registry key is a particular key within a Windows registry (a hierarchical database that stores low-level settings for the Microsoft Windows operating sytem and for applications that opt to use the registry). [based on https://en.wikipedia.org/wiki/Windows_Registry]"
+    in_subset:
+      - microsoft
 
   windows registry key facet:
     is_a: core:Facet
@@ -4250,26 +4530,35 @@ classes:
         range: iri type
       registryValues:
         range: iri type
+        multivalued: true
     slots:
       - modifiedTime
       - numberOfSubkeys
       - key
+    in_subset:
+      - microsoft
 
   windows registry value:
     is_a: core:UcoInherentCharacterizationThing
     name: windows registry value
     description: >-
       "A Windows registry value is a grouping of characteristics unique to a particular value within a Windows registry (a hierarchical database that stores low-level settings for the Microsoft Windows operating sytem and for applications that opt to use the registry. [based on https://en.wikipedia.org/wiki/Windows_Registry]"
+    slot_usage:
+      name:
+        is_a: core:Name
     slots:
-      - name
       - data
       - dataType
+    in_subset:
+      - microsoft
 
   windows service:
     is_a: observable object
     name: windows service
     description: >-
       "A Windows service is a specific Windows service (a computer program that operates in the background of a Windows operating system, similar to the way a UNIX daemon runs on UNIX ). [based on https://en.wikipedia.org/wiki/Windows_service]"
+    in_subset:
+      - microsoft
     exact_mappings:
       - WIKIDATA:Q1370727
 
@@ -4284,24 +4573,39 @@ classes:
       - serviceName
       - servicStatus
       - serviceType
-      - start command line
+      - startCommandLine
       - startType
-      - descriptions
+    slot_usage:
+      descriptions:
+        multivalued: true
+    in_subset:
+      - microsoft
 
-  windows service startType:
+  windows service start type:
     range: WindowsServiceStartTypeEnum
+    name: windows service start type
+    in_subset:
+      - microsoft
 
-  windows servicStatus:
+  windows service status:
     range: WindowsServiceStatusEnum
+    name: windows service status
+    in_subset:
+      - microsoft
 
-  windows serviceType:
+  windows service type:
     range: WindowsServiceTypeEnum
+    name: windows service type
+    in_subset:
+      - microsoft
 
   windows system restore:
     is_a: observable object
     name: windows system restore
     description: >-
       "A Windows system restore is a capture of a Windows computer's state (including system files, installed applications, Windows Registry, and system settings) at a particular point in time such that the computer can be reverted to that state in the event of system malfunctions or other problems. [based on https://en.wikipedia.org/wiki/System_Restore]"
+    in_subset:
+      - microsoft
     exact_mappings:
       - WIKIDATA:Q1066221
 
@@ -4310,6 +4614,8 @@ classes:
     name: windows task
     description: >-
       "A Windows task is a process that is scheduled to execute on a Windows operating system by the Windows Task Scheduler. [based on http://msdn.microsoft.com/en-us/library/windows/desktop/aa381311(v=vs.85).aspx]"
+    in_subset:
+      - microsoft
 
   windows task facet:
     is_a: core:Facet
@@ -4327,8 +4633,10 @@ classes:
         range: iri type
       actionList:
         range: iri type
+        multivalued: true
       triggerList:
         range: iri type
+        multivalued: true
       flags:
         range: TaskFlagEnum
       priority:
@@ -4347,29 +4655,41 @@ classes:
       - parameters
       - taskComment
       - taskCreator
+    in_subset:
+      - microsoft
 
   windows thread:
     is_a: process thread
     name: windows thread
     description: >-
       "A Windows thread is a single thread of execution within a Windows process."
+    in_subset:
+      - microsoft
 
   windows thread facet:
     is_a: core:Facet
     name: windows thread facet
     description: >-
       "A Windows thread facet is a grouping os characteristics unique to a single thread of execution within a Windows process."
+    slot_usage:
+      parameterAddress:
+        multivalued: true
+      startAddress:
+        multivalued: true
+      stackSize:
+        multivalued: true
+      threadID:
+        multivalued: true
+      creationFlags:
+        multivalued: true
     slots:
       - creationTime
-      - parameterAddress
-      - start address
       - priority
-      - stackSize
-      - threadID
       - context
       - runningStatus
       - securityAttributes
-      - creationFlags
+    in_subset:
+      - microsoft
 
   windows volume facet:
     is_a: core:Facet
@@ -4383,18 +4703,24 @@ classes:
         maximum_count: 4
     slots:
       - driveLetter
+    in_subset:
+      - microsoft
 
   windows waitable time:
     is_a: observable object
     name: windows waitable time
     description: >-
       "A Windows waitable timer is a synchronization object within the Windows operating system whose state is set to signaled when a specified due time arrives. There are two types of waitable timers that can be created: manual-reset and synchronization. A timer of either type can also be a periodic timer. [based on https://docs.microsoft.com/en-us/windows/win32/sync/waitable-timer-objects]"
+    in_subset:
+      - microsoft
 
   wireless network connection:
     is_a: network connection
     name: wireless network connection
     description: >-
       "A wireless network connection is a connection (completed or attempted) across an IEEE 802.11 standards-confromant digital network (a group of two or more computer systems linked together). [based on https://www.webopedia.com/TERM/N/network.html]"
+    in_subset:
+      - microsoft
 
   wireless network connection facet:
     is_a: core:Facet
@@ -4439,9 +4765,8 @@ classes:
         range: iri type
       thumbprintHash:
         range: iri type
-      isSelfSigned:
-        range: boolean type
     slots:
+      - isSelfSigned
       - validityNotAfter
       - validityNotBefore
       - subjectPublicKeyExponent
@@ -4454,27 +4779,27 @@ classes:
       - subjectPublicKeyModulus
       - version
 
-  X509 v3 certificate:
+  X509V3 certificate:
     is_a: observable object
-    name: X509V3Certificate
+    name: X509V3 certificate
     description: >-
       "An X.509 v3 certificate is a public key digital identity certificate conformant to the X.509 v3 PKI (Public Key Infrastructure) standard."
     exact_mappings:
       - WIKIDATA:Q105850342
 
-  X509 v3 extensions facet:
+  X509V3 extensions facet:
     is_a: core:Facet
-    name: X509 v3 extensions facet
+    name: X509V3 extensions facet
     description: >-
       "An X.509 v3 certificate extensions facet is a grouping of characteristics unique to a public key digital identity certificate conformant to the X.509 v3 PKI (Public Key Infrastructure) standard."
     slots:
       - privateKeyUsagePeriodNotAfter
-      - private Key usage period not before
+      - privateKeyUsagePeriodNotBefore
       - authorityKeyIdentifier
       - basicConstraints
       - certificatePolicies
       - crlDistributionPoints
-      - extended keyUsage
+      - extendedKeyUsage
       - inhibitAnyPolicy
       - issuerAlternativeName
       - keyUsage
@@ -4520,6 +4845,24 @@ slots:
       "Personal Unlocking Key (PUK) to unlock the SIM card."
     exact_mappings:
       - WIKIDATA:Q942499
+
+  SIMForm:
+    name: SIMForm
+    description: >-
+      "The form of SIM card such as SIM, Micro SIM, Nano SIM."
+        narrow_mappings:
+      - WIKIDATA:Q51885558  # nano sim
+      - WIKIDATA:Q3856948  # micro sim
+
+  SIMType:
+    name: SIMType
+    description: >-
+      "The type of SIM card such as SIM, USIM, UICC."
+        broad_mappings:
+      - WIKIDATA:Q41349  # smart card
+    narrow_mappings:
+      - WIKIDATA:Q3814060  # uicc
+      - WIKIDATA:Q2362986  # usim
 
   abbreviation:
     name: abbreviation
@@ -4628,6 +4971,8 @@ slots:
     name: advertisingID
     description: >-
       "Advertising ID as a UUID. [based on https://developer.android.com/reference/androidx/ads/identifier/AdvertisingIdInfo]"
+    in_subset:
+      - android
 
   allocationStatus:
     name: allocationStatus
@@ -4643,18 +4988,24 @@ slots:
     name: androidFingerprint
     description: >-
       "A string that uniquely identifies a build of the Android operating system. [based on https://developer.android.com/reference/android/os/Build#FINGERPRINT]"
+    in_subset:
+      - android
 
   androidID:
     name: androidID
     description: >-
       "A 64-bit number (expressed as a hexadecimal string), unique to each combination of app-signing key, user, and device. [based on https://developer.android.com/reference/android/provider/Settings.Secure#ANDROID_ID"
     range: hex binary type
+    in_subset:
+      - android
 
   androidVersion:
     name: androidVersion
     description: >-
       "The user-visible version string. E.g., '1.0' or '3.4b5' or 'bananas'. This field is an opaque string. Do not assume that its value has any particular structure or that values of RELEASE from different releases can be somehow ordered. [based on https://developer.android.com/reference/android/os/Build.VERSION#RELEASE]"
-        related_mappings:
+    in_subset:
+      - android
+    related_mappings:
       - WIKIDATA:Q79611  # androidVersion history
 
   antennaHeight:
@@ -5116,10 +5467,10 @@ slots:
       "contactSIP specifies information characterizing details for contacting a contact entity by Session Initiation Protocol (SIP)."
     range: contactSIP
 
-  contactSIP scope:
-    name: contactSIP scope
+  contactSIPScope:
+    name: contactSIPScope
     description: >-
-      "contactSIP scope specifies the relevant scope (home, work, school, etc) of details for contacting a contact entity by Session Initiation Protocol (SIP)."
+      "contactSIPScope specifies the relevant scope (home, work, school, etc) of details for contacting a contact entity by Session Initiation Protocol (SIP)."
     range: vocabulary:ContactSIPScopeVocab
 
   contactURL:
@@ -5429,6 +5780,8 @@ slots:
     description: >-
       "Specifies the driveType of a windows volume."
     range: vocabulary:WindowsDriveTypeVocab
+    in_subset:
+      - microsoft
 
   dst:
     name: dst
@@ -5657,48 +6010,64 @@ slots:
     description: >-
       "Specifies the time at which the file represented by an Inode was 'deleted'."
     range: time type
+    in_subset:
+      - linux
 
   extFileType:
     name: extFileType
     description: >-
       "Specifies the EXT file type (FIFO, Directory, Regular file, Symbolic link, etc) for the Inode."
     range: integer type
+    in_subset:
+      - linux
 
   extFlags:
     name: extFlags
     description: >-
       "Specifies user flags to further protect (limit its use and modification) the file represented by an Inode."
     range: integer type
+    in_subset:
+      - linux
 
   extHardLinkCount:
     name: extHardLinkCount
     description: >-
       "Specifies a count of how many hard links point to an Inode."
     range: integer type
+    in_subset:
+      - linux
 
   extInodeChangeTime:
     name: extInodeChangeTime
     description: >-
       "The date and time at which the file Inode metadata was last modified."
     range: time type
+    in_subset:
+      - linux
 
   extInodeID:
     name: extInodeID
     description: >-
       "Specifies a single Inode identifier."
     range: integer type
+    in_subset:
+      - linux
 
   extPermissions:
     name: extPermissions
     description: >-
       "Specifies the read/write/execute permissions for the file represented by an EXT Inode."
     range: integer type
+    in_subset:
+      - linux
 
   extSGID:
     name: extSGID
     description: >-
       "Specifies the group ID for the file represented by an Inode."
     range: integer type
+    in_subset:
+      - linux
     broad_mappings:
       - WIKIDATA:Q656307  # unix file permissions
       - WIKIDATA:Q269582  # sgid
@@ -5708,11 +6077,13 @@ slots:
     description: >-
       "Specifies the user ID that 'owns' the file represented by an Inode."
     range: integer type
+    in_subset:
+      - linux
     broad_mappings:
       - WIKIDATA:Q656307  # unix file permissions
 
-  extended keyUsage:
-    name: extended keyUsage
+  extendedKeyUsage:
+    name: extendedKeyUsage
 
   extension:
     name: extension
@@ -5809,8 +6180,8 @@ slots:
       "Timestamp of when the prefetch application was firstRun."
     range: time type
 
-  firstVisitTime:
-    name: firstVisitTime
+  firstVisit:
+    name: firstVisit
     description: >-
       "Specifies the date/time that the URL referred to by the URL field was first visited"
     range: time type
@@ -6135,6 +6506,8 @@ slots:
     description: >-
       "Root access through the Android Debug Bridge (ADB) daemon observed to be enabled. [based on https://developer.android.com/studio/command-line/adb]"
     range: boolean type
+    in_subset:
+      - android
 
   isActive:
     name: isActive
@@ -6181,6 +6554,8 @@ slots:
     description: >-
       "Limits advertising tracking if enabled. [based on https://developer.android.com/reference/androidx/ads/identifier/AdvertisingIdInfo]"
     range: boolean type
+    in_subset:
+      - android
 
   isMapped:
     name: isMapped
@@ -6229,6 +6604,9 @@ slots:
     description: >-
       "Root access through Linux SU binary observed to be enabled. [based on https://en.wikipedia.org/wiki/Rooting_(Android)]"
     range: boolean type
+    in_subset:
+      - linux
+      - android
 
   isSecure:
     name: isSecure
@@ -6361,6 +6739,18 @@ slots:
     name: libraryType
     description: >-
       "Specifies the type of library being characterized."
+
+  MSISDN:
+    name: MSISDN
+    description: >-
+      "Mobile Station International Subscriber Directory Number (MSISDN) is a number used to identify a mobile phone number internationally. MSISDN is defined by the E.164 numbering plan. This number includes a country code and a National Destination Code which identifies the subscriber's operator."
+    exact_mappings:
+      - WIKIDATA:Q786900
+
+  MSISDNType:
+    name: MSISDNType
+    description: >-
+      "???."
 
   listedCount:
     name: listedCount
@@ -6510,6 +6900,8 @@ slots:
     description: >-
       "Specifies the record number for the file within an NTFS Master file Table."
     range: integer type
+    in_subset:
+      - microsoft
 
   mftFileNameAccessedTime:
     name: mftFileNameAccessedTime
@@ -6528,6 +6920,8 @@ slots:
     description: >-
       " Specifies the length of an NTFS fileName, in unicode characters."
     range: integer type
+    in_subset:
+      - microsoft
 
   mftFileNameModifiedTime:
     name: mftFileNameModifiedTime
@@ -6552,12 +6946,16 @@ slots:
     description: >-
       "Specifies the record number within an NTFS Master file Table for parent directory of the file."
     range: integer type
+    in_subset:
+      - microsoft
 
   mftRecordChangeTime:
     name: mftRecordChangeTime
     description: >-
       "The date and time at which an NTFS file metadata was last modified."
     range: time type
+    in_subset:
+      - microsoft
 
   middleName:
     name: middleName
@@ -6576,7 +6974,7 @@ slots:
     description: >-
       "MIME type of the data. For example 'text/html' or 'audio/mp3'."
     exact_mappings:
-      - EDAM:media_type
+      - EDAM_DATA:media_type
       - sumo:mimeType
       - WIKIDATA:Q1667978
 
@@ -6647,6 +7045,8 @@ slots:
     name: msProductName
     description: >-
       "The Microsoft ProductName of the current installation of Windows. This is typically found in HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion!ProductName."
+    in_subset:
+      - microsoft
 
   mutexName:
     name: mutexName
@@ -6692,6 +7092,8 @@ slots:
     name: netBIOSName
     description: >-
       "Specifies the NetBIOS (network  Basic Input/Output System) name of the Windows system. This is not the same as the host name."
+    in_subset:
+      - microsoft
     exact_mappings:
       - WIKIDATA:Q1122519
 
@@ -6732,16 +7134,22 @@ slots:
     description: >-
       "Specifies the number of directory entries that reference an NTFS file record."
     range: integer type
+    in_subset:
+      - microsoft
 
   ntfsOwnerID:
     name: ntfsOwnerID
     description: >-
       "Specifies the identifier of the file owner, from the security index."
+    in_subset:
+      - microsoft
 
   ntfsOwnerSID:
     name: ntfsOwnerSID
     description: >-
       "Specifies the security ID (key in the $SII Index and $SDS DataStream in the file $Secure) for an NTFS file."
+    in_subset:
+      - microsoft
 
   number:
     name: number
@@ -7235,12 +7643,16 @@ slots:
     description: >-
       "The organization that this copy of Windows is registered to."
     range: identity:Identity
+    in_subset:
+      - microsoft
 
   registeredOwner:
     name: registeredOwner
     description: >-
       "The person or organization that is the registeredOwner of this copy of Windows."
     range: identity:Identity
+    in_subset:
+      - microsoft
 
   registrantContactInfo:
     name: registrantContactInfo
@@ -7571,11 +7983,11 @@ slots:
     name: stackSize
     range: non negative integer type
 
-  start address:
-    name: start address
+  startAddress:
+    name: startAddress
     range: hex binary type
 
-  start command line:
+  startCommandLine:
     name: startCommandLine
 
   startTime:
@@ -7605,8 +8017,8 @@ slots:
       "Specifies the number of tweets that this profile has issued"
     range: non negative integer type
 
-  storageCapacityInBtes:
-    name: storageCapacityInBtes
+  storageCapacityInBytes:
+    name: storageCapacityInBytes
     description: >-
       "The number of bytes that can be stored on a SIM card."
     range: integer type
@@ -7873,6 +8285,8 @@ slots:
 
   version:
     name: version
+    exact_mappings:
+      - WIKIDATA_PROPERTY:P348  # app version, etc
 
   visibility:
     name: visibility
@@ -7933,24 +8347,32 @@ slots:
     description: >-
       "The Windows_Directory field specifies the fully-qualified path to the Windows install directory."
     range: observable object
+    in_subset:
+      - microsoft
 
   windowsSystemDirectory:
     name: windowsSystemDirectory
     description: >-
       "The Windows_System_Directory field specifies the fully-qualified path to the Windows system directory."
     range: observable object
+    in_subset:
+      - microsoft
 
   windowsTempDirectory:
     name: windowsTempDirectory
     description: >-
       "The Windows_Temp_Directory field specifies the fully-qualified path to the Windows temporary files directory."
     range: observable object
+    in_subset:
+      - microsoft
 
   windowsVolumeAttributes:
     name: windowsVolumeAttributes
     description: >-
       "Specifies the attributes of a windows volume."
     range: vocabulary:WindowsvolumeAttributeVocab
+    in_subset:
+      - microsoft
 
   wirelessNetworkSecurityMode:
     name: wirelessNetworkSecurityMode
