@@ -26,7 +26,7 @@ prefixes:
   EDAM_DATA: 'http://edamontology.org/data_'
   EDAM_FORMAT: 'http://edamontology.org/format_'
   EDAM_OPERATION: 'http://edamontology.org/operation_'
-  EDAM_TOPIC: 'http://edamontology.org/topic_
+  EDAM_TOPIC: 'http://edamontology.org/topic_'
   linkml: 'https://w3id.org/linkml/'
   metasat: 'https://schema.space/metasat/'
   SAN: 'https://www.irit.fr/recherches/MELODI/ontologies/SAN.html#'  # System Actuator device
@@ -54,7 +54,7 @@ default_range: string
 ## ------------
 enums:
 
-  AccountTypeEnums:
+  AccountTypeEnum:
     description: >-
       "An account type represents the endpoint type where the account is located; for example, ADS for an ActiveDirectory endpoint type, or LDAP for an LDAP, etc."
     permissible_values:
@@ -703,6 +703,10 @@ types:
     base: int
     description: >-
       "real number strictly greater than zero"
+
+  positive integer type:
+    typeof: integer type
+    uri: xsd:positiveInteger
     exact_mappings:
       - WIKIDATA:Q3176558  # positive real number
 
@@ -747,6 +751,10 @@ types:
   boolean type:
     typeof: boolean
     uri: xsd:boolean
+
+  duration type:
+    typeof: integer
+    uri: xsd:duration
 
   time type:
     typeof: time
@@ -1480,7 +1488,7 @@ classes:
       geolocationAddress:
         range: iri type
       contactAddressScope:
-          range: contactAddressScopeEnum
+        range: contactAddressScopeEnum
 
   contact affiliation:
     is_a: core:UcoInherentCharacterizationThing
@@ -4049,17 +4057,17 @@ classes:
       - SIO:000302
       - WIKIDATA:Q36774
 
-  who is:
+  whois:
     is_a: observable object
-    name: who is
+    name: whois
     description: >-
       "Whois is a response record conformant to the WHOIS protocol standard (RFC 3912). [based on https://en.wikipedia.org/wiki/WHOIS]"
     exact_mappings:
       - WIKIDATA:Q590967
 
-  who is facet:
+  whois facet:
     is_a: core:Facet
-    name: who is facet
+    name: whois facet
     description: >-
       "A Whois facet is a grouping of characteristics unique to a response record conformant to the WHOIS protocol standard (RFC 3912). [based on https://en.wikipedia.org/wiki/WHOIS]"
     slots:
@@ -4094,18 +4102,18 @@ classes:
       status:
         range: WhoisStatusTypeEnum
 
-  who is contact facet:
+  whois contact facet:
     is_a: contact facet
-    name: who is contact facet
+    name: whois contact facet
     description: >-
       "A Whois contact type is a grouping of characteristics unique to contact-related information present in a response record conformant to the WHOIS protocol standard (RFC 3912). [based on https://en.wikipedia.org/wiki/WHOIS]"
     slot_usage:
       whois contact type:
         range: WhoisContactTypeEnum
 
-  who is registrar info type:
+  whois registrar info type:
     is_a: core:UcoInherentCharacterizationThing
-    name: who is registrar info type
+    name: whois registrar info type
     description: >-
       "A Whois registrarInfo type is a grouping of characteristics unique to registrar-related information present in a response record conformant to the WHOIS protocol standard (RFC 3912). [based on https://en.wikipedia.org/wiki/WHOIS]"
     slot_usage:
@@ -4352,11 +4360,11 @@ classes:
     in_subset:
       - microsoft
 
-  windows PE optionalHeader:
+  windows PE optional header:
     is_a: core:UcoInherentCharacterizationThing
-    name: windows PE optionalHeader
+    name: windows PE optional header
     description: >-
-      "A Windows PE optionalHeader is a grouping of characteristics unique to the 'optionalHeader' of a Windows PE (Portable Executable) file, consisting of a collection of metadata about the executable code structure of the file."
+      "A Windows PE optional header is a grouping of characteristics unique to the 'optionalHeader' of a Windows PE (Portable Executable) file, consisting of a collection of metadata about the executable code structure of the file."
     slot_usage:
       majorLinkerVersion:
         multivalued: true
@@ -4903,6 +4911,10 @@ slots:
     name: accountIdentifier
     description: >-
       "The unique identifier for the account."
+    exact_mappings:
+      - sumo:AccountID
+    related_mappings:
+      - WIKIDATA:Q28378282  # verified id
 
   accountIssuer:
     name: accountIssuer
@@ -4929,7 +4941,9 @@ slots:
     name: accountType
     description: >-
       "The type of account, for instance bank, phone, application, service, etc."
-    range: AccountTypeEnum
+    union_of:
+      - string type
+      - vocabulary:AccountTypeVocab
 
   actionID:
     name: actionID
@@ -4946,7 +4960,9 @@ slots:
     name: actiontype
     description: >-
       "Specifies the type of the action. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380596(v=vs.85).aspx."
-    range: vocabulary:TaskActionTypeVocab
+    union_of:
+      - string type
+      - vocabulary:TaskActionTypeVocab
 
   activeDirectoryGroups:
     name: activeDirectoryGroups
@@ -5162,7 +5178,9 @@ slots:
     name: blockType
     description: >-
       "The blockType property specifies the blockType of a particular memory object."
-    range: vocabulary:memoryBlockTypeVocab
+    union_of:
+      - string type
+      - vocabulary:memoryBlockTypeVocab
 
   bluetoothDeviceName:
     name: bluetoothDeviceName
@@ -5207,7 +5225,9 @@ slots:
 
   byteOrder:
     name: byteOrder
-    range: vocabulary:EndiannessTypeVocab
+    union_of:
+      - string type
+      - vocabulary:EndiannessTypeVocab
 
   byteStringValue:
     name: byteStringValue
@@ -5340,10 +5360,12 @@ slots:
   comment:
     name: comment
     exact_mappings:
+      - OM:longcomment
+      - SIO:comment
       - sumo:DigitalComment
-      - WIKIDATA:Q25345994
-    narrow_mappings:
-      - WIKIDATA:Q1141067  # comment; programming
+      - WIKIDATA:Q1141067
+      - WIKIDATA_PROPERTY:P2315  # comment
+      - WIKIDATA_PROPERTY:P2916  # syntax clarification
 
   compressionMethod:
     name: compressionMethod
@@ -5363,20 +5385,26 @@ slots:
     range: observable object
     close_mappings:
       - sumo:ContactSite
+    narrow_mappings:
+      - sumo:Touching
 
   contactAddress:
     name: contactAddress
     description: >-
       "contactAddress specifies information characterizing a geolocation address of a contact entity."
-    range: contactAddress
+    range: contact address
     close_mappings:
       - sumo:ContactSite
+    exact_mappings:
+      - sumo:PostalPlace
 
   contactAddressScope:
     name: contactAddressScope
     description: >-
       "contactAddressScope specifies the relevant scope (home, work, school, etc) for a geolocation address of a contact entity."
-    range: vocabulary:ContactAddressScopeVocab
+    union_of:
+      - string type
+      - vocabulary:ContactAddressScopeVocab
 
   contactAffiliation:
     name: contactAffiliation
@@ -5396,7 +5424,9 @@ slots:
     name: contactEmailScope
     description: >-
       "contactEmailScope specifies the relevant scope (home, work, school, etc) of details for contacting a contact entity by email."
-    range: vocabulary:ContactEmailScopeVocab
+    union_of:
+      - string type
+      - vocabulary:ContactEmailScopeVocab
 
   contactGroup:
     name: contactGroup
@@ -5412,7 +5442,7 @@ slots:
     name: contactMessaging
     description: >-
       "contactMessaging specifies information characterizing details for contacting a contact entity by digital messaging."
-    range: contactMessaging
+    range: contact messaging
 
   contactMessagingPlatform:
     name: contactMessagingPlatform
@@ -5435,7 +5465,7 @@ slots:
     name: contactPhone
     description: >-
       "contactPhone specifies information characterizing details for contacting a contact entity by telephone."
-    range: contactPhone
+    range: contact phone
 
   contactPhoneNumber:
     name: contactPhoneNumber
@@ -5447,13 +5477,15 @@ slots:
     name: contactPhoneScope
     description: >-
       "contactPhoneScope specifies the relevant scope (home, work, school, etc) of details for contacting a contact entity by telephone."
-    range: vocabulary:ContactPhoneScopeVocab
+    union_of:
+      - string type
+      - vocabulary:ContactPhoneScopeVocab
 
   contactProfile:
     name: contactProfile
     description: >-
       "contactProfile specifies information characterizing details for contacting a contact entity by online service."
-    range: contactProfile
+    range: contact profile
 
   contactProfile platform:
     name: contactProfile platform
@@ -5465,25 +5497,29 @@ slots:
     name: contactSIP
     description: >-
       "contactSIP specifies information characterizing details for contacting a contact entity by Session Initiation Protocol (SIP)."
-    range: contactSIP
+    range: contact SIP
 
   contactSIPScope:
     name: contactSIPScope
     description: >-
       "contactSIPScope specifies the relevant scope (home, work, school, etc) of details for contacting a contact entity by Session Initiation Protocol (SIP)."
-    range: vocabulary:ContactSIPScopeVocab
+    union_of:
+      - string type
+      - vocabulary:ContactSIPScopeVocab
 
   contactURL:
     name: contactURL
     description: >-
       "contactURL specifies information characterizing details for contacting a contact entity by Uniform Resource Locator (URL)."
-    range: contactURL
+    range: contact URL
 
   contactURLScope:
     name: contactURLScope
     description: >-
       "contact url scope specifies the relevant scope (homepage, home, work, school, etc) of details for contacting a contact entity by Uniform Resource Locator (URL)."
-    range: vocabulary:ContactURLScopeVocab
+    union_of:
+      - string type
+      - vocabulary:ContactURLScopeVocab
 
   contentDisposition:
     name: contentDisposition
@@ -5494,7 +5530,9 @@ slots:
     name: contentRecoveredStatus
     description: >-
       "Specifies the recoverability status of the content of an object."
-    range: vocabulary:recovered objectStatusVocab
+    union_of:
+      - string type
+      - vocabulary:recoveredObjectStatusVocab
 
   contentType:
     name: contentType
@@ -5779,7 +5817,9 @@ slots:
     name: driveType
     description: >-
       "Specifies the driveType of a windows volume."
-    range: vocabulary:WindowsDriveTypeVocab
+    union_of:
+      - string type
+      - vocabulary:WindowsDriveTypeVocab
     in_subset:
       - microsoft
 
@@ -6190,7 +6230,9 @@ slots:
     name: flags
     description: >-
       "Specifies any flags that modify the behavior of the scheduled task. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381248(v=vs.85).aspx."
-    range: vocabulary:TaskFlagVocab
+    union_of:
+      - string type
+      - vocabulary:TaskFlagVocab
 
   followersCount:
     name: followersCount
@@ -6272,7 +6314,7 @@ slots:
     name: globalFlagList
     description: >-
       "A list of global flags. See also: http://msdn.microsoft.com/en-us/library/windows/hardware/ff549557(v=vs.85).aspx."
-    range: globalFlagType
+    range: global flag type
 
   gpu:
     name: gpu
@@ -6380,7 +6422,7 @@ slots:
     name: iComHandlerAction
     description: >-
       "Specifies the data associated with the task action-fired COM handler."
-    range: iComHandlerActionType
+    range: iComHandlerAction type
 
   iEmailAction:
     name: iEmailAction
@@ -6392,13 +6434,13 @@ slots:
     name: iExecAction
     description: >-
       "Specifies an action that executes a command-line operation. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa380715(v=vs.85).aspx."
-    range: iExecActionType
+    range: IExecAction type
 
   iShowMessageAction:
     name: iShowMessageAction
     description: >-
       "Specifies an action that shows a message box when a task is activated. See also: http://msdn.microsoft.com/en-us/library/windows/desktop/aa381302(v=vs.85).aspx."
-    range: iShowMessageActionType
+    range: IShowMessageAction type
 
   icmpCode:
     name: icmpCode
@@ -6826,7 +6868,7 @@ slots:
     name: majorLinkerVersion
     description: >-
       "Specifies the linker major version number."
-    range: xsd:byte
+    range: byte type
 
   majorOSVersion:
     name: majorOSVersion
@@ -6893,7 +6935,9 @@ slots:
     name: metadataRecoveredStatus
     description: >-
       "Specifies the recoverability status of the metadata of an object."
-    range: vocabulary:recovered objectStatusVocab
+    union_of:
+      - string type
+      - vocabulary:recoveredObjectStatusVocab
 
   mftFileID:
     name: mftFileID
@@ -6988,7 +7032,7 @@ slots:
     name: minorLinkerVersion
     description: >-
       "Specifies the linker minor version number."
-    range: xsd:byte
+    range: byte type
 
   minorOSVersion:
     name: minorOSVersion
@@ -7038,6 +7082,8 @@ slots:
     name: msProductID
     description: >-
       "The Microsoft Product ID. See also: http://support.microsoft.com/gp/pidwin."
+    in_subset:
+      - microsoft
 
   msProductName:
     aliases:
@@ -7073,7 +7119,9 @@ slots:
     name: nameRecoveredStatus
     description: >-
       "Specifies the recoverability status of the name of an object."
-    range: vocabulary:recovered objectStatusVocab
+    union_of:
+      - string type
+      - vocabulary:recoveredObjectStatusVocab
 
   nameServer:
     name: nameServer
@@ -7208,7 +7256,6 @@ slots:
       "Specifies a listing of the current file descriptors used by the Unix process."
     range: integer type
 
- 
   operatingSystem:
     description: >-
     name: operatingSystem
@@ -7217,8 +7264,8 @@ slots:
   optionalHeader:
     name: optionalHeader
     description: >-
-      "Specifies the PE optionalHeader of the PE binary."
-    range: windows PE optionalHeader
+      "Specifies the PE optional header of the PE binary."
+    range: windows PE optional header
 
   options:
     name: options
@@ -7234,7 +7281,7 @@ slots:
     name: organizationLocation
     description: >-
       "Specifies a geolocation address of an organization."
-    range: contactAddress
+    range: contact address
 
   organizationPosition:
     name: organizationPosition
@@ -7429,7 +7476,10 @@ slots:
     name: priority
     description: >-
       "The priority of the email."
-    range: string type
+    union_of:
+      - vocabulary:TaskPriorityVocab
+      - integer type
+      - string type
 
   privateKeyUsagePeriodNotAfter:
     name: privateKeyUsagePeriodNotAfter
@@ -7626,7 +7676,9 @@ slots:
     name: regionalInternetRegistry
     description: >-
       "specifies the name of the Regional Internet Registry (RIR) which allocated the IP address contained in a WHOIS entry."
-    range: RegionalRegistryTypeEnum
+    union_of:
+      - string type
+      - vocabulary:RegionalRegistryTypeVocab
 
   regionalInternetRegistry-shape-value-not-vocabulary-member:
     description: >-
@@ -7679,7 +7731,7 @@ slots:
     name: registrarInfo
     description: >-
       "Specifies registrarInfo that would be returned from a registrar lookup."
-    range: who is registrarInfo type
+    range: whois registrar info type
 
   registrarName:
     name: registrarName
@@ -7690,7 +7742,7 @@ slots:
     name: registryValues
     description: >-
       "The values that were enumerated as a result of the action on the object."
-    range: windows registryValue
+    range: windows registry value
 
   remarks:
     name: remarks
@@ -7721,7 +7773,7 @@ slots:
 
   rowIndex:
     name: rowIndex
-    range: xsd:positiveInteger
+    range: positive integer type
 
   ruid:
     name: ruid
@@ -8009,7 +8061,10 @@ slots:
     name: status
     description: >-
       "Specifies a list of statuses for a given Whois entry."
-    range: vocabulary:TaskStatusVocab
+    union_of:
+      - string type
+      - vocabulary:TaskStatusVocab
+      - vocabulary:WhoisStatusTypeVocab
 
   statusesCount:
     name: statusesCount
@@ -8180,7 +8235,9 @@ slots:
     name: triggerFrequency
     description: >-
       "Specifies the frequency at which the trigger repeats."
-    range: vocabulary:TriggerFrequencyVocab
+    union_of:
+      - vocabulary:TriggerFrequencyVocab
+      - string type
 
   triggerList:
     name: triggerList
@@ -8202,7 +8259,9 @@ slots:
     name: triggerType
     description: >-
       "Specifies the type of the task trigger."
-    range: vocabulary:triggerTypeVocab
+    union_of:
+      - vocabulary:triggerTypeVocab
+      - string type
 
   twitterHandle:
     name: twitterHandle
@@ -8255,7 +8314,9 @@ slots:
     name: transition type
     description: >-
       "Specifies how a browser navigated to a particular URL on a particular visit."
-    range: vocabulary:URLTransitionTypeVocab
+    union_of:
+      - string type
+      - vocabulary:URLTransitionTypeVocab
 
   userLocationString:
     name: userLocationString
@@ -8302,7 +8363,7 @@ slots:
     name: visitDuration
     description: >-
       "Specifies the duration of a specific visit of a URL within a particular browser."
-    range: xsd:duration
+    range: duration type
 
   visitTime:
     name: visitTime
@@ -8325,7 +8386,9 @@ slots:
     name: whoisContactType
     description: >-
       "Specifies what type of WHOIS contact this is."
-    range: vocabulary:WhoiscontactTypeVocab
+    union_of:
+      - vocabulary:WhoiscontactTypeVocab
+      - string type
 
   whoisServer:
     name: whoisServer
@@ -8378,7 +8441,9 @@ slots:
     name: wirelessNetworkSecurityMode
     description: >-
       "Specifies the security mode of a wireless network (None, WEP, WPA, etc)."
-    range: vocabulary:wireless network securityModeVocab
+    union_of:
+      - vocabulary:WirelessNetworkSecurityModeVocab
+      - string type
 
   workItemData:
     name: workItemData

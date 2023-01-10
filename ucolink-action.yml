@@ -42,6 +42,23 @@ default_range: string
 ## ------------
 enums:
 
+  ActionStatusTypeEnum:
+    permissible_values:
+      Complete/Finish:
+        is_a: vocabulary:ActionStatusTypeVocab
+      Error:
+        is_a: vocabulary:ActionStatusTypeVocab
+      Fail:
+        is_a: vocabulary:ActionStatusTypeVocab
+      Ongoing:
+        is_a: vocabulary:ActionStatusTypeVocab
+      Pending:
+        is_a: vocabulary:ActionStatusTypeVocab
+      Success:
+        is_a: vocabulary:ActionStatusTypeVocab
+      Unknown:
+        is_a: vocabulary:ActionStatusTypeVocab
+
   SeverityTypeEnum:
     permissible_values:
       info:
@@ -80,11 +97,6 @@ types:
     uri: xsd:decimal
     base: float
 
-  string type:
-    typeof: string
-    uri: xsd:string
-    base: str
-
   iri type:
     typeof: uriorcurie
     description: >-
@@ -94,6 +106,137 @@ types:
     typeof: time
     uri: xsd:dateTime 
 
+
+## ------------
+## CLASSES
+## ------------
+classes:
+
+  pattern:
+    mixin: true
+    description: >-
+      An arrangement of objects, facts, behaviors, or other things which have scientific, mathematical, geometric, statistical, or other meaning.
+    exact_mappings:
+      - NCIT:C25336
+      - SIO:000130
+
+  action:
+    description: >-
+      An action is something that may be done or performed.
+    name: action   # rdfs:label
+    is_a: core:UcoObject
+    slots:
+      - endTime
+      - startTime
+      - actionCount
+    slot_usage:
+      actionStatus:
+        range: ActionStatusTypeEnum
+      environment:
+        range: iri type
+      error:
+        range: iri type
+        multivalued: true
+      info:
+        range: SeverityTypeEnum
+      instrument:
+        range: iri type
+        multivalued: true
+      location:
+        range: iri type
+        multivalued: true
+      object:
+        range: iri type
+        multivalued: true
+      participant:
+        range: iri type
+        multivalued: true
+      performer:
+        range: iri type
+      result:
+        range: iri type
+        multivalued: true
+      subaction:
+        range: iri type
+        multivalued: true
+    exact_mappings:
+      - NCIT:C25404  # action, thing done
+      - WIKIDATA:Q1914636
+    narrow_mappings:
+      - NCIT:C162846  # regulatory action
+
+  action argument facet:
+    description: >-
+      An action argument facet is a grouping of characteristics unique to a single parameter of an action.
+    name: action argument facet
+    is_a: core:Facet
+    slot_usage:
+      argumentName:
+        required: true
+      value:
+        required: true
+
+  action estimation facet:
+    description: >-
+      An action estimation facet is a grouping of characteristics unique to decision-focused approximation aspects for an action that may potentially be performed.
+    name: action estimation facet
+    is_a: core:Facet
+    slots:
+      - estimatedCost
+      - estimatedEfficacy
+      - estimatedImpact
+      - objective
+
+  action frequency facet:
+    description: >-
+      An action frequency facet is a grouping of characteristics unique to the frequency of occurrence for an action.
+    name: action frequency facet
+    is_a: core:Facet
+    slot_usage:
+      rate:
+        required: true
+      scale:
+        required: true
+      units:
+        required: true
+      trend:
+        range: SeverityTypeEnum
+        required: true
+
+  action lifecycle:
+    description: >-
+      An action lifecycle is an action pattern consisting of an ordered set of multiple actions or subordinate action lifecycles.
+    name: action lifecycle
+    is_a: action
+    slots:
+      - endTime
+      - startTime
+      - actionCount
+      - actionStatus
+    slot_usage:
+      error:
+        range: iri type
+      phase:
+        range: iri type
+        required: true
+      
+  action pattern:
+    description: >-
+      An action pattern is a grouping of characteristics unique to a combination of actions forming a consistent or characteristic arrangement.
+    name: action pattern
+    is_a: action
+    mixins:
+      - pattern
+
+  array of action:
+    description: >-
+      An array of action is an ordered list of references to things that may be done or performed.
+    name: array of action
+    is_a: core:UcoInherentCharacterizationThing
+    slot_usage:
+      action:
+        range: iri type
+        required: true
 
 ## ------------
 ## SLOTS
@@ -106,26 +249,25 @@ slots:
       A characterization of a single action. 
     domain: action
 
-  action count:
-    name: action count
+  actionCount:
+    name: actionCount
     description: >-
       The number of times that the action was performed.
     range: non negative integer type
 
-  action status:
-    name: action status
+  actionStatus:
+    name: actionStatus
     description: >-
       The current state of the action.
     range: vocabulary:ActionStatusTypeVocab
 
-  argument name:
-    name: argument name
+  argumentName:
+    name: argumentName
     description: >-
       The identifying label of an argument.
-    range: string type
 
-  end time:
-    name: end time
+  endTime:
+    name: endTime
     description: >-
       The time at which performance of the action ended.
     range: time type
@@ -142,23 +284,20 @@ slots:
       A characterization of the differences between the expected and the actual performance of the action.
     domain: core:UcoObject
 
-  estimated cost:
-    name: estimated cost
+  estimatedCost:
+    name: estimatedCost
     description: >-
       An estimation of the cost if the action is performed.
-    range: string type
 
-  estimated efficacy:
-    name: estimated efficacy
+  estimatedEfficacy:
+    name: estimatedEfficacy
     description: >-
-      "An estimation of the effectiveness of the action at achieving its objective if the action is performed.
-    range: string type
+      An estimation of the effectiveness of the action at achieving its objective if the action is performed.
 
-  estimated impact:
-    name: estimated impact
+  estimatedImpact:
+    name: estimatedImpact
     description: >-
       An estimation of the impact if the action is performed.
-    range: string type
 
   instrument:
     name: instrument
@@ -182,7 +321,6 @@ slots:
     name: objective
     description: >-
       The intended purpose for performing the action.
-    range: string type
 
   participant:
     name: participant
@@ -219,10 +357,9 @@ slots:
     name: scale
     description: >-
       The time scale utilized for the frequency rate count for the occurence of an action.
-    range: string type
 
-  start time:
-    name: start time
+  startTime:
+    name: startTime
     description: >-
       The time at which performance of the action began.
     range: time type
@@ -243,139 +380,10 @@ slots:
     name: units
     description: >-
       The units of measure utilized for the frequency rate count for the occurence of an action.
-    range: string type
 
   value:
     name: value
     description: >-
       The value of an action parameter.
-    range: string type
-
-
-## ------------
-## CLASSES
-## ------------
-classes:
-
-  # mixins
-
-  pattern:
-    mixin: true
-    description: >-
-      An arrangement of objects, facts, behaviors, or other things which have scientific, mathematical, geometric, statistical, or other meaning.
-    exact_mappings:
-      - NCIT:C25336
-      - SIO:000130
-
-  # classes
-
-  action:
-    description: >-
-      An action is something that may be done or performed.
-    name: action   # rdfs:label
-    is_a: core:UcoObject
-    slots:
-      - end time
-      - start time
-      - action count
-    slot_usage:
-      action status:
-        range: vocabulary:ActionStatusTypeVocab
-      environment:
-        range: iri type
-      error:
-        range: iri type
-      info:
-        range: SeverityTypeEnum
-      instrument:
-        range: iri type
-      location:
-        range: iri type
-      object:
-        range: iri type
-      participant:
-        range: iri type
-      performer:
-        range: iri type
-      result:
-        range: iri type
-      subaction:
-        range: iri type
-    exact_mappings:
-      - NCIT:C25404  # action, thing done
-      - WIKIDATA:Q1914636
-    narrow_mappings:
-      - NCIT:C162846  # regulatory action
-
-  action argument facet:
-    description: >-
-      An action argument facet is a grouping of characteristics unique to a single parameter of an action.
-    name: action argument facet
-    is_a: core:Facet
-    slot_usage:
-      argument name:
-        required: true
-      value:
-        required: true
-
-  action estimation facet:
-    description: >-
-      An action estimation facet is a grouping of characteristics unique to decision-focused approximation aspects for an action that may potentially be performed.
-    name: action estimation facet
-    is_a: core:Facet
-    slots:
-      - estimated cost
-      - estimated efficacy
-      - estimated impact
-      - objective
-
-  action frequency facet:
-    description: >-
-      An action frequency facet is a grouping of characteristics unique to the frequency of occurrence for an action.
-    name: action frequency facet
-    is_a: core:Facet
-    slot_usage:
-      rate:
-        required: true
-      scale:
-        required: true
-      units:
-        required: true
-      trend:
-        range: SeverityTypeEnum
-        required: true
-
-  action lifecycle:
-    description: >-
-      An action lifecycle is an action pattern consisting of an ordered set of multiple actions or subordinate action lifecycles.
-    name: action lifecycle
-    is_a: action
-    slots:
-      - end time
-      - start time
-      - action count
-      - action status
-    slot_usage:
-      error:
-        range: iri type
-      phase:
-        required: true
-      
-  action pattern:
-    description: >-
-      An action pattern is a grouping of characteristics unique to a combination of actions forming a consistent or characteristic arrangement.
-    name: action pattern
-    is_a: action
-    mixins:
-      - pattern
-
-  array of action:
-    description: >-
-      An array of action is an ordered list of references to things that may be done or performed.
-    name: array of action
-    is_a: core:UcoInherentCharacterizationThing
-    slot_usage:
-      action:
-        required: true
 
 ...

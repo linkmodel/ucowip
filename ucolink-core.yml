@@ -64,11 +64,6 @@ types:
     exact_mappings:
       - WIKIDATA:Q3176558  # positive real number
 
-  string type:
-    typeof: string
-    uri: xsd:string
-    base: str
-
   statement type:
     typeof: string type
     description: >-
@@ -86,228 +81,8 @@ types:
   time type:
     typeof: time
     uri: xsd:dateTime 
-
-
-## ------------
-## SLOTS
-## ------------
-slots:
-
-  confidence:
-    name: confidence
-    description: >-
-      An asserted level of certainty in the accuracy of some information.
-    range: non negative integer type
-    minimum_value: 0
-    maximum_value: 100
-    close_mappings:
-      - WIKIDATA:Q4116378
     related_mappings:
-      - WIKIDATA:Q1048607  # conviction
-
-  constraining vocabulary name:
-    name: constraining vocabulary name
-    description: >-
-      The name of an explicitly constrained set of string values.
-    range: string type
-    
-  constraining vocabulary reference:
-    name: constraining vocabulary reference
-    description: >-
-      A reference to a specification for an explicitly constrained set of string values. The specification may be unstructured (e.g., web page listing string values) or structured (e.g. RDF/OWL enumeration).
-    range: iri type
-  
-  context:
-    name: context
-    description: >-
-      A description of particular contextual affinity.
-    range: string type
-    exact_mappings:
-      - NCIT:C63325
-      - WIKIDATA:Q813912
-    narrow_mappings:
-      - WIKIDATA:Q196626
-    related_mappings:
-      - WIKIDATA:Q2141565 # situation
-
-  created by:
-    name: created by
-    description: >-
-      The identity that created a characterization of a concept.
-    domain: identity abstraction
-    exact_mappings:
-      - NCIT:C42628
-    narrow_mappings:
-      - baselink:author
-
-  defining context:
-    name: defining context
-    description: >-
-      A description of the context relevant to the definition of a particular external reference identifier.
-    range: string type
-
-  description:
-    name: description
-    description: >-
-      A description of a particular concept characterization.  
-    range: string type
-    exact_mappings:
-      - baselink:description
-
-  end time:
-    name: end time
-    description: >-
-      The ending time of a time range.
-    range: time type
-    exact_mappings:
-      - NCIT:C82573
-      - SIO:000670
-      - WIKIDATA:Q24575125
-    
-  external identifier:
-    name: external identifier
-    description: >-
-      An identifier for some information defined external to the UCO context.
-    range: string type
-
-  external reference:
-    name: external reference
-    description: >-
-      Specifies a reference to a resource outside of the UCO.
-    domain: external reference
-
-  has facet:
-    name: has facet
-    description: >-
-      Further sets of properties characterizing a concept based on the particular context of the class and of the particular instance of the concept being characterized.
-    domain: facet
-
-  has facet-shape:
-    name: has facet-shape
-    notes:
-      - hasFacet must not be used to link two objects to one Facet.
-    domain: facet
-
-  is directional:
-    name: is directional
-    description: >-
-      A specification whether or not a relationship assertion is limited to the context FROM a source object(s) TO a target object.
-    range: boolean type
-
-  kind of relationship:
-    name: kind of relationship
-    description: >-
-      A characterization of the nature of a relationship between objects.
-    range: string type
-
-  modified time:
-    name: modified time
-    description: >-
-      Specifies the time that this particular version of the object was modified. The object creator can use the time it deems most appropriate as the time this version of the object was modified. The value of the modified property for a given object version MUST be later than or equal to the value of the created property. Object creators MUST update the modified property when creating a new version of an object. The modified timestamp MUST be precise to the nearest millisecond (exactly three digits after the decimal place in seconds).
-    range: time type
-
-  name:
-    name: name
-    description: >-
-      The name of a particular concept characterization.
-    range: string type
-    exact_mappings:
-      - NCIT:C42614
-      - WIKIDATA:Q82799
-
-  naming authority:
-    name: naming authority
-    description: >-
-      Specifies the naming authority that issued the name of the entity.
-    range: string type
-
-  object:
-    name: object
-    description: >-
-      Specifies one or more UcoObjects.
-    domain: uco object
-    exact_mappings:
-      - SIO:000776
-      - WIKIDATA:Q488383
-    narrow_mappings:
-      - WIKIDATA:Q175026  # object
-
-  object created time:
-    name: object created time
-    description: >-
-      The time at which a characterization of a concept is created. This time pertains to the time of creating the record object, and is not an intrinsic characteristic of the concept.
-    range: time type
-
-  object marking:
-    name: object marking
-    description: >-
-      Marking definitions to be applied to a particular concept characterization in its entirety.
-    domain: marking definition abstraction
-
-  reference URL:
-    name: reference URL
-    description: >-
-      A URL for some information defined external to the UCO context.
-    range: iri type
-    exact_mappings:
-      - T4FS:0000553
-
-  source:
-    name: source
-    description: >-
-      The originating node of a specified relationship.
-    domain: uco object
-
-  spec version:
-    name: spec version
-    description: >-
-      The version of UCO ontology or subontology specification used to characterize a concept.
-    range: string type
-    exact_mappings:
-      - WIKIDATA:Q55155149  # specification edition
-
-  start time:
-    name: start time
-    description: >-
-      The initial time of a time range.
-    range: time type
-    exact_mappings:
-      - NCIT:C78441
-      - SIO:000669
-      - WIKIDATA:Q24575110
-
-  statement:
-    name: statement type
-    description: >-
-      A textual statement of an assertion.
-    range: statement
-    exact_mappings:
-      - NCIT:C49154
-      - WIKIDATA:Q2684591
-
-  tag:
-    name: tag
-    description: >-
-      A generic tag/label.
-    range: string type
-    exact_mappings:
-      - WIKIDATA:Q658349
-    
-  target:
-    name: target
-    description: >-
-      The terminating node of a specified relationship.
-    domain: uco object
-
-  value:
-    name: value
-    description: >-
-      A string value.
-    range: string type
-    exact_mappings:
-      - NCIT:C45253  # string
-      - WIKIDATA:Q1196827  # value, digital
-    
+      - sumo:TimePoint
 
 ## ------------
 ## CLASSES
@@ -349,7 +124,7 @@ classes:
     name: attributed name
     is_a: uco object
     slots:
-      - naming authority
+      - namingAuthority
     related_mappings:
       - WIKIDATA:Q758251  # Authorization certificate
       - WIKIDATA:Q32635   # domain name
@@ -407,8 +182,8 @@ classes:
     name: controlled vocabulary
     is_a: uco object
     slots:
-      - constraining vocabulary reference
-      - constraining vocabulary name
+      - constrainingVocabularyReference
+      - constrainingVocabularyName
     slot_usage:
       value:
         required: true
@@ -436,9 +211,9 @@ classes:
     name: external reference
     is_a: uco inherent characterization thing
     slots:
-      - reference URL
-      - defining context
-      - external identifier
+      - referenceURL
+      - definingContext
+      - externalIdentifier
 
   facet:
     description: >-
@@ -453,8 +228,8 @@ classes:
       A grouping is a compilation of referenced UCO content with a shared context.
     name: grouping
     is_a: contextual compilation
-    mixins:
-      - baselink:ClassGroupingMixin
+    # mixins:
+    # - baselink:ClassGroupingMixin
     slot_usage:
       context:
         multivalued: true
@@ -501,9 +276,9 @@ classes:
     name: relationship
     is_a: uco object
     slots:
-      - end time
-      - start time
-      - kind of relationship
+      - endTime
+      - startTime
+      - kindOfRelationship
     slot_usage:
       target:
         range: iri type
@@ -512,7 +287,7 @@ classes:
         range: iri type
         required: true
         multivalued: true
-      is directional:
+      isDirectional:
         required: true
     exact_mappings:
       - NCIT:C25648
@@ -523,31 +298,35 @@ classes:
       A UCO inherent characterization thing is a grouping of characteristics unique to a particular inherent aspect of a UCO domain object.
     name: uco inherent caracterization thing
     is_a: uco thing
+    disjoint_with:
+      - uco object
 
   uco object:
     description: >-
         A UCO object is a representation of a fundamental concept either directly inherent to the cyber domain or indirectly related to the cyber domain and necessary for contextually characterizing cyber domain concepts and relationships. Within the Unified Cyber Ontology (UCO) structure this is the base class acting as a consistent, unifying and interoperable foundation for all explicit and inter-relatable content objects.
     name: uco object
     is_a: uco thing
+    disjoint_with:
+      - uco inherent characterization thing
     slots:
-      - object marking
-      - object created time
-      - modified time
+      - objectMarking
+      - objectCreatedTime
+      - modifiedTime
       - name
-      - spec version
+      - specVersion
       - description
     slot_usage:
-      created by:
+      createdBy:
         range: iri type
-      external reference:
-        range: iri type
-        multivalued: true
-      has facet:
+      externalReference:
         range: iri type
         multivalued: true
-      modified time:
+      hasFacet:
+        range: iri type
         multivalued: true
-      object marking:
+      modifiedTime:
+        multivalued: true
+      objectMarking:
         range: iri type
         multivalued: true
       tag:
@@ -566,7 +345,7 @@ classes:
     exact_mappings:
       - owl:Thing
     notes:
-      - seeAlso uco-core:UcoThing-identifier-regex-shape
+      - see also core:UcoThing-identifier-regex-shape
     related_mappings:
       - BFO:0000001    # entity
       - WIKIDATA:Q35120    # entity
@@ -579,5 +358,117 @@ classes:
     abstract: true
     notes:
       - UcoThings are suggested to end with a UUID.
+
+## ------------
+## SLOTS
+## ------------
+slots:
+
+  confidence:
+    name: confidence
+    description: >-
+      An asserted level of certainty in the accuracy of some information.
+    range: non negative integer type
+    minimum_value: 0
+    maximum_value: 100
+    close_mappings:
+      - WIKIDATA:Q4116378
+    related_mappings:
+      - WIKIDATA:Q1048607  # conviction
+
+  constrainingVocabularyName:
+    name: constrainingVocabularyName
+    description: >-
+      The name of an explicitly constrained set of string values.
+    
+  constrainingVocabularyReference:
+    name: constrainingVocabularyReference
+    description: >-
+      A reference to a specification for an explicitly constrained set of string values. The specification may be unstructured (e.g., web page listing string values) or structured (e.g. RDF/OWL enumeration).
+    range: iri type
+  
+  context:
+    name: context
+    description: >-
+      A description of particular contextual affinity.
+    exact_mappings:
+      - NCIT:C63325
+      - WIKIDATA:Q813912
+    narrow_mappings:
+      - WIKIDATA:Q196626
+    related_mappings:
+      - WIKIDATA:Q2141565 # situation
+
+  createdBy:
+    name: createdBy
+    description: >-
+      The identity that created a characterization of a concept.
+    domain: identity abstraction
+    exact_mappings:
+      - NCIT:C42628
+    narrow_mappings:
+      - baselink:author
+
+  definingContext:
+    name: definingContext
+    description: >-
+      A description of the context relevant to the definition of a particular external reference identifier.
+
+  description:
+    name: description
+    description: >-
+      A description of a particular concept characterization.  
+    exact_mappings:
+      - baselink:description
+
+  endTime:
+    name: endTime
+    description: >-
+      The ending time of a time range.
+    range: time type
+    exact_mappings:
+      - NCIT:C82573
+      - SIO:000670
+      - WIKIDATA:Q24575125
+    
+  externalIdentifier:
+    name: externalIdentifier
+    description: >-
+      An identifier for some information defined external to the UCO context.
+
+  externalReference:
+    name: externalReference
+    description: >-
+      Specifies a reference to a resource outside of the UCO.
+    domain: external reference
+
+  hasFacet:
+    name: hasFacet
+    description: >-
+      Further sets of properties characterizing a concept based on the particular context of the class and of the particular instance of the concept being characterized.
+    domain: facet
+
+  hasFacet-shape:
+    name: hasFacet-shape
+    notes:
+      - hasFacet must not be used to link two objects to one Facet.
+    domain: facet
+
+  isDirectional:
+    name: isDirectional
+    description: >-
+      A specification whether or not a relationship assertion is limited to the context FROM a source object(s) TO a target object.
+    range: boolean type
+
+  kindOfRelationship:
+    name: kindOfRelationship
+    description: >-
+      A characterization of the nature of a relationship between objects.
+
+  modifiedTime:
+    name: modifiedTime
+    description: >-
+      Specifies the time that this particular version of the object was modified. The object creator can use the time it deems most appropriate as the time this version of the object was modified. The value of the modified property for a given object version MUST be later than or equal to the value of the created property. Object creators MUST update the modified property when creating a new version of an object. The modified timestamp MUST be precise to the nearest millisecond (exactly three digits after the decimal place in seconds).
+    range: time type
 
 ...

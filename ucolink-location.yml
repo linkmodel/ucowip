@@ -53,125 +53,6 @@ types:
     uri: xsd:decimal
     base: float
 
-  string type:
-    typeof: string
-    uri: xsd:string
-    base: str
-
-## ------------
-## SLOTS
-## ------------
-slots:
-
-  address type:
-    name: address type
-    description: >-
-      The type of the address, for instance home or work.
-    range: string type
-    
-  altitude:
-    name: altitude
-    description: >-
-      The altitude coordinate of a geolocation.
-    range: decimal type
-    exact_mappings:
-      - SIO:000438
-      - WIKIDATA:Q190200
-    
-  country:
-    name: country
-    description: >-
-      The name of the geolocation country.
-    range: string type
-    exact_mappings:
-      - NCIT:C25464
-      - SIO:000664
-      - WIKIDATA:Q6256
-    
-  hdop:
-    name: hdop
-    description: >-
-      The horizontal dilution of precision of the GPS location.
-    range: decimal type
-    
-  latitude:
-    name: latitude
-    description: >-
-      The latitude coordinate of a geolocation.
-    range: decimal type
-    exact_mappings:
-      - NCIT:C68642
-      - SIO:000319
-      - WIKIDATA:Q34027
-    
-  locality:
-    name: locality
-    description: >-
-      The name of the geolocation locality (e.g., city).
-    range: string type
-    exact_mappings:
-      - NCIT:C87189
-    narrow_mappings:
-      - WIKIDATA:Q3257686  # locality, human settlement
-    
-  longitude:
-    name: longitude
-    description: >-
-      The longitude coordinate of a geolocation.
-    range: decimal type
-    exact_mappings:
-      - NCIT:C68643
-      - SIO:000318
-      - WIKIDATA:Q36477
-    
-  pdop:
-    name: pdop
-    description: >-
-      The positional (3D) dilution of precision of the GPS location.
-    range: decimal type
-    
-  postal code:
-    name: postal code
-    description: >-
-      The zip-code.
-    range: string type
-    exact_mappings:
-      - IAO:0000646
-      - NCIT:C25621
-    
-  region:
-    name: region
-    description: >-
-      The name of the geolocation region (e.g., state).
-    range: string type
-    broad_mappings:
-      - WIKIDATA:Q82794  # geographic region
-    exact_mappings:
-      - NCIT:C41129
-    
-  street:
-    name: street
-    description: >-
-      The name of the street.
-    range: string type
-    exact_mappings:
-      - NCIT:C80230
-      - WIKIDATA:Q79007
-      - WIKIDATA:Q34442
-    
-  tdop:
-    name: tdop
-    description: >-
-      The temporal dilution of precision of the GPS location.
-    range: decimal type
-    
-  vdop:
-    name: vdop
-    description: >-
-      The vertical dilution of precision of the GPS location.
-    range: decimal type
-    
-
 ## ------------
 ## CLASSES
 ## ------------
@@ -213,11 +94,118 @@ classes:
     name: simple address facet
     is_a: core:Facet
     slots:
-      - address type
+      - addressType
       - country
       - locality
-      - postal code
+      - postalCode
       - region
       - street
 
+## ------------
+## SLOTS
+## ------------
+slots:
+
+  addressType:
+    name: addressType
+    description: >-
+      The type of the address, for instance home or work.
+    
+  altitude:
+    name: altitude
+    description: >-
+      The altitude coordinate of a geolocation.
+    range: decimal type
+    exact_mappings:
+      - SIO:000438
+      - WIKIDATA:Q190200
+    
+  country:
+    name: country
+    description: >-
+      The name of the geolocation country.
+    exact_mappings:
+      - NCIT:C25464
+      - SIO:000664
+      - WIKIDATA:Q6256
+    
+  hdop:
+    name: hdop
+    description: >-
+      The horizontal dilution of precision of the GPS location.
+    range: decimal type
+    
+  latitude:
+    name: latitude
+    description: >-
+      The latitude coordinate of a geolocation.
+    range: decimal type
+    exact_mappings:
+      - NCIT:C68642
+      - SIO:000319
+      - WIKIDATA:Q34027
+    
+  locality:
+    name: locality
+    description: >-
+      The name of the geolocation locality (e.g., city).
+    exact_mappings:
+      - NCIT:C87189
+    narrow_mappings:
+      - WIKIDATA:Q3257686  # locality, human settlement
+    
+  longitude:
+    name: longitude
+    description: >-
+      The longitude coordinate of a geolocation.
+    range: decimal type
+    exact_mappings:
+      - NCIT:C68643
+      - SIO:000318
+      - WIKIDATA:Q36477
+    
+  pdop:
+    name: pdop
+    description: >-
+      The positional (3D) dilution of precision of the GPS location.
+    range: decimal type
+    
+  postalCode:
+    name: postalCode
+    description: >-
+      The zip-code.
+    exact_mappings:
+      - IAO:0000646
+      - NCIT:C25621
+    
+  region:
+    name: region
+    description: >-
+      The name of the geolocation region (e.g., state).
+    broad_mappings:
+      - WIKIDATA:Q82794  # geographic region
+    exact_mappings:
+      - NCIT:C41129
+    
+  street:
+    name: street
+    description: >-
+      The name of the street.
+    exact_mappings:
+      - NCIT:C80230
+      - WIKIDATA:Q79007
+      - WIKIDATA:Q34442
+    
+  tdop:
+    name: tdop
+    description: >-
+      The temporal dilution of precision of the GPS location.
+    range: decimal type
+    
+  vdop:
+    name: vdop
+    description: >-
+      The vertical dilution of precision of the GPS location.
+    range: decimal type
+    
 ...
