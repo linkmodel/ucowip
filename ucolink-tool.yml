@@ -1,0 +1,320 @@
+---
+id: https://w3id.org/linkmodel/ucolink-tool
+name: ucolink-tool
+description: >-
+license: https://www.apache.org/licenses/LICENSE-2.0
+
+version: 1.0.0  # sync with primary git repo release tag
+
+## ------------
+##
+## PREFIXES
+## ------------
+# CURIE namespaces (prefixes/base URI's) mappings of prefixes used in the body of
+# the UCOLink Model specification are resolved using a specific precedence order,
+# for use in the generation of the UCOLink Model context.jsonld mappings to
+# namespaces. Any prefixes encountered in the UCOLink Model but not resolved by
+# the following precedence sources, are anonymously declared by linkml as
+# http://example.org/UNKNOWN/ rooted base URI's which should ideally be repaired
+# in one of the precedence lists.
+#
+# 1. The following 'prefixes:' delimited list has first precedence in resolution.
+
+prefixes:
+  baselink: 'https://w3id.org/baselink/vocab/'
+  GSSO: 'http://purl.obolibrary.org/obo/GSSO_'  # gender sex s ontology
+  INO: 'http://purl.obolibrary.org/obo/INO_'  # interactive network ontology
+  linkml: 'https://w3id.org/linkml/'
+  WIKIDATA: 'https://www.wikidata.org/wiki/'
+
+  core: 'https://ontology.unifiedcyberontology.org/uco/core/'
+  identity: 'https://ontology.unifiedcyberontology.org/uco/identity/'
+
+default_prefix: ucolink-tool
+default_range: string
+
+## ------------
+## ENUMS
+## ------------
+enums: {}
+
+## ------------
+## SUBSETS
+## ------------
+subsets: {}
+
+## ------------
+## TYPES
+## ------------
+imports:
+  - linkml:types
+
+types:
+
+  iri type:
+    typeof: uriorcurie
+    description: >-
+    uri: xsd:anyURI
+
+  time type:
+    typeof: time
+    uri: xsd:dateTime
+
+## ------------
+## CLASSES
+## ------------
+classes:
+
+  analytic tool:
+    is_a: tool
+    name: AnalyticTool
+    description: >-
+      An analytic tool is an artifact of hardware and/or software utilized to accomplish a task or purpose of explanation, interpretation or logical reasoning.
+    broad_mappings:
+      - WIKIDATA:Q4751159  # analytic method
+      - WIKIDATA:Q485202  # analytic hierarchy process
+    close_mappings:
+      - WIKIDATA:Q209544  # analytic language
+
+  build facet:
+    is_a: core:Facet
+    name: BuildFacet
+    description: >-
+      A build facet is a grouping of characteristics unique to a particular version of a software.
+    slot_usage:
+      buildInformation:
+        range: iri type
+
+  build information type:
+    is_a: core:UcoInherentCharacterizationThing
+    name: BuildInformationType
+    description: >-
+      A build information type is a grouping of characteristics that describe how a particular version of software was converted from source code to executable code.
+    slot_usage:
+      buildConfiguration:
+        range: iri type
+      buildUtility:
+        range: iri type
+      compilers:
+        range: iri type
+      libraries:
+        range: iri type
+    slots:
+      - compilationDate
+      - buildID
+      - buildLabel
+      - buildOutputLog
+      - buildProject
+      - buildScript
+      - buildVersion
+
+  build utility type:
+    is_a: core:UcoInherentCharacterizationThing
+    name: BuildUtilityType
+    description: >-
+      A build utility type characterizes the tool used to convert from source code to executable code for a particular version of software.
+    slots:
+      - buildUtilityName
+      - cpeid
+      - swid
+
+  compiler type:
+    is_a: core:UcoInherentCharacterizationThing
+    name: CompilerType
+    description: >-
+      A compiler type is a grouping of characteristics unique to a specific program that translates computer code written in one programming language (the source language) into another language (the target language). Typically a program that translates source code from a high-level programming language to a lower-level language (e.g., assembly language, object code, or machine code) to create an executable program. [based on https://en.wikipedia.org/wiki/Compiler]
+    slots:
+      - compilerInformalDescription
+      - cpeid
+      - swid
+
+  configured tool:
+    is_a: tool
+    name: ConfiguredTool
+    description: >-
+      A ConfiguredTool is a Tool that is known to be configured to run in a more specified manner than some unconfigured or less-configured Tool.
+    slot_usage:
+      usesConfiguration:
+        any_of:
+          - range: iri type
+          - range: bnode
+      isConfigurationOf:
+        any_of:
+          - range: iri type
+          - range: bnode
+
+  defensive tool:
+    is_a: tool
+    name: DefensiveTool
+    description: >-
+      A defensive tool is an artifact of hardware and/or software utilized to accomplish a task or purpose of guarding.
+
+  library type:
+    is_a: core:UcoInherentCharacterizationThing
+    name: LibraryType
+    description: >-
+      A library type is a grouping of characteristics unique to a collection of resources incorporated into the build of a software.
+    slots:
+      - libraryName
+      - libraryVersion
+    broad_mappings:
+      - IAO:0000593  # software library
+      - SIO:000100  # software library
+      - WIKIDATA:Q188860  # sofware library
+
+  malicious tool:
+    is_a: tool
+    name: MaliciousTool
+    description: >-
+      A malicious tool is an artifact of hardware and/or software utilized to accomplish a malevolent task or purpose.
+
+  tool:
+    is_a: core:UcoObject
+    name: Tool
+    description: >-
+      A tool is an element of hardware and/or software utilized to carry out a particular function.
+    slot_usage:
+      creator:
+        range: iri type
+      references:
+        range: iri type
+    slots:
+      - servicePack
+      - toolType
+      - version
+    broad_mappings:
+      - sumo:Device
+      - WIKIDATA:Q1077784  # programming tool
+    exact_mappings:
+      - NCIT:C172800
+
+## ------------
+## SLOTS
+## ------------
+slots:
+
+  buildConfiguration:
+    name: buildConfiguration
+    description: >-
+      How the build utility was configured for a particular build of a particular software.
+    range: configuration:Configuration
+
+  buildID:
+    name: buildID
+    description: >-
+      An externally defined unique identifier for a particular build of a software.
+
+  buildInformation:
+    name: buildInformation
+    description: >-
+      Describes how a particular tool was built.
+    range: tool:BuildInformationType
+
+  buildLabel:
+    name: buildLabel
+    description: >-
+      Relevant label for a particular build of a particular software.
+
+  buildOutputLog:
+    name: buildOutputLog
+    description: >-
+      The output log of the build process for a software.
+
+  buildProject:
+    name: buildProject
+    description: >-
+      The project name of a build of a software.
+
+  buildScript:
+    name: buildScript
+    description: >-
+      The actual build script for a particular build of a particular software.
+
+  buildUtility:
+    name: buildUtility
+    description: >-
+      Identifies the utility used to build a software.
+    range: tool:BuildUtilityType
+
+  buildUtilityName:
+    name: buildUtilityName
+    description: >-
+      The informally defined name of the utility used to build a particular software.
+
+  buildVersion:
+    name: buildVersion
+    description: >-
+      The appropriate version descriptor of a particular build of a particular software.
+
+  compilationDate:
+    name: compilationDate
+    description: >-
+      The compilation date for the build of a software.
+    range: time type
+
+  compilerInformalDescription:
+    name: compilerInformalDescription
+    description: >-
+      An informal description of a compiler.
+
+  compilers:
+    name: compilers
+    description: >-
+      The compilers utilized during a particular build of a particular software.
+    range: tool:CompilerType
+
+  cpeid:
+    name: cpeid
+    description: >-
+      Specifies the Common Platform Enumeration identifier for the software.
+
+  creator:
+    name: creator
+    description: >-
+      The creator organization for a particular tool.
+    range: identity:Identity
+
+  libraries:
+    name: libraries
+    description: >-
+      The libraries incorporated into a particular build of a software.
+    range: tool:LibraryType
+
+  libraryName:
+    name: libraryName
+    description: >-
+      The name of the library.
+
+  libraryVersion:
+    name: libraryVersion
+    description: >-
+      The version of the library.
+
+  references:
+    name: references
+    description: >-
+      References to information describing a particular tool.
+    range: iri type
+
+  servicePack:
+    name: servicePack
+    description: >-
+      An appropriate service pack descriptor for a particular tool.
+
+  swid:
+    name: swid
+    description: >-
+      Specifies the SWID tag for the software.
+
+  toolType:
+    name: toolType
+    description: >-
+      The type of tool.
+
+  version:
+    name: version
+    description: >-
+      An appropriate version descriptor of a particular tool.
+
+...
+
