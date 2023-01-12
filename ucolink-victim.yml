@@ -1,0 +1,78 @@
+---
+id: https://w3id.org/linkmodel/ucolink-victim
+name: ucolink-victim
+description: >-
+license: https://www.apache.org/licenses/LICENSE-2.0
+
+version: 1.0.0  # sync with primary git repo release tag
+
+## ------------
+##
+## PREFIXES
+## ------------
+# CURIE namespaces (prefixes/base URI's) mappings of prefixes used in the body of
+# the UCOLink Model specification are resolved using a specific precedence order,
+# for use in the generation of the UCOLink Model context.jsonld mappings to
+# namespaces. Any prefixes encountered in the UCOLink Model but not resolved by
+# the following precedence sources, are anonymously declared by linkml as
+# http://example.org/UNKNOWN/ rooted base URI's which should ideally be repaired
+# in one of the precedence lists.
+#
+# 1. The following 'prefixes:' delimited list has first precedence in resolution.
+
+prefixes:
+  baselink: 'https://w3id.org/baselink/vocab/'
+  GSSO: 'http://purl.obolibrary.org/obo/GSSO_'  # gender sex s ontology
+  linkml: 'https://w3id.org/linkml/'
+  sumo: 'https://w3id.org/sumo/kb/'
+  WIKIDATA: 'https://www.wikidata.org/wiki/'
+
+  role: 'https://ontology.unifiedcyberontology.org/uco/role/'
+
+default_prefix: ucolink-victim
+default_range: string
+
+## ------------
+## ENUMS
+## ------------
+enums: {}
+
+## ------------
+## SUBSETS
+## ------------
+subsets: {}
+
+## ------------
+## TYPES
+## ------------
+imports:
+  - linkml:types
+
+types: {}
+
+## ------------
+## CLASSES
+## ------------
+classes:
+
+  victim:
+    is_a: role:NeutralRole
+    name: Victim
+    description: >-
+      "A victim is a role played by a person or organization that is/was the target of some malicious action."
+    exact_mappings:
+      - GSSO:003951
+      - WIKIDATA:Q1851760
+    narrow_mappings:
+      - WIKIDATA:Q5883980  # holocaust victims
+
+  victim targeting:
+    is_a: victim ;
+    name: VictimTargeting
+    description: >-
+      "A victim targeting is a grouping of characteristics unique to people or organizations that are the target of some malicious activity."
+    exact_mappings:
+      - NCIT:C99770  # victimization
+
+...
+

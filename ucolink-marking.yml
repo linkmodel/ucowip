@@ -5,7 +5,7 @@ description: >-
   Data markings represent restrictions, permissions, and other guidance for how data can be used and shared.
 license: https://www.apache.org/licenses/LICENSE-2.0
 
-version: 0.0.1  # sync with primary git repo release tag
+version: 1.0.0  # sync with primary git repo release tag
 
 ## ------------
 ##
@@ -23,10 +23,10 @@ version: 0.0.1  # sync with primary git repo release tag
 
 prefixes:
   baselink: 'https://w3id.org/baselink/vocab/'
-  csrc: 'https://csrc.nist.gov/glossary/term/'    # Computer Security Resource Center
   linkml: 'https://w3id.org/linkml/'
   SIO: 'http://semanticscience.org/resource/SIO_'   # Semanticscience Integrated Ontology
-  sh: 'http://www.w3.org/ns/shacl#'
+  sumo: 'https://w3id.org/sumo/kb/'
+  WIKIDATA: 'https://www.wikidata.org/wiki/'
 
   core: 'https://ontology.unifiedcyberontology.org/uco/core/'
 

@@ -26,6 +26,7 @@ prefixes:
   GSSO: 'http://purl.obolibrary.org/obo/GSSO_'  # gender sex s ontology
   INO: 'http://purl.obolibrary.org/obo/INO_'  # interactive network ontology
   linkml: 'https://w3id.org/linkml/'
+  sumo: 'https://w3id.org/sumo/kb/'
   WIKIDATA: 'https://www.wikidata.org/wiki/'
 
 default_prefix: ucolink-role

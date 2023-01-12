@@ -4,7 +4,7 @@ name: ucolink-core
 description: >-
   This ontology defines classes and properties for characterizing actions.
 license: https://www.apache.org/licenses/LICENSE-2.0
-version: 0.0.1  # sync with primary git repo release tag
+version: 1.0.0  # sync with primary git repo release tag
 
 ## ------------
 ##
@@ -26,6 +26,7 @@ prefixes:
   linkml: 'https://w3id.org/linkml/'
   SIO: 'http://semanticscience.org/resource/SIO_'   # Semanticscience Integrated Ontology
   sh: 'http://www.w3.org/ns/shacl#'
+  WIKIDATA: 'https://www.wikidata.org/wiki/'
 
   action: 'https://ontology.unifiedcyberontology.org/uco/action/'
   core: 'https://ontology.unifiedcyberontology.org/uco/core/'

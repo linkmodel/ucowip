@@ -1,0 +1,386 @@
+---
+id: https://w3id.org/linkmodel/ucolink-types
+name: ucolink-types
+description: >-
+license: https://www.apache.org/licenses/LICENSE-2.0
+
+version: 1.0.0  # sync with primary git repo release tag
+
+## ------------
+##
+## PREFIXES
+## ------------
+# CURIE namespaces (prefixes/base URI's) mappings of prefixes used in the body of
+# the UCOLink Model specification are resolved using a specific precedence order,
+# for use in the generation of the UCOLink Model context.jsonld mappings to
+# namespaces. Any prefixes encountered in the UCOLink Model but not resolved by
+# the following precedence sources, are anonymously declared by linkml as
+# http://example.org/UNKNOWN/ rooted base URI's which should ideally be repaired
+# in one of the precedence lists.
+#
+# 1. The following 'prefixes:' delimited list has first precedence in resolution.
+
+prefixes:
+  baselink: 'https://w3id.org/baselink/vocab/'
+  co: 'http://purl.org/co/'
+  linkml: 'https://w3id.org/linkml/'
+  sumo: 'https://w3id.org/sumo/kb/'
+  WIKIDATA: 'https://www.wikidata.org/wiki/'
+
+  uco-co: 'https://ontology.unifiedcyberontology.org/co/'
+  core: 'https://ontology.unifiedcyberontology.org/uco/core/'
+  vocabulary: 'https://ontology.unifiedcyberontology.org/uco/vocabulary/'
+
+default_prefix: ucolink-types
+default_range: string
+
+## ------------
+## ENUMS
+## ------------
+enums:
+
+  HashNameEnum:
+    "MD5":
+      is_a: vocabulary:HashNameVocab
+    "MD6":
+      is_a: vocabulary:HashNameVocab
+    "SHA1":
+      is_a: vocabulary:HashNameVocab
+    "SHA224":
+      is_a: vocabulary:HashNameVocab
+    "SHA256":
+      is_a: vocabulary:HashNameVocab
+    "SHA384":
+      is_a: vocabulary:HashNameVocab
+    "SHA512":
+      is_a: vocabulary:HashNameVocab
+    "SSDEEP":
+      is_a: vocabulary:HashNameVocab
+
+## ------------
+## SUBSETS
+## ------------
+subsets: {}
+
+## ------------
+## TYPES
+## ------------
+imports:
+  - linkml:types
+
+types:
+
+  iri type:
+    typeof: uriorcurie
+    description: >-
+    uri: xsd:anyURI
+
+  time type:
+    typeof: time
+    uri: xsd:dateTime
+
+## ------------
+## CLASSES
+## ------------
+classes:
+
+  controlled dictionary:
+    is_a: types:Dictionary
+    name: "ControlledDictionary"
+    description: >-
+      "A controlled dictionary is a list of (term/key, value) pairs where each term/key exists no more than once and is constrained to an explicitly defined set of values."
+    slots:
+      - entry
+
+  controlled dictionary entry:
+    is_a: types:DictionaryEntry
+    name: "ControlledDictionaryEntry"
+    description: >-
+      "A controlled dictionary entry is a single (term/key, value) pair where the term/key is constrained to an explicitly defined set of values."
+
+  dictionary:
+    is_a: core:UcoInherentCharacterizationThing
+    name: "Dictionary"
+    description: >-
+      "A dictionary is list of (term/key, value) pairs with each term/key existing no more than once."
+    slot_usage:
+      entry:
+        range: iri type
+
+  dictionary entry:
+    is_a: core:UcoInherentCharacterizationThing
+    name: "DictionaryEntry"
+    description: >-
+      "A dictionary entry is a single (term/key, value) pair."
+    slot_usage:
+      key:
+        required: true
+      value:
+        required: true
+
+  hash:
+    is_a: core:UcoInherentCharacterizationThing
+    name: "Hash"
+    description: >-
+      "A hash is a grouping of characteristics unique to the result of applying a mathematical algorithm that maps data of arbitrary size to a bit string (the 'hash') and is a one-way function, that is, a function which is practically infeasible to invert. This is commonly used for integrity checking of data. [based on https://en.wikipedia.org/wiki/Cryptographic_hash_function]"
+    slot_usage:
+      hashValue:
+        required: true
+      hashMethod:
+        required: true
+        range: HashNameEnum
+
+
+## ------------
+## SLOTS
+## ------------
+slots:
+
+  Identifier:
+    description: >-
+      "An identifier is a string conformant to the specified UUID-based format for UCO object identifiers."
+
+  NativeFormatString:
+    description: >-
+      "Specifies data in its native format of some external language. The data may be encoded in Base64 per [RFC4648]. Data encoded in Base64 must be denoted as such using the encoded property."
+
+  StructuredText:
+    description: >-
+      "Expresses string-based data in some information structuring format (e.g., HTML5)."
+
+  Thread:
+    is_a:
+		co:Bag ,
+		core:UcoThing
+		;
+    name: "Thread"
+    description: >-
+      "A semi-ordered array of items, that can be present in multiple copies.  Implemetation of a UCO Thread is similar to a Collections Ontology List, except a Thread may fork and merge - that is, one of its members may have two or more direct successors, and two or more direct predecessors."
+	owl:disjointWith co:List
+	sh:property [
+		sh:class types:ThreadItem
+		sh:path co:item
+	]
+
+  ThreadItem
+    is_a:
+		co:Item ,
+		core:UcoThing
+		;
+    name: "ThreadItem"
+    description: >-
+      "A ThreadItem is a member of a thread."
+	owl:disjointWith co:ListItem
+	sh:property [
+		sh:class core:UcoObject
+		sh:path co:itemContent
+	]
+
+  entry
+	a owl:ObjectProperty
+    name: "entry"
+    description: >-
+      "A dictionary entry."
+	rdfs:range types:DictionaryEntry
+
+  hashMethod
+	a owl:DatatypeProperty
+    name: "hashMethod"
+    description: >-
+      "A particular cryptographic hashing method (e.g., MD5)."
+	rdfs:range [
+			owl:unionOf (
+			vocabulary:HashNameVocab
+			xsd:string
+		)
+	]
+
+  hashValue
+	a owl:DatatypeProperty
+    name: "hashValue"
+    description: >-
+      "A cryptographic hash value."
+	rdfs:range xsd:hexBinary
+
+  key
+	a owl:DatatypeProperty
+    name: "key"
+    description: >-
+      "A key property of a single dictionary entry."
+	rdfs:range xsd:string
+
+  threadNextItem
+	a owl:ObjectProperty
+	rdfs:subPropertyOf types:threadSuccessor
+    name: "threadNextItem"
+    description: >-
+      "The link to a next item in a thread."
+	rdfs:seeAlso co:nextItem
+
+  threadNextItem-subjects-shape
+	a sh:PropertyShape
+	sh:class types:ThreadItem
+	sh:nodeKind sh:IRI
+	sh:path types:threadNextItem
+	sh:targetSubjectsOf types:threadNextItem
+
+  threadOriginItem
+	a owl:ObjectProperty
+	rdfs:subPropertyOf co:item
+    name: "threadOriginItem"
+    description: >-
+      "A link to an item of the thread known to have no predecessor."
+	rdfs:domain types:Thread
+	rdfs:range [
+		a owl:Class
+		owl:intersectionOf (
+			types:ThreadItem
+			[
+				a owl:Restriction
+				owl:onProperty types:threadPreviousItem
+				owl:cardinality "0"^^xsd:nonNegativeInteger
+			]
+		)
+	]
+	rdfs:seeAlso co:firstItem
+
+  threadOriginItem-subjects-shape
+	a sh:PropertyShape
+	sh:class types:ThreadItem
+	sh:nodeKind sh:IRI
+	sh:path types:threadOriginItem
+	sh:targetSubjectsOf types:threadOriginItem
+
+  threadOriginItem-subjects-threadPredecessor-shape
+	a sh:PropertyShape
+	sh:description "An origin item in a thread must not have a predecessor."
+	sh:maxCount "0"^^xsd:integer
+	sh:nodeKind sh:IRI
+	sh:path (
+		types:threadOriginItem
+		types:threadPredecessor
+	)
+	sh:targetSubjectsOf types:threadOriginItem
+
+  threadOriginItem-subjects-threadPreviousItem-shape
+	a sh:PropertyShape
+	sh:description "An origin item in a thread must not have a previous item."
+	sh:maxCount "0"^^xsd:integer
+	sh:nodeKind sh:IRI
+	sh:path (
+		types:threadOriginItem
+		types:threadPreviousItem
+	)
+	sh:targetSubjectsOf types:threadOriginItem
+
+  threadPredecessor
+	a
+		owl:ObjectProperty ,
+		owl:TransitiveProperty
+		;
+    name: "threadPredecessor"
+    description: >-
+      "The link to the preceding item in a thread."
+	rdfs:domain types:ThreadItem
+	rdfs:range types:ThreadItem
+	rdfs:seeAlso co:precededBy
+	owl:inverseOf types:threadSuccessor
+
+  threadPredecessor-subjects-shape
+	a sh:PropertyShape
+	sh:class types:ThreadItem
+	sh:nodeKind sh:IRI
+	sh:path types:threadPredecessor
+	sh:targetSubjectsOf types:threadPredecessor
+
+  threadPreviousItem
+	a owl:ObjectProperty
+	rdfs:subPropertyOf types:threadPredecessor
+    name: "threadPreviousItem"
+    description: >-
+      "A direct link to a previous item in a thread."
+	rdfs:seeAlso co:previousItem
+	owl:inverseOf types:threadNextItem
+
+  threadPreviousItem-subjects-shape
+	a sh:PropertyShape
+	sh:class types:ThreadItem
+	sh:nodeKind sh:IRI
+	sh:path types:threadPreviousItem
+	sh:targetSubjectsOf types:threadPreviousItem
+
+  threadSuccessor
+	a
+		owl:ObjectProperty ,
+		owl:TransitiveProperty
+		;
+    name: "threadSuccessor"
+    description: >-
+      "A link to a following item in a thread."
+	rdfs:domain types:ThreadItem
+	rdfs:range types:ThreadItem
+	rdfs:seeAlso co:followedBy
+
+  threadSuccessor-subjects-shape
+	a sh:PropertyShape
+	sh:class types:ThreadItem
+	sh:nodeKind sh:IRI
+	sh:path types:threadSuccessor
+	sh:targetSubjectsOf types:threadSuccessor
+
+  threadTerminalItem
+	a owl:ObjectProperty
+	rdfs:subPropertyOf co:item
+    name: "threadTerminalItem"
+    description: >-
+      "A link to an item of the thread known to have no successor."
+	rdfs:domain types:Thread
+	rdfs:range [
+		a owl:Class
+		owl:intersectionOf (
+			types:ThreadItem
+			[
+				a owl:Restriction
+				owl:onProperty types:threadNextItem
+				owl:cardinality "0"^^xsd:nonNegativeInteger
+			]
+		)
+	]
+	rdfs:seeAlso co:lastItem
+
+  threadTerminalItem-subjects-shape
+	a sh:PropertyShape
+	sh:class types:ThreadItem
+	sh:nodeKind sh:IRI
+	sh:path types:threadTerminalItem
+	sh:targetSubjectsOf types:threadTerminalItem
+
+  threadTerminalItem-subjects-threadNextItem-shape
+	a sh:PropertyShape
+	sh:description "A terminal item in a thread must not have a next item."
+	sh:maxCount "0"^^xsd:integer
+	sh:nodeKind sh:IRI
+	sh:path (
+		types:threadTerminalItem
+		types:threadNextItem
+	)
+	sh:targetSubjectsOf types:threadTerminalItem
+
+  threadTerminalItem-subjects-threadSuccessor-shape
+	a sh:PropertyShape
+	sh:description "A terminal item in a thread must not have a successor."
+	sh:maxCount "0"^^xsd:integer
+	sh:nodeKind sh:IRI
+	sh:path (
+		types:threadTerminalItem
+		types:threadSuccessor
+	)
+	sh:targetSubjectsOf types:threadTerminalItem
+
+  value
+	a owl:DatatypeProperty
+    name: "value"
+    description: >-
+      "A specific property value."
+	rdfs:range xsd:string
+

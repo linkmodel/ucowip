@@ -4,7 +4,7 @@ name: ucolink-observable
 description: >-
 license: https://www.apache.org/licenses/LICENSE-2.0
 
-version: 0.0.1  # sync with primary git repo release tag
+version: 1.0.0  # sync with primary git repo release tag
 
 ## ------------
 ##
@@ -35,7 +35,8 @@ prefixes:
   sosa: 'http://www.w3.org/ns/sosa/'         # Sensor, Observation, Sample, and Actuator
   ssn: 'https://www.w3.org/TR/vocab-ssn/#'   # Semantic sensor network ontology
   ssn-system: 'http://www.w3.org/ns/ssn/systems/'
-  sumo: 'w3id.org/sumo/kb/'
+  sumo: 'https://w3id.org/sumo/kb/'
+  WIKIDATA: 'https://www.wikidata.org/wiki/'
 
   action: 'https://ontology.unifiedcyberontology.org/uco/action/'
   configuration: 'https://ontology.unifiedcyberontology.org/uco/configuration/'

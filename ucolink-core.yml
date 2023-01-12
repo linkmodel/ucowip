@@ -5,7 +5,7 @@ description: >-
   This ontology defines classes and properties that are shared across the various UCO ontologies.  At a high-level, the UCO core ontology provides base classes, relationship-oriented classes, content-aggregation classes, and shared classes.
 license: https://www.apache.org/licenses/LICENSE-2.0
 
-version: 0.0.1  # sync with primary git repo release tag
+version: 1.0.0  # sync with primary git repo release tag
 
 ## ------------
 ##
@@ -23,10 +23,11 @@ version: 0.0.1  # sync with primary git repo release tag
 
 prefixes:
   baselink: 'https://w3id.org/baselink/vocab/'
-  csrc: 'https://csrc.nist.gov/glossary/term/'    # Computer Security Resource Center
+  # csrc: 'https://csrc.nist.gov/glossary/term/'    # Computer Security Resource Center
   linkml: 'https://w3id.org/linkml/'
   SIO: 'http://semanticscience.org/resource/SIO_'   # Semanticscience Integrated Ontology
-  sh: 'http://www.w3.org/ns/shacl#'
+  sumo: 'https://w3id.org/sumo/kb/'
+  WIKIDATA: 'https://www.wikidata.org/wiki/'
 
 default_prefix: ucolink-core
 default_range: string
@@ -161,7 +162,7 @@ classes:
         required: true
     related_mappings:
       - baselink:ConfidenceLevel
-      - csrc:confidence_interval
+      # csrc:confidence_interval
 
   contextual compilation:
     description: >-
