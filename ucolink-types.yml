@@ -23,7 +23,14 @@ version: 1.0.0  # sync with primary git repo release tag
 prefixes:
   baselink: 'https://w3id.org/baselink/vocab/'
   co: 'http://purl.org/co/'
+  dwc: 'https://dwc.tdwg.org/terms/#dc:'    # Darwin core
+  ECO: 'https://evidenceontology.org/term/'  # Evidence Conclusion ontology
+  EDAM-DATA: 'http://edamontology.org/data_'
+  EFO: 'http://www.ebi.ac.uk/efo/'    # Experimental Facors ontology
   linkml: 'https://w3id.org/linkml/'
+  REPR: 'https://w3id.org/reproduceme#'     # reproduce me
+  SIO: 'http://semanticscience.org/resource/SIO_'   # Semanticscience Integrated Ontology
+  schema: 'https://schema.org/'    # W3C schema
   sumo: 'https://w3id.org/sumo/kb/'
   WIKIDATA: 'https://www.wikidata.org/wiki/'
 
@@ -77,6 +84,7 @@ types:
 
   time type:
     typeof: time
+    description: >-
     uri: xsd:dateTime
 
 ## ------------
@@ -85,7 +93,7 @@ types:
 classes:
 
   controlled dictionary:
-    is_a: types:Dictionary
+    is_a: dictionary
     name: "ControlledDictionary"
     description: >-
       "A controlled dictionary is a list of (term/key, value) pairs where each term/key exists no more than once and is constrained to an explicitly defined set of values."
@@ -93,7 +101,7 @@ classes:
       - entry
 
   controlled dictionary entry:
-    is_a: types:DictionaryEntry
+    is_a: dictionary entry
     name: "ControlledDictionaryEntry"
     description: >-
       "A controlled dictionary entry is a single (term/key, value) pair where the term/key is constrained to an explicitly defined set of values."
@@ -106,6 +114,14 @@ classes:
     slot_usage:
       entry:
         range: iri type
+    broad_mappings:
+      - WIKIDATA:Q23622
+      - GSSO:D016437
+      - NCIT:C49461
+      - sumo:Dictionary
+    exact_mappings:
+      - WIKIDATA:Q80585  # associative array
+      - WIKIDATA:Q20706915  # key-value store
 
   dictionary entry:
     is_a: core:UcoInherentCharacterizationThing
@@ -117,6 +133,8 @@ classes:
         required: true
       value:
         required: true
+    exact_mappings:
+      - WIKIDATA:Q4818718  # key-value pair
 
   hash:
     is_a: core:UcoInherentCharacterizationThing
@@ -129,109 +147,177 @@ classes:
       hashMethod:
         required: true
         range: HashNameEnum
+    exact_mappings:
+      - NCIT:C68725
+      - WIKIDATA:Q477202
 
+  thing mixin:
+    is_a: core:UcoThing
+    mixin: true
 
+  thread:
+    is_a: co:Bag
+    mixins:
+      - thing mixin
+    name: "Thread"
+    description: >-
+      "A semi-ordered array of items, that can be present in multiple copies.  Implemetation of a UCO Thread is similar to a Collections Ontology List, except a Thread may fork and merge - that is, one of its members may have two or more direct successors, and two or more direct predecessors."
+    disjoint_with: List
+    slots:
+      - Item
+
+  thread item:
+    is_a: co:item
+    mixins:
+      - thing mixin
+    name: "ThreadItem"
+    description: >-
+      "A ThreadItem is a member of a thread."
+    disjoint_with: ListItem
+    slots:
+      - ItemContent
+
+  a owl:Class
+                owl:intersectionOf (
+                        types:ThreadItem
+                        [
+                                a owl:Restriction
+                                owl:onProperty types:threadPreviousItem
+                                owl:cardinality "0"^^xsd:nonNegativeInteger
+                        ]
+                )
+
+  
 ## ------------
 ## SLOTS
 ## ------------
 slots:
 
+  Item:
+    range: thread item
+
+  ItemContent:
+    range: core:UcoObject
+
+  List:
+    range: co:List
+
+  ListItem:
+    range: co:ListItem
+
   Identifier:
     description: >-
       "An identifier is a string conformant to the specified UUID-based format for UCO object identifiers."
+    exact_mappings:
+      - dct:identifier
+      - EDAM-DATA:0842  # identifier
+      - EFO:id
+      - REPR:id
+      - schema:identifier
+      - SIO:000115          # identifier
+      - sumo:Identifier
+      - sumo:identityElement
+    narrow_mappings:
+      - dwc:eventID
+      - dwc:parentEventID
+      - dwc:identificationID
+      - dwc:systemID
+      # CSO:bicm-id
+      - SIO:000672    # is identifier for
+      - SIO:000674    # is unique identifier for
+      - ERO:0000044   # has inventory number
+      - ERO:0000480   # has_url
+      - NCIT:C94069   # resource provider identifier
+      - REPR:doi
+      - SIO:000328    # positional identifier
+      - SIO:000729    # record identifier
+      - schema:productID
+      - schema:taxID
+      - sumo:AccountID
+      - sumo:AlphaIDString
+      - sumo:AlphaNumericIDString
+      - sumo:AgentID
+      - sumo:CountryID
+      - sumo:CustomerID
+      - sumo:currencyCode
+      - sumo:DistrictID
 
-  NativeFormatString:
+  native format string:
     description: >-
       "Specifies data in its native format of some external language. The data may be encoded in Base64 per [RFC4648]. Data encoded in Base64 must be denoted as such using the encoded property."
+    related_mappings:
+      - SWO:0000741   # is encoded by
 
-  StructuredText:
+  structured text:
     description: >-
       "Expresses string-based data in some information structuring format (e.g., HTML5)."
+    broad_mappings:
+      - sumo:DigitalData
+      - WIKIDATA:Q128751  # source code
+    narrow_mappings:
+      - WIKIDATA:Q2053  # html5
+      - WIKIDATA:Q2115  # xml
+      - WIKIDATA:Q281876  # yaml
+      - WIKIDATA:Q1193600  # markdown
+      - WIKIDATA:Q1141412  # inifile
+      - WIKIDATA:Q1645574  # protobuf
+      - WIKIDATA:Q2063  # json
+      - WIKIDATA:Q2005  # javascript
 
-  Thread:
-    is_a:
-		co:Bag ,
-		core:UcoThing
-		;
+  thread:
+    is_a: co bag
+    mixins:
+      - thing mixin
     name: "Thread"
     description: >-
       "A semi-ordered array of items, that can be present in multiple copies.  Implemetation of a UCO Thread is similar to a Collections Ontology List, except a Thread may fork and merge - that is, one of its members may have two or more direct successors, and two or more direct predecessors."
-	owl:disjointWith co:List
-	sh:property [
-		sh:class types:ThreadItem
-		sh:path co:item
-	]
+    disjoint_with: co list
+    slots:
+      - item
 
-  ThreadItem
-    is_a:
-		co:Item ,
-		core:UcoThing
-		;
-    name: "ThreadItem"
-    description: >-
-      "A ThreadItem is a member of a thread."
-	owl:disjointWith co:ListItem
-	sh:property [
-		sh:class core:UcoObject
-		sh:path co:itemContent
-	]
-
-  entry
-	a owl:ObjectProperty
+  entry:
     name: "entry"
     description: >-
       "A dictionary entry."
-	rdfs:range types:DictionaryEntry
+    range: dictionary entry
 
-  hashMethod
-	a owl:DatatypeProperty
+  hashMethod:
     name: "hashMethod"
     description: >-
       "A particular cryptographic hashing method (e.g., MD5)."
-	rdfs:range [
-			owl:unionOf (
-			vocabulary:HashNameVocab
-			xsd:string
-		)
-	]
+    domain: vocabulary:HashNameVocab
+    range: string type
 
-  hashValue
-	a owl:DatatypeProperty
+  hashValue:
     name: "hashValue"
     description: >-
       "A cryptographic hash value."
-	rdfs:range xsd:hexBinary
+    range: hex binary type
 
-  key
-	a owl:DatatypeProperty
+  key:
     name: "key"
     description: >-
       "A key property of a single dictionary entry."
-	rdfs:range xsd:string
+    range: string type
 
-  threadNextItem
-	a owl:ObjectProperty
-	rdfs:subPropertyOf types:threadSuccessor
+  threadNextItem:
+    subproperty_of: threadSuccessor
     name: "threadNextItem"
     description: >-
       "The link to a next item in a thread."
-	rdfs:seeAlso co:nextItem
+    seeAlso: co:nextItem
 
-  threadNextItem-subjects-shape
-	a sh:PropertyShape
-	sh:class types:ThreadItem
-	sh:nodeKind sh:IRI
-	sh:path types:threadNextItem
-	sh:targetSubjectsOf types:threadNextItem
+  threadNextItem-subjects-shape:
+    is_a: thread item
+    range: iri type
 
-  threadOriginItem
-	a owl:ObjectProperty
-	rdfs:subPropertyOf co:item
+  threadOriginItem:
+    subproperty_of: Item
     name: "threadOriginItem"
     description: >-
       "A link to an item of the thread known to have no predecessor."
-	rdfs:domain types:Thread
-	rdfs:range [
+    domain: thread
+    range:
 		a owl:Class
 		owl:intersectionOf (
 			types:ThreadItem
@@ -242,7 +328,7 @@ slots:
 			]
 		)
 	]
-	rdfs:seeAlso co:firstItem
+    seeAlso: co:firstItem
 
   threadOriginItem-subjects-shape
 	a sh:PropertyShape
@@ -281,9 +367,9 @@ slots:
     name: "threadPredecessor"
     description: >-
       "The link to the preceding item in a thread."
-	rdfs:domain types:ThreadItem
-	rdfs:range types:ThreadItem
-	rdfs:seeAlso co:precededBy
+    domain types:ThreadItem
+    range types:ThreadItem
+    seeAlso co:precededBy
 	owl:inverseOf types:threadSuccessor
 
   threadPredecessor-subjects-shape
@@ -295,11 +381,11 @@ slots:
 
   threadPreviousItem
 	a owl:ObjectProperty
-	rdfs:subPropertyOf types:threadPredecessor
+    subPropertyOf types:threadPredecessor
     name: "threadPreviousItem"
     description: >-
       "A direct link to a previous item in a thread."
-	rdfs:seeAlso co:previousItem
+    seeAlso co:previousItem
 	owl:inverseOf types:threadNextItem
 
   threadPreviousItem-subjects-shape
@@ -317,9 +403,9 @@ slots:
     name: "threadSuccessor"
     description: >-
       "A link to a following item in a thread."
-	rdfs:domain types:ThreadItem
-	rdfs:range types:ThreadItem
-	rdfs:seeAlso co:followedBy
+    domain types:ThreadItem
+    range types:ThreadItem
+    seeAlso co:followedBy
 
   threadSuccessor-subjects-shape
 	a sh:PropertyShape
@@ -330,12 +416,12 @@ slots:
 
   threadTerminalItem
 	a owl:ObjectProperty
-	rdfs:subPropertyOf co:item
+    subPropertyOf co:item
     name: "threadTerminalItem"
     description: >-
       "A link to an item of the thread known to have no successor."
-	rdfs:domain types:Thread
-	rdfs:range [
+    domain types:Thread
+    range [
 		a owl:Class
 		owl:intersectionOf (
 			types:ThreadItem
@@ -346,7 +432,7 @@ slots:
 			]
 		)
 	]
-	rdfs:seeAlso co:lastItem
+    seeAlso co:lastItem
 
   threadTerminalItem-subjects-shape
 	a sh:PropertyShape
@@ -382,5 +468,5 @@ slots:
     name: "value"
     description: >-
       "A specific property value."
-	rdfs:range xsd:string
+    range xsd:string
 

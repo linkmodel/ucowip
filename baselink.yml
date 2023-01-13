@@ -29,6 +29,7 @@ prefixes:
   linkml: 'https://w3id.org/linkml/'
   CDAO: http://purl.obolibrary.org/obo/CDAO_     # Comparative data analysis ontology 
   COAR_RESOURCE: 'http://purl.org/coar/resource_type/'  # Controld Vocab/ResType
+  co: 'http://purl.org/co/'  # collections ontology
   CSO: 'https://cso.kmi.open.ac.uk/topics/'  # Computer Science Ontology (CSO)
   CTD: 'CTD: 'http://ctdbase.org/'  # Comparative Toxicogenomics Database
   dbo: 'https://dbpedia.org/ontology/'       # dbpedia ontology
@@ -380,6 +381,16 @@ types:
 
   computational sequence:
     typeof: string
+
+  item type:
+    uri: co:Item
+
+  bag type:
+    uri: co:Bag
+
+  list type:
+    uri: co:List
+
 
 ## ------------
 ## SLOTS
@@ -5849,6 +5860,11 @@ classes:
       - csrc:limited_dataset
       - csrc:Static_Analysis_Reference_Dataset
       - CSO:spatial_datasets
+
+  bag:
+    description: >-
+    is_a: dataset
+    range: 
 
   dataset distribution:
     is_a: information content entity
