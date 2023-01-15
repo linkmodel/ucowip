@@ -87,6 +87,12 @@ types:
     description: >-
     uri: xsd:dateTime
 
+  hex binary type:
+    uri: xsd:hexBinary
+    description: >-
+      "Represents arbitrary hex-encoded binary data"
+    base: hex
+
 ## ------------
 ## CLASSES
 ## ------------
@@ -177,17 +183,7 @@ classes:
     slots:
       - ItemContent
 
-  a owl:Class
-                owl:intersectionOf (
-                        types:ThreadItem
-                        [
-                                a owl:Restriction
-                                owl:onProperty types:threadPreviousItem
-                                owl:cardinality "0"^^xsd:nonNegativeInteger
-                        ]
-                )
 
-  
 ## ------------
 ## SLOTS
 ## ------------
@@ -242,13 +238,13 @@ slots:
       - sumo:currencyCode
       - sumo:DistrictID
 
-  native format string:
+  NativeFormatString:
     description: >-
       "Specifies data in its native format of some external language. The data may be encoded in Base64 per [RFC4648]. Data encoded in Base64 must be denoted as such using the encoded property."
     related_mappings:
       - SWO:0000741   # is encoded by
 
-  structured text:
+  StructuredText:
     description: >-
       "Expresses string-based data in some information structuring format (e.g., HTML5)."
     broad_mappings:
@@ -264,17 +260,6 @@ slots:
       - WIKIDATA:Q2063  # json
       - WIKIDATA:Q2005  # javascript
 
-  thread:
-    is_a: co bag
-    mixins:
-      - thing mixin
-    name: "Thread"
-    description: >-
-      "A semi-ordered array of items, that can be present in multiple copies.  Implemetation of a UCO Thread is similar to a Collections Ontology List, except a Thread may fork and merge - that is, one of its members may have two or more direct successors, and two or more direct predecessors."
-    disjoint_with: co list
-    slots:
-      - item
-
   entry:
     name: "entry"
     description: >-
@@ -286,7 +271,6 @@ slots:
     description: >-
       "A particular cryptographic hashing method (e.g., MD5)."
     domain: vocabulary:HashNameVocab
-    range: string type
 
   hashValue:
     name: "hashValue"
@@ -298,7 +282,6 @@ slots:
     name: "key"
     description: >-
       "A key property of a single dictionary entry."
-    range: string type
 
   threadNextItem:
     subproperty_of: threadSuccessor
@@ -307,166 +290,54 @@ slots:
       "The link to a next item in a thread."
     seeAlso: co:nextItem
 
-  threadNextItem-subjects-shape:
-    is_a: thread item
-    range: iri type
-
   threadOriginItem:
     subproperty_of: Item
     name: "threadOriginItem"
     description: >-
       "A link to an item of the thread known to have no predecessor."
     domain: thread
-    range:
-		a owl:Class
-		owl:intersectionOf (
-			types:ThreadItem
-			[
-				a owl:Restriction
-				owl:onProperty types:threadPreviousItem
-				owl:cardinality "0"^^xsd:nonNegativeInteger
-			]
-		)
-	]
+    # TODO: intersection of restriction
     seeAlso: co:firstItem
 
-  threadOriginItem-subjects-shape
-	a sh:PropertyShape
-	sh:class types:ThreadItem
-	sh:nodeKind sh:IRI
-	sh:path types:threadOriginItem
-	sh:targetSubjectsOf types:threadOriginItem
-
-  threadOriginItem-subjects-threadPredecessor-shape
-	a sh:PropertyShape
-	sh:description "An origin item in a thread must not have a predecessor."
-	sh:maxCount "0"^^xsd:integer
-	sh:nodeKind sh:IRI
-	sh:path (
-		types:threadOriginItem
-		types:threadPredecessor
-	)
-	sh:targetSubjectsOf types:threadOriginItem
-
-  threadOriginItem-subjects-threadPreviousItem-shape
-	a sh:PropertyShape
-	sh:description "An origin item in a thread must not have a previous item."
-	sh:maxCount "0"^^xsd:integer
-	sh:nodeKind sh:IRI
-	sh:path (
-		types:threadOriginItem
-		types:threadPreviousItem
-	)
-	sh:targetSubjectsOf types:threadOriginItem
-
-  threadPredecessor
-	a
-		owl:ObjectProperty ,
-		owl:TransitiveProperty
-		;
+  threadPredecessor:
+    transitive: true
     name: "threadPredecessor"
     description: >-
       "The link to the preceding item in a thread."
-    domain types:ThreadItem
-    range types:ThreadItem
-    seeAlso co:precededBy
-	owl:inverseOf types:threadSuccessor
+    domain: thread item
+    range: thread item
+    seeAlso: co:precededBy
+    inverse: threadSuccessor
 
-  threadPredecessor-subjects-shape
-	a sh:PropertyShape
-	sh:class types:ThreadItem
-	sh:nodeKind sh:IRI
-	sh:path types:threadPredecessor
-	sh:targetSubjectsOf types:threadPredecessor
-
-  threadPreviousItem
-	a owl:ObjectProperty
-    subPropertyOf types:threadPredecessor
+  threadPreviousItem:
+    subproperty_of: threadPredecessor
     name: "threadPreviousItem"
     description: >-
       "A direct link to a previous item in a thread."
-    seeAlso co:previousItem
-	owl:inverseOf types:threadNextItem
+    seeAlso: co:previousItem
+    inverse: threadNextItem
 
-  threadPreviousItem-subjects-shape
-	a sh:PropertyShape
-	sh:class types:ThreadItem
-	sh:nodeKind sh:IRI
-	sh:path types:threadPreviousItem
-	sh:targetSubjectsOf types:threadPreviousItem
-
-  threadSuccessor
-	a
-		owl:ObjectProperty ,
-		owl:TransitiveProperty
-		;
+  threadSuccessor:
+    transitive: true
     name: "threadSuccessor"
     description: >-
       "A link to a following item in a thread."
-    domain types:ThreadItem
-    range types:ThreadItem
-    seeAlso co:followedBy
+    domain: thread item
+    range: thread item
+    seeAlso: co:followedBy
 
-  threadSuccessor-subjects-shape
-	a sh:PropertyShape
-	sh:class types:ThreadItem
-	sh:nodeKind sh:IRI
-	sh:path types:threadSuccessor
-	sh:targetSubjectsOf types:threadSuccessor
-
-  threadTerminalItem
-	a owl:ObjectProperty
-    subPropertyOf co:item
+  threadTerminalItem:
+    subproperty_of: co:item
     name: "threadTerminalItem"
     description: >-
       "A link to an item of the thread known to have no successor."
-    domain types:Thread
-    range [
-		a owl:Class
-		owl:intersectionOf (
-			types:ThreadItem
-			[
-				a owl:Restriction
-				owl:onProperty types:threadNextItem
-				owl:cardinality "0"^^xsd:nonNegativeInteger
-			]
-		)
-	]
-    seeAlso co:lastItem
+    domain: thread
+    # TODO: range intersectionOf
+    seeAlso: co:lastItem
 
-  threadTerminalItem-subjects-shape
-	a sh:PropertyShape
-	sh:class types:ThreadItem
-	sh:nodeKind sh:IRI
-	sh:path types:threadTerminalItem
-	sh:targetSubjectsOf types:threadTerminalItem
-
-  threadTerminalItem-subjects-threadNextItem-shape
-	a sh:PropertyShape
-	sh:description "A terminal item in a thread must not have a next item."
-	sh:maxCount "0"^^xsd:integer
-	sh:nodeKind sh:IRI
-	sh:path (
-		types:threadTerminalItem
-		types:threadNextItem
-	)
-	sh:targetSubjectsOf types:threadTerminalItem
-
-  threadTerminalItem-subjects-threadSuccessor-shape
-	a sh:PropertyShape
-	sh:description "A terminal item in a thread must not have a successor."
-	sh:maxCount "0"^^xsd:integer
-	sh:nodeKind sh:IRI
-	sh:path (
-		types:threadTerminalItem
-		types:threadSuccessor
-	)
-	sh:targetSubjectsOf types:threadTerminalItem
-
-  value
-	a owl:DatatypeProperty
+  value:
     name: "value"
     description: >-
       "A specific property value."
-    range xsd:string
 
+...
