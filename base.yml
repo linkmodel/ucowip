@@ -1,11 +1,14 @@
 ---
-id: https://w3id.org/linkmodel/baselink
-name: Baselink
+id: https://w3id.org/lmodel/base
+name: base
+title: Base
 description: >-
   Entity and association taxonomy and datamodel for named thing abstractions.
 license: https://www.apache.org/licenses/LICENSE-2.0
+see_also:
+  - https://lmodel.github.io/base
 
-version: 0.0.1  # sync with primary git repo release tag
+version: 0.1.0  # sync with primary git repo release tag
 
 ## ------------
 ##
@@ -23,14 +26,14 @@ version: 0.0.1  # sync with primary git repo release tag
 
 prefixes:
   AML: 'https://w3id.org/i40/aml#'    # Automation machine learning
-  artarch: 'https://www.getty.edu/vow/AATFullDisplay?find=&logic=AND&note=&subjectid=' # art/arch thesarus
+  # artarch: 'https://www.getty.edu/vow/AATFullDisplay?find=&logic=AND&note=&subjectid='  # art/arch thesarus
   astrovocab: 'https://www.asc-csa.gc.ca/eng/resources/vocabulary/view.asp?id='  # astronautics vocab
-  baselink: 'https://w3id.org/baselink/vocab/'
+  base: 'https://w3id.org/lmodel/base/'
   linkml: 'https://w3id.org/linkml/'
-  CDAO: http://purl.obolibrary.org/obo/CDAO_     # Comparative data analysis ontology 
+  CDAO: 'http://purl.obolibrary.org/obo/CDAO_'     # Comparative data analysis ontology
   COAR_RESOURCE: 'http://purl.org/coar/resource_type/'  # Controld Vocab/ResType
   CSO: 'https://cso.kmi.open.ac.uk/topics/'  # Computer Science Ontology (CSO)
-  CTD: 'CTD: 'http://ctdbase.org/'  # Comparative Toxicogenomics Database
+  CTD: 'http://ctdbase.org/'  # Comparative Toxicogenomics Database
   dbo: 'https://dbpedia.org/ontology/'       # dbpedia ontology
   dct: 'http://purl.org/dc/terms/'
   dcat: 'http://www.w3.org/ns/dcat#'  # Data Catalog Vocabulary (DCAT)
@@ -80,8 +83,8 @@ prefixes:
   sosa: 'http://www.w3.org/ns/sosa/'         # Sensor, Observation, Sample, and Actuator
   ssn: 'https://www.w3.org/TR/vocab-ssn/#'   # Semantic sensor network ontology
   ssn-system: 'http://www.w3.org/ns/ssn/systems/'
-  sumo-wn: 'http://sigma.ontologyportal.org:8080/sigma/WordNet.jsp?POS=0&word='    # sumo wordnet
-  sumo: 'http://sigma.ontologyportal.org:8080/sigma/TreeView.jsp?flang=SUO-KIF&kb=SUMO&simple=yes&term='
+  sumo-wn: 'https://w3id.org/sumo/wn/'  # sumo wordnet
+  sumo: 'https://w3id.org/sumo/kb/'
   uco-core: 'https://unifiedcyberontology.org/ontology/uco/core#'  # Unified Cyber ontology
   uco-observable: 'https://unifiedcyberontology.org/ontology/uco/observable#'  # UCO-observable
   UO: 'http://purl.obolibrary.org/obo/UO_'     # Units of measurement ontology
@@ -89,9 +92,11 @@ prefixes:
   WIKIDATA_PROPERTY: 'https://www.wikidata.org/wiki/Property:'  # Wikidata Property - not a conventional namespace
   wgs: 'http://www.w3.org/2003/01/geo/wgs84_pos'    # Basic Geo (WGS84 lat/long) Vocabulary
   XAPI: 'http://ns.inria.fr/ludo/v1/docs/xapi.html#'  # Ludo xAPI
-
-default_prefix: baselink
+default_prefix: base
 default_range: string
+
+imports:
+  - linkml:types
 
 # 2. The following prefix maps are retrieved from the specified
 # contexts defined at https://prefixcommons.org/. The ordered
@@ -112,18 +117,157 @@ emit_prefixes:
   - SO
 
 ## ------------
+## TYPES
+## ------------
+
+types:
+  formula value:
+    uri: xsd:string
+    base: str
+    description: A formula
+    notes:
+      - Should be implemented as a stronger type
+
+  category type:
+    typeof: uriorcurie
+    description: >-
+      A primitive type in which the value denotes a class within the base model.
+      The value must be a URI or a CURIE. In a Neo4j representation, the value should
+      be the CURIE for the base class, for example base:Service. For an RDF representation,
+      the value should be a URI such as https://w3id.org/lmodel/base/vocab/Service
+    exact_mappings:
+      - NCIT:C115618    # Category Type
+      - schema:categoryCode
+      - sumo:categoryID
+    narrow_mappings:
+      - AML:InterfaceClass
+      - AML:RoleClass
+      - AML:SystemUnitClass
+      - schema:MapCategoryType
+      - schema:occupationalCode
+
+  iri type:
+    typeof: uriorcurie
+    description: >-
+      An IRI
+
+  label type:
+    typeof: string
+    description: >-
+      A string that provides a human-readable name for an entity
+
+  predicate type:
+    typeof: uriorcurie
+    description: >-
+      A CURIE from the base related_to hierarchy.
+      For example, base:related_to, base:causes, base:treats
+
+  narrative text:
+    typeof: string
+    description: >-
+      A string that provides a human-readable description of something
+    exact_mappings:
+      - sumo:NarrativeText
+    close_mappings:
+      - geolink:description
+      - schema:description
+
+  symbol type:
+    typeof: string
+    broad_mappings:
+      - sumo:SymbolicString
+
+  frequency value:
+    typeof: string
+    uri: UO:0000105    # frequency unit
+    exact_mappings:
+      - dct:Frequency
+      - schema:frequency
+      - sumo:FrequencyMeasure
+
+  percentage frequency value:
+    typeof: double
+    uri: UO:0000187    # percent
+    exact_mappings:
+      - schema:percent
+      - sumo-wn:per_centum
+      - WIKIDATA:Q11229  # percent
+
+  quotient:
+    aliases: ['ratio']
+    typeof: double
+    uri: UO:0010006
+    exact_mappings:
+      - WIKIDATA:Q13107493   # quotient
+    broad_mappings:
+      - schema:result
+    narrow_mappings:
+      - SIO:001018    # ratio: dimensionless quotient
+      - sumo:intelligenceQuotient
+      - sumo:compressionRatio
+      - sumo:contrastRatio
+      - sumo:dampingRatio
+      - sumo:operationRatio
+
+  unit:
+    typeof: string
+    uri: UO:0000000   # unit
+    id_prefixes:
+      - UO
+    broad_mappings:
+      - schema:unitText
+    exact_mappings:
+      - CTRL:Unit
+      - qud:Unit
+      - schema:unit
+      - sumo:UnitOfInformation
+    close_mappings:
+      - SIO:000074       # unit of measurement
+      - sumo:UnitOfMeasure
+    narrow_mappings:
+      - sumo:Bit
+      - sumo:Byte
+      - sumo:businessUnit
+      - sumo:UnitFn
+      - sumo:UnitOfAngularMeasure
+      - sumo:UnitOfArea
+      - sumo:UnitOfAtmosphericPressure
+      - sumo:UnitOfCurrency
+      - sumo:UnitOfDuration
+      - sumo:UnitOfFrequency
+      - sumo:UnitOfInformation
+      - sumo:UnitOfLength
+      - sumo:UnitOfMass
+      - sumo:UnitOfMeasure
+      - sumo:UnitOfMeasureMultiplier
+      - sumo:UnitOfTemperature
+      - sumo:UnitOfVolume
+      - WIKIDATA_PROPERTY:P8111  # recommended unit of measurement
+
+  time type:
+    typeof: time
+
+  computational sequence:
+    typeof: string
+
+## ------------
 ## ENUMS
 ## ------------
 
 enums:
 
-  DeploymentContextQualifierEnum:
-    reachable_from:
-      source_ontology: ''
-      source_nodes: []
-      is_direct: false
-      relationship_types:
-        - rdfs:subClassOf
+  PersonStatus:
+    permissible_values:
+      ALIVE:
+        description: the person is living
+        meaning: PATO:0001421 
+      DEAD:
+        description: the person is deceased
+        meaning: PATO:0001422
+      UNKNOWN:
+        description: the vital status is not known
+        todos:
+          - map this to an ontology
 
   DirectionQualifierEnum:
     permissible_values:
@@ -213,8 +357,8 @@ enums:
 
   RegulatorGuidelineEventEnum:
     description: >-
-      please consult with the Regulator guidelines as proposed in this document:
-      https://example.com/regulator.io/guideline
+      "please consult with the Regulator guidelines as proposed in this document,
+      https://example.com/regulator.io/guideline"
     permissible_values: {}
 
   RegulatorAdverseEventEnum:
@@ -222,7 +366,7 @@ enums:
       please consult with the Regulator guidelines.
     permissible_values:
       0:
-      1: 
+      1:
 
 ## ------------
 ## SUBSETS
@@ -239,153 +383,27 @@ subsets:
 
   samples:
     description: >-
-      Sample/csosample datamodel
-
-
-## ------------
-## TYPES
-## ------------
-
-imports:
-  - linkml:types
-
-types:
-
-  formula value:
-    uri: xsd:string
-    base: str
-    description: A formula
-    notes:
-      - Should be implemented as a stronger type
-
-  category type:
-    typeof: uriorcurie
-    description: >-
-      A primitive type in which the value denotes a class within the baselink model.
-      The value must be a URI or a CURIE. In a Neo4j representation, the value should
-      be the CURIE for the baselink class, for example baselink:Service. For an RDF representation,
-      the value should be a URI such as https://w3id.org/baselink/vocab/Service
-    exact_mappings:
-      - NCIT:C115618    # Category Type
-      - schema:categoryCode
-      - sumo:categoryID
-    narrow_mappings:
-      - AML:InterfaceClass
-      - AML:RoleClass
-      - AML:SystemUnitClass
-      - schema:MapCategoryType
-      - schema:occupationalCode
-
-  iri type:
-    typeof: uriorcurie
-    description: >-
-      An IRI
-
-  label type:
-    typeof: string
-    description: >-
-      A string that provides a human-readable name for an entity
-
-  predicate type:
-    typeof: uriorcurie
-    description: >-
-      A CURIE from the baselink related_to hierarchy.
-      For example, baselink:related_to, baselink:causes, baselink:treats
-
-  narrative text:
-    typeof: string
-    description: >-
-      A string that provides a human-readable description of something
-    exact_mappings:
-      - sumo:NarrativeText
-    close_mappings:
-      - geolink:description
-      - schema:description
-
-  symbol type:
-    typeof: string
-    broad_mappings:
-      - sumo:SymbolicString
-
-  frequency value:
-    typeof: string
-    uri: UO:0000105    # frequency unit
-    exact_mappings:
-      - dct:Frequency
-      - schema:frequency
-      - sumo:FrequencyMeasure
-  
-  percentage frequency value:
-    typeof: double
-    uri: UO:0000187    # percent
-    exact_mappings:
-      - schema:percent
-      - sumo-wn:per_centum
-      - WIKIDATA:Q11229  # percent
-
-  quotient:
-    aliases: ['ratio']
-    typeof: double
-    uri: UO:0010006
-    exact_mappings:
-      - WIKIDATA:Q13107493   # quotient
-    broad_mappings:
-      - schema:result
-    narrow_mappings:
-      - SIO:001018    # ratio: dimensionless quotient
-      - sumo:intelligenceQuotient
-      - sumo:compressionRatio
-      - sumo:contrastRatio
-      - sumo:dampingRatio
-      - sumo:operationRatio
-
-  unit:
-    typeof: string
-    uri: UO:0000000   # unit
-    id_prefixes:
-      - UO
-    broad_mappings:
-      - schema:unitText
-    exact_mappings:
-      - CTRL:Unit
-      - qud:Unit
-      - schema:unit
-      - sumo:UnitOfInformation
-    close_mappings:
-      - SIO:000074       # unit of measurement
-      - sumo:UnitOfMeasure
-    narrow_mappings:
-      - sumo:Bit
-      - sumo:Byte
-      - sumo:businessUnit
-      - sumo:UnitFn
-      - sumo:UnitOfAngularMeasure
-      - sumo:UnitOfArea
-      - sumo:UnitOfAtmosphericPressure
-      - sumo:UnitOfCurrency
-      - sumo:UnitOfDuration
-      - sumo:UnitOfFrequency
-      - sumo:UnitOfInformation
-      - sumo:UnitOfLength
-      - sumo:UnitOfMass
-      - sumo:UnitOfMeasure
-      - sumo:UnitOfMeasureMultiplier
-      - sumo:UnitOfTemperature
-      - sumo:UnitOfVolume
-      - WIKIDATA_PROPERTY:P8111  # recommended unit of measurement
-
-  time type:
-    typeof: time
-
-  computational sequence:
-    typeof: string
+      Sample datamodel
 
 ## ------------
 ## SLOTS
 ## ------------
 
 slots:
-
+  primary_email:
+    slot_uri: schema:email
+    description: The main email address of a person
+  birth_date:
+    slot_uri: schema:birthDate
+    range: date
+    description: Date on which a person is born
+  age_in_years:
+    range: integer
+    description: Number of years since birth
+  vital_status:
+    range: PersonStatus
+    description: living or dead status
+    
   ## --------------------
   ## ATTRIBUTE SLOTS
   ## --------------------
@@ -690,7 +708,7 @@ slots:
       - dct:isVersionOf
       - NCIT:C115618    # Category Type
       - NCIT:C42854    # Label Type Flag
-      - INO_0000154  # has interaction type
+      - INO:0000154  # has interaction type
       - SAN:QuantityKind
       - schema:publicationType
       - schema:Float
@@ -836,7 +854,7 @@ slots:
 
   base coordinate:
     is_a: sequence localization attribute
-    aliases: ['one-based','fully-closed']
+    aliases: ['one-based', 'fully-closed']
     description: >-
       A position in the base coordinate system. Base coordinates start at position 1 instead of position 0.
     range: integer
@@ -864,7 +882,6 @@ slots:
       - IAO:0000119    # definition source
       - sumo:identityElement
     exact_mappings:
-      - agrkb:primaryId
       - dct:identifier
       - EDAM-DATA:0842  # identifier
       - EFO:id
@@ -934,7 +951,6 @@ slots:
       - RO:0002473    # composed primarily of
       - IAO:0006011   # may be identical to
     exact_mappings:
-      - agrkb:soTermId
       - dct:type
       # DB_Object_Type
       - IAO:0000219    # denotes
@@ -960,13 +976,13 @@ slots:
     designates_type: true
     description: >-
       Name of the high level ontology class in which this entity is categorized. Corresponds to the label for the
-      baselink entity type class.
+      base entity type class.
        * In a neo4j database this MAY correspond to the neo4j label tag.
-       * In an RDF database it should be a baselink model class URI.
-      This field is multi-valued. It should include values for ancestors of the baselink class
+       * In an RDF database it should be a base model class URI.
+      This field is multi-valued. It should include values for ancestors of the base class
 
-      In an RDF database, nodes will typically have an rdf:type triples. This can be to the most specific baselink
-      class, or potentially to a class more specific than something in baselink.
+      In an RDF database, nodes will typically have an rdf:type triples. This can be to the most specific base
+      class, or potentially to a class more specific than something in base.
     is_class_field: true
     multivalued: true
     in_subset:
@@ -1047,7 +1063,6 @@ slots:
     description: >-
       Symbol for a particular thing
     exact_mappings:
-      - agrkb:symbol
       - SIO:000105    # symbol
       - IAO:0000028   # symbol
       - gvp:Symbol
@@ -1060,7 +1075,7 @@ slots:
 
   synonym:
     is_a: node property
-    aliases: [ 'alias' ]
+    aliases: ['alias']
     domain: named thing
     range: label type
     description: >-
@@ -1078,7 +1093,7 @@ slots:
       - OM:unofficialLabel
       - OM:unofficialAbbreviation
       # there is an interesting debate here: are these terms "narrower" a.k.a. more specialized instances of
-      # 'baselink:synonym' or should they be binned into their respective namesake class of mappings?
+      # 'base:synonym' or should they be binned into their respective namesake class of mappings?
       # namely, is 'EXO:hasExactSynonym' an instance 'exact_mappings', etc.
       - IAO:0000136    # is about
       - skos:altLabel
@@ -1240,7 +1255,7 @@ slots:
   ## Time
 
   timepoint:
-    aliases: [ 'duration' ]
+    aliases: ['duration']
     range: time type
     description: >-
       a point in time
@@ -1272,6 +1287,7 @@ slots:
       - dwc:eventDate
       - dwc:verbatimEventDate
       - dwc:relationshipEstablishedDate
+      - WIKIDATA:Q115748455  # date of change
 
   update date:
     is_a: node property
@@ -1447,7 +1463,7 @@ slots:
   dataset download url:
     is_a: node property
     domain: dataset
-    slot_uri: dcat:downloadURL
+    slot_uri: WIKIDATA_PROPERTY:P4945
 
   distribution download url:
     is_a: node property
@@ -1501,7 +1517,7 @@ slots:
       This property should be a comma-delimited list of author names. It is recommended that an author's name
       be formatted as "surname, firstname initial.".  Note that this property is a node annotation voicing
       the citation list of authorship which might typically otherwise be more completely documented in
-      baselink:PublicationToProviderAssociation defined edges which point to full details about an author
+      base:PublicationToProviderAssociation defined edges which point to full details about an author
       and possibly, some qualifiers which clarify the specific status of a given author in the publication.
     multivalued: true
     domain: publication
@@ -1773,7 +1789,7 @@ slots:
       see the association slot: 'regulator approval status.'
 
   administrative operation regulatory status world wide:
-    aliases: [ 'max phase' ]
+    aliases: ['max phase']
     description: >-
       An agglomeration of administrative operation regulatory status worldwide. Not specific to one regulator.
     exact_mappings:
@@ -1845,21 +1861,6 @@ slots:
       the qualifier ‘increased’ combines with a core concept of ‘Thing X’ and an aspect of ‘expression’ to express the composed concept ‘increased expression of Thing X’
       the qualifier ‘decreased’ combines with a core concept of ‘Plant X’ and an aspect of ‘abundance’ to express the composed concept ‘decreased abundance of Plant X’
 
-  mapped predicate:
-    description: >-
-      The predicate that is being replaced by the fully qualified representation of predicate + subject and object
-      qualifiers.  Only to be used in test data and mapping data to help with the transition to the fully qualified
-      predicate model. Not to be used in knowledge graphs.
-
-  deprecated predicate mappings:
-    description: >-
-      A collection of relationships that are not used in baselink, but have baselink patterns that can
-      be used to replace them.  This is a temporary slot to help with the transition to the fully qualified predicate
-      model in Baselink3.
-    multivalued: true
-    range: deprecated predicate mapping
-    inlined_as_list: true
-
   exact matches:
     description: >-
       A list of terms from different schemas or terminology systems that have
@@ -1880,43 +1881,6 @@ slots:
       a broader meaning. Such terms often describe a more general concept
       from different ontological perspectives.
     multivalued: true
-
-  subject aspect qualifier:
-    is_a: aspect qualifier
-
-  subject form or variant qualifier:
-    is_a: form or variant qualifier
-
-  subject part qualifier:
-    is_a: part qualifier
-
-  subject derivative qualifier:
-    is_a: derivative qualifier
-
-  subject context qualifier:
-    is_a: context qualifier
-
-  subject direction qualifier:
-    is_a: direction qualifier
-
-  object aspect qualifier:
-    is_a: aspect qualifier
-
-  object form or variant qualifier:
-    is_a: form or variant qualifier
-
-  object part qualifier:
-    is_a: part qualifier
-
-  object derivative qualifier:
-    is_a: derivative qualifier
-
-  object context qualifier:
-    is_a: context qualifier
-
-  object direction qualifier:
-    is_a: direction qualifier
-    range: DirectionQualifierEnum
 
   qualified predicate:
     is_a: association slot
@@ -1945,16 +1909,6 @@ slots:
       A statement qualifier representing a type of operational control mechanism through which an
       effect of a control on a class or subclasses is mediated (e.g. 'agonism', 'inhibition',
       'modulation', 'blocker')
-
-  deployment context qualifier:
-    is_a: statement qualifier
-    description: >-
-      A statement qualifier representing an deployment location where an relationship expressed in an
-      association took place.
-    range: DeploymentContextQualifierEnum
-    notes: >-
-      Deployment context values can be any term from ????. See DeploymentContextQualifierEnum for more
-      details.
 
   qualifiers:
     singular_name: qualifier
@@ -2028,9 +1982,9 @@ slots:
     # path: "object/during"
     examples: []
 
-## --------------------
-## PREDICATES/RELATIONS
-## --------------------
+  ## --------------------
+  ## PREDICATES/RELATIONS
+  ## --------------------
 
   related to:
     description: >-
@@ -2060,7 +2014,7 @@ slots:
       - dwc:ResourceRelationship
     narrow_mappings:
       - AML:contains
-      - BFO:0000054    # realized in
+      - BFO:0000054  # realized in
       - CSO:semantic_relatedness
       - csrc:Relatively_prime
       - CTRL:isConnectedTo
@@ -2263,7 +2217,7 @@ slots:
       (though not in all cases), and is weaker than its child, 'correlated with', but stronger than its parent,
       'related to'. This relationship holds between two concepts represented by variables for which a statistical
       dependence is demonstrated. E.g. the statement “A is associated with B"
-      asserts that having A is not statistically independent from whether a patient 
+      asserts that having A is not statistically independent from whether a patient
       will also have B. Note that in Translator associations, the subject and object concepts may map exactly to
       the statistical variables, or represent related entities for which the variables serve as proxies in an
       Association (e.g. faults, contro entities or processes)
@@ -2284,7 +2238,7 @@ slots:
       holds between two classes where the domain class is a super class of the range class
     domain: ontology class
     range: ontology class
-    multivalued: True
+    multivalued: true
     inverse: subclass of
     in_subset:
       - translator_minimal
@@ -2493,7 +2447,7 @@ slots:
   opposite of:
     description: >-
       An opposite can be the other side of, reverse of, or something
-      contrary to anything, not just words. Completely different. 
+      contrary to anything, not just words. Completely different.
     is_a: related to at instance level
     symmetric: true
     annotations:
@@ -2960,7 +2914,7 @@ slots:
     annotations:
       canonical_predicate: true
     broad_mappings:
-      - PATO:0000085 # sensitivity toward
+      - PATO:0000085  # sensitivity toward
     narrow_mappings: []
 
   sensitivity associated with:
@@ -2995,8 +2949,8 @@ slots:
     annotations:
       canonical_predicate: true
     close_mappings:
-      - NCIT:C15220 # diagnosis
-      - SIO:001331 # diagnosis
+      - NCIT:C15220  # diagnosis
+      - SIO:001331  # diagnosis
     exact_mappings: []
 
   is diagnosed by:
@@ -3157,7 +3111,7 @@ slots:
 
   disrupts:
     is_a: affects
-    aliases: [ 'fault causes disruption of' ]
+    aliases: ['fault causes disruption of']
     description: >-
       describes a relationship where one entity degrades or interferes
       with the structure, function, or occurrence of another.
@@ -3383,7 +3337,7 @@ slots:
       - RO:0002325  # colocalizes with
 
   # Despite the name, note that this particular entity is
-  # NOT a baselink:Association but rather, a baselink:predicate
+  # NOT a base:Association but rather, a base:predicate
   inheritance association:
     is_a: related to at instance level
     symmetric: true
@@ -3411,7 +3365,7 @@ slots:
 
   condition associated with class:
     is_a: inheritance association
-    aliases: [ 'fault associated with class' ]
+    aliases: ['fault associated with class']
     description: >-
       holds between a class and a fault or observable feature that the class or its subclasses may influence,
       contribute to, or correlate with
@@ -3521,8 +3475,8 @@ slots:
       holds between two entities where the occurrence, existence,
       or activity of one is caused by the occurrence or generation of the other
     is_a: related to at instance level
-    aliases: [ 'fault caused by disruption of', 'fault has basis in dysfunction of',
-               'realized in response to', 'realized in response to stimulus' ]
+    aliases: ['fault caused by disruption of', 'fault has basis in dysfunction of',
+              'realized in response to', 'realized in response to stimulus']
     in_subset:
       - translator_minimal
     inverse: causes
@@ -3583,7 +3537,7 @@ slots:
       - translator_minimal
 
   treats:
-    aliases: [ 'is substance that treats', 'indicated for' ]
+    aliases: ['is substance that treats', 'indicated for']
     is_a: ameliorates
     description: >-
       holds between a therapeutic procedure or control entity
@@ -3804,7 +3758,6 @@ slots:
       - SIO:001279    # has observable feature
       - RO:0002200    # has observable feature
     narrow_mappings:
-      - DOID-PROPERTY:has_symptom
       - RO:0002200  # has phenotype
 
   observation of:
@@ -3812,7 +3765,7 @@ slots:
     domain: observable feature
     range: computational entity
     multivalued: true
-    inverse: has observable feature
+    inverse: has observation
 
   # TODO: predicate inverse for occurs in
   occurs in:
@@ -3902,7 +3855,7 @@ slots:
       canonical_predicate: true
     exact_mappings:
       - RO:HOM0000000    # I don't understand this identifier, but I think it's equivalent
-      - SO:similar_to               #equivalent
+      - SO:similar_to    # equivalent
 
   has sequence location:
     is_a: related to at instance level
@@ -3957,7 +3910,7 @@ slots:
       canonical_predicate: true
     exact_mappings:
       - RO:0002131    # overlaps
-    narrow_mappings: []
+    narrow_mappings:
       - SIO:000325  # overlaps with
 
   has part:
@@ -3994,7 +3947,7 @@ slots:
       - RO:0002473    # composed primarily of
       - RO:0002524    # has subsequence
 
-  composed_primarily_of:
+  composed primarily of:
     is_a: related to
     description: >-
       x composed_primarily_of_y if:more than half of the mass of x is made from parts of y.
@@ -4049,7 +4002,7 @@ slots:
     in_subset:
       - translator_minimal
     close_mappings:
-      # RTX inverse mapping to to 'baselink:has_input'
+      # RTX inverse mapping to to 'base:has_input'
       - RO:0002352    # input of
     exact_mappings:
       - RO:0002233    # has input
@@ -4079,7 +4032,7 @@ slots:
     in_subset:
       - translator_minimal
     close_mappings:
-      # RTX inverse mapping to to 'baselink:has_output'
+      # RTX inverse mapping to to 'base:has_output'
       - RO:0002353    # output of
       - RO:0002354    # formed as result of
     exact_mappings:
@@ -4116,9 +4069,9 @@ slots:
       - RO:has_participant
     narrow_mappings:
       - BFO:0000167    # has participant at all times
-      # Several of the following RTX terms tagged as inverse to 'baselink:participates_in'
+      # Several of the following RTX terms tagged as inverse to 'base:participates_in'
       - LOINC:has_subject
-      # RTX mapped the following term as 'baselink:superclass_of' but term seem compositional in nature
+      # RTX mapped the following term as 'base:superclass_of' but term seem compositional in nature
       # has_group
       # has_state transition
       - RO:0004007    # has primary input or output
@@ -4162,7 +4115,7 @@ slots:
 
   actively involved in:
     is_a: participates in
-    aliases: ['involved in',]
+    aliases: ['involved in']
     description: >-
       holds between a continuant and a process or function, where
       the continuant actively contributes to part or all of
@@ -4230,7 +4183,7 @@ slots:
     description: >-
       holds between a process and an entity, where the entity executes the process
     domain: computational process or activity
-    range: named thing  # check
+    range: system entity
     in_subset:
       - translator_minimal
     inverse: enables
@@ -4272,7 +4225,6 @@ slots:
       - RO:0001000    # derives from
       - RO:derives_from
     narrow_mappings: []
-      # has_functional_parent
 
   is controller of:
     is_a: derives from
@@ -4421,7 +4373,7 @@ slots:
     description: >-
       Relates a fault or observable feature to its observed inheritance classes
     domain: fault or observable feature
-    range: genetic inheritance
+    range: inheritance
     annotations:
       # This canonical order reverses that of its parent 'has manifestation' class
       # but seems a more natural direction in the pertinent edge relationships.
@@ -4445,7 +4397,6 @@ slots:
       - sumo:produced
       - WIKIDATA_PROPERTY:P1056  # product or material produced
     narrow_mappings: []
-      # has_process_output
 
   produced by:
     is_a: related to at instance level
@@ -4480,7 +4431,6 @@ slots:
     annotations:
       canonical_predicate: true
     exact_mappings: []
-      # temporally_related_to
     narrow_mappings:
       # The These RTX mappings are temporal in nature, but not with precedes ordering, so mapped here
       - RO:0002082    # simultaneous with
@@ -4603,7 +4553,7 @@ slots:
 
   has adverse event:
     is_a: affects
-    aliases: [ 'adverse effect']
+    aliases: ['adverse effect']
     description: >-
       An untoward occurrence in an entity or empirical investigation subject that happens during restoration
       with an agent. Adverse events may be caused by something other than the administrative
@@ -4622,7 +4572,7 @@ slots:
     inverse: has adverse event
 
   has side effect:
-    aliases: [ 'adverse administrative operation reaction']
+    aliases: ['adverse administrative operation reaction']
     is_a: affects
     description: >-
       An unintended, but predictable, secondary effect shown to be correlated with a therapeutic agent, administrative
@@ -4635,7 +4585,7 @@ slots:
     annotations:
       canonical_predicate: true
     exact_mappings:
-      - NCIT:C2861 # side effect
+      - NCIT:C2861  # side effect
 
   is side effect of:
     is_a: affected by
@@ -4718,7 +4668,7 @@ slots:
     broad_mappings:
       - sumo:lacks
     exact_mappings:
-      - INO_0000139    # lacks part
+      - INO:0000139    # lacks part
     narrow_mappings:
       - CSO:incomplete_information_systems
 
@@ -4731,7 +4681,7 @@ slots:
     annotations:
       canonical_predicate: true
     close_mappings:
-      # RTX mapping seems to be inverse of 'baselink:develops_from'
+      # RTX mapping seems to be inverse of 'base:develops_from'
       - RO:0002203    # develops into
     exact_mappings:
       - BTO:develops_from
@@ -4748,7 +4698,12 @@ slots:
     inverse: develops from
 
   in taxon:
-    aliases: [ 'instance of', 'is system source of subclasses', 'system has class', 'class found in system','subclasses has system source' ]
+    aliases:
+      - 'instance of'
+      - 'is system source of subclasses'
+      - 'system has class'
+      - 'class found in system'
+      - 'subclasses has system source'
     is_a: related to at instance level
     domain: thing with taxon
     range: system taxon
@@ -4789,14 +4744,19 @@ slots:
     domain: ontology class
     inverse: has operational consequence
 
-## --------------------
-## ASSOCIATION SLOTS
-## --------------------
+  ## --------------------
+  ## ASSOCIATION SLOTS
+  ## --------------------
 
   association slot:
     abstract: true
     domain: association
-    aliases: ['edge property','statement property','node qualifier','edge qualifier','statement qualifier']
+    aliases:
+      - 'edge property'
+      - 'statement property'
+      - 'node qualifier'
+      - 'edge qualifier'
+      - 'statement qualifier'
     description: >-
       any slot that relates an association to another entity
 
@@ -4804,20 +4764,20 @@ slots:
     is_a: association slot
     description: >-
       used to hold the original subject of a relation (or predicate) that an external knowledge
-      source uses before transformation to match the baselink model specification.
+      source uses before transformation to match the base model specification.
 
   original_object:
     is_a: association slot
     description: >-
       used to hold the original object of a relation (or predicate) that an external knowledge
-      source uses before transformation to match the baselink model specification.
+      source uses before transformation to match the base model specification.
 
   original_predicate:
     aliases: ['original relation', 'relation']
     is_a: association slot
     description: >-
       used to hold the original relation/predicate that an external knowledge
-      source uses before transformation to match the baselink model specification.
+      source uses before transformation to match the base model specification.
     id_prefixes:
       - RO
       - SIO
@@ -4876,7 +4836,7 @@ slots:
       Has a value from the Baselink related_to hierarchy. In RDF,  this
       corresponds to rdf:predicate and in Neo4j this corresponds to the
       relationship type. The convention is for an edge label in snake_case
-      form. For example, baselink:related_to, baselink:causes, baselink:restores
+      form. For example, base:related_to, base:causes, base:restores
     range: predicate type
     required: true
     local_names:
@@ -5154,7 +5114,7 @@ slots:
       assuming that the actual value was the result of chance alone.
     range: integer
     examples:
-        - value: 15
+      - value: 15
 
   supporting document type:
     is_a: association slot
@@ -5245,7 +5205,7 @@ slots:
 
   sequence localization attribute:
     is_a: association slot
-    domain: workload sequence localization
+    domain: named thing
     description: >-
       An attribute that can be applied to a workload sequence localization edge. These edges
       connect a workload entity to another entity. Edge properties are used
@@ -5253,7 +5213,7 @@ slots:
 
   start coordinate:
     is_a: base coordinate
-    aliases: [ 'start' ]
+    aliases: ['start']
     description: >-
       The position at which the subject workload entity starts
       on the entity to which it is located on.
@@ -5262,7 +5222,7 @@ slots:
 
   end coordinate:
     is_a: base coordinate
-    aliases: [ 'end' ]
+    aliases: ['end']
     description: >-
       The position at which the subject workload entity ends
       on the entity to which it is located on.
@@ -5332,40 +5292,37 @@ slots:
 
 classes:
 
-  deprecated mapping collection:
+  NamedThing:
     description: >-
-      A collection of deprecated mappings.
-    abstract: true
+      A generic grouping for any identifiable entity
     slots:
-      - deprecated predicate mappings
+      - id
+      - name
+      - description
+    class_uri: schema:Thing
+
+  Person:
+    is_a: NamedThing
+    description: >-
+      Represents a Person
+    slots:
+      - primary_email
+      - birth_date
+      - age_in_years
+      - vital_status
+    slot_usage:
+      primary_email:
+        pattern: "^\\S+@[\\S+\\.]+\\S+"
+        
+  PersonCollection:
     tree_root: true
-
-  deprecated predicate mapping:
     description: >-
-      A deprecated predicate mapping object contains the deprecated predicate and an example of the rewiring that should
-      be done to use a qualified statement in its place.
-    slots:
-      - mapped predicate
-      - subject aspect qualifier
-      - subject direction qualifier
-      - subject form or variant qualifier
-      - subject part qualifier
-      - subject derivative qualifier
-      - subject context qualifier
-      - predicate
-      - qualified predicate
-      - object aspect qualifier
-      - object direction qualifier
-      - object form or variant qualifier
-      - object part qualifier
-      - object derivative qualifier
-      - object context qualifier
-      - causal mechanism qualifier
-      - deployment context qualifier
-      - exact match
-      - narrow match
-      - broad match
-
+      A holder for Person objects
+    attributes:
+      entries:
+        range: Person
+        multivalued: true
+        inlined: true
 
   ## ----------
   ## ATTRIBUTES
@@ -5379,16 +5336,16 @@ classes:
       - id
     description: >-
       a concept or class in an ontology, vocabulary or thesaurus. Note that nodes in
-      a baselink compatible KG can be considered both instances of baselink classes, and
+      a base compatible KG can be considered both instances of base classes, and
       OWL classes in their own right. In general you should not need to use this class directly.
-      Instead, use the appropriate baselink class.
+      Instead, use the appropriate base class.
     exact_mappings:
       - owl:Class
       - schema:Class
     comments:
       - >-
          This is modeled as a mixin. 'ontology class' should not be the primary type of a
-         node in the KG. Instead you should use an informative csoloink category, such as DeploymentEntity
+         node in the KG. Instead you should use an informative base category, such as DeploymentEntity
       - >-
          Note that formally this is a metaclass. Instances of this class are instances in the graph,
          but can be the object of 'type' edges.
@@ -5400,6 +5357,8 @@ classes:
     description: >-
       Baselink Model root class for entity annotations.
     abstract: true
+    exact_mappings:
+      - WIKIDATA:Q857525
 
   quantity value:
     is_a: annotation
@@ -5410,7 +5369,7 @@ classes:
       - has unit
       - has numeric value
 
-  # Alignment attempted of the baselink:Attribute model
+  # Alignment attempted of the base:Attribute model
   # to the proposed TRAPI Release 1.1 Attribute schema, i.e.
   #
   # attribute_name: "assertionAuthoredBy",
@@ -5591,13 +5550,14 @@ classes:
   named thing:
     is_a: entity
     description: a databased entity or concept/class
+    class_uri: schema:Thing
     slots:
       - provided by
       - xref
     slot_usage:
       category:
         required: true
-        pattern: '^baselink:\d+$'
+        pattern: '^base:\d+$'
     exact_mappings:
       - BFO:0000001    # entity
       - WIKIDATA:Q35120    # entity
@@ -5643,7 +5603,7 @@ classes:
     in_subset:
       - model_system_database
 
-    ## Temporal Entities
+  ## Temporal Entities
 
   event:
     is_a: named thing
@@ -5687,7 +5647,7 @@ classes:
     is_a: information content entity
     description: a variable that is used as a measure in the investigation of a study
     narrow_mappings:
-      - NCIT:C142192 # specifies clinical study
+      - NCIT:C142192  # specifies clinical study
     close_mappings:
       - STATO:0000258  # variable
       - SIO:000367  # variable
@@ -5703,21 +5663,6 @@ classes:
       - NCIT:C19984  # common data element
 
   ## epc result sets
-  concept count analysis result:
-    is_a: study result
-    description: >-
-      A result of a concept count analysis.
-
-  observed expected frequency analysis result:
-    is_a: study result
-    description: >-
-      A result of a observed expected frequency analysis.
-
-  relative frequency analysis result:
-    is_a: study result
-    description: >-
-      A result of a relative frequency analysis.
-
   text mining result:
     is_a: study result
     description: >-
@@ -5961,7 +5906,7 @@ classes:
           Wikidata (https://www.wikidata.org/wiki/Wikidata:Publication_types), or
           equivalent publication type ontology. When a given publication type ontology term
           is used within a given knowledge graph, then the CURIE identified term must be
-          documented in the graph as a concept node of baselink:category baselink:OntologyClass.
+          documented in the graph as a concept node of base:category base:OntologyClass.
         values_from:  # Not sure which takes precedence, if any...
           - dctypes
           - LCSH
@@ -6096,8 +6041,8 @@ classes:
     description: >-
       A processual entity that has temporal parts and happens,
       unfolds or develops through time. Occurrents have phases.
-    # baselink:Occurrent is most consistently used as a mixin thus it should
-    # be declared as such and cannot inherit from the non-mixin baselink:NamedThing
+    # base:Occurrent is most consistently used as a mixin thus it should
+    # be declared as such and cannot inherit from the non-mixin base:NamedThing
     is_a: tangible essence or occurrent
     mixin: true
     exact_mappings:
@@ -6114,7 +6059,6 @@ classes:
     broad_mappings:
       - dct:behavior
     exact_mappings: []
-      # Activities & Behaviors
 
   activity:
     is_a: named thing
@@ -6568,7 +6512,7 @@ classes:
       An execution of a operational function carried out by a
       subclasses or assembly complex.
     is_a: computational process or activity
-    aliases: [ 'operational function', 'operational event', 'reaction' ]
+    aliases: ['operational function', 'operational event', 'reaction']
     mixins:
       - occurrent
       - ontology class
@@ -6890,7 +6834,7 @@ classes:
     description: >-
       A disorder of structure or function, especially one that produces specific
       signs, observable features or symptoms or that affects a specific location and is not simply a
-      direct result of injury. 
+      direct result of injury.
     is_a: fault or observable feature
     related_mappings:
       - CSO:error_concealment
@@ -6962,15 +6906,15 @@ classes:
       - model_system_database
 
   observable feature:
-    aliases: ['sign', 'symptom', 'observable feature', 'trait', 'condition']
+    aliases: ['sign', 'symptom', 'observable', 'trait', 'condition']
     is_a: fault or observable feature
     description: >-
       A combination of entity and quality that makes up a observation statement. An observable characteristic of an
       element resulting from the interaction of its observable feature with its operational and tangible environment.
     broad_mappings:
-      - BFO:0000019 # quality
-      - PATO:0000001 # quality
-      - CSO:observable feature
+      - BFO:0000019  # quality
+      - PATO:0000001  # quality
+      - CSO:observability
       - sumo:ObservationAndMonitoring
     related_mappings:
       - csrc:Feature_set
@@ -6997,7 +6941,7 @@ classes:
       - WIKIDATA:Q1207505    # quality
     id_prefixes:
       - CVE
-      - EFO # covered by BFO quality mapping
+      - EFO  # covered by BFO quality mapping
       - NCIT
       - LCSH
     in_subset:
@@ -7139,7 +7083,7 @@ classes:
     is_a: computational entity
     mixins:
       - class or subclasses
-      - workoad entity
+      - workload entity
       - control entity or class or subclasses
       - tangible essence
       - ontology class
@@ -7389,7 +7333,7 @@ classes:
     is_a: attribute
     description: >-
       Attributes relating to a socioeconomic manifestation
-    #slot_usage:
+    # slot_usage:
     # need a suitable qualifying socioeconomic ontology target here?
     # Perhaps some subset of ECTO: https://github.com/EnvironmentOntology/environmental-exposure-ontology
     #  has attribute type:
@@ -7431,7 +7375,7 @@ classes:
       - NCIT:C61512    # cohort
       - STATO:0000203   # cohort
       - WIKIDATA:Q1303415  # cohort
-    narrow_mappings: []
+    narrow_mappings:
       - NCIT:C20587  # age group
 
   ## Exposures
@@ -7467,8 +7411,8 @@ classes:
       - thing with taxon
       - ontology class
     description: >-
-      A workload background exposure is where an individual's specific workoad background
-      of named things, sequences or other pre-existing workoad conditions constitute
+      A workload background exposure is where an individual's specific workload background
+      of named things, sequences or other pre-existing workload conditions constitute
       a kind of 'exposure' to the system, leading to or influencing an outcome.
 
   faulty entity mixin:
@@ -7702,7 +7646,7 @@ classes:
     description: >-
       A typed association between two entities, supported by evidence
     comments:
-      - This is roughly the model used by baselink and ontobio at the moment
+      - This is roughly the model used by base and ontobio at the moment
     slots:
       - subject
       - predicate
@@ -7717,7 +7661,7 @@ classes:
       - timepoint
     slot_usage:
       type:
-        description: rdf:type of baselink:Association should be fixed at rdf:Statement
+        description: rdf:type of base:Association should be fixed at rdf:Statement
       category:
         range: category type
         required: false
@@ -7933,7 +7877,6 @@ classes:
       where the presence of the control gives rise to or exacerbates the observable feature.
     is_a: association
     narrow_mappings: []
-      # computational-failure association
     defining_slots:
       - subject
       - object
@@ -7944,24 +7887,6 @@ classes:
       object:
         range: fault or observable feature
         description: "the fault or observable feature that is affected by the control"
-
-  control or system operation or repairing to fault or observable feature association:
-    description: >-
-      This association defines a relationship between a control or repairing (or procedure) and a fault or observable feature
-      where the fault or observable feature is a secondary undesirable effect.
-    is_a: association
-    defining_slots:
-      - subject
-      - predicate
-      - object
-    mixins:
-      - control to entity association mixin
-      - entity to fault or observable feature association mixin
-    slots:
-      - regulator adverse event level
-    slot_usage:
-      predicate:
-        subproperty_of: has adverse event
 
   class to pathway association:
     description: >-
@@ -8051,7 +7976,7 @@ classes:
       An association between an exposure event and a fault.
     is_a: association
     mixins:
-      - faul to entity association mixin
+      - fault to entity association mixin
       - entity to exposure event association mixin
     defining_slots:
       - subject
@@ -8204,7 +8129,7 @@ classes:
       - service type to entity association mixin
     slot_usage:
       predicate:
-        subproperty_of: has observable feature
+        subproperty_of: has observation
       subject:
         range: service type
         description: >-
@@ -8388,88 +8313,6 @@ classes:
           a fault that is associated with that service type
         examples: []
 
-  model to fault association mixin:
-    description: >-
-      This mixin is used for any association class for which the subject
-      (source node) plays the role of a 'model', in that it recapitulates some
-      features of the fault in a way that is useful for studying the fault
-      outside a entity carrying the fault
-    mixin: true
-    slot_usage:
-      subject:
-        description: >-
-          The entity that serves as the model of the fault. This may be
-          a system, a strain of system, a service type or variant that exhibits
-          similar features, or a class that when migrated exhibits features of the fault
-      predicate:
-        subproperty_of: model of
-        description: >-
-          The relationship to the fault
-
-  class as a model of fault association:
-    is_a: class to fault association
-    defining_slots:
-      - subject
-      - predicate
-      - object
-    mixins:
-      - model to fault association mixin
-      - entity to fault association mixin
-    slot_usage:
-      subject:
-        range: class or subclasses
-        description: >-
-          A class that has a role in modeling the fault. This may be a model
-          system ortholog of a known fault class, or it may be a class whose
-          mutants recapitulate core features of the fault.
-
-  service type as a model of fault association:
-    is_a: service type to fault association
-    defining_slots:
-      - subject
-      - predicate
-      - object
-    mixins:
-      - model to fault association mixin
-      - entity to fault association mixin
-    slot_usage:
-      subject:
-        range: service type
-        description: >-
-          A service type that has a role in modeling the fault.
-
-  component type as a model of fault association:
-    is_a: component type to fault or observable feature association
-    defining_slots:
-      - subject
-      - predicate
-      - object
-    mixins:
-      - model to fault association mixin
-      - entity to fault association mixin
-    slot_usage:
-      subject:
-        range: component type
-        description: >-
-          A component type derived from an system entity with a fault state that is used
-          as a model of that fault.
-
-  system entity as a model of fault association:
-    is_a: association
-    defining_slots:
-      - subject
-      - predicate
-      - object
-    mixins:
-      - model to fault association mixin
-      - entity to fault association mixin
-    slot_usage:
-      subject:
-        range: system entity
-        description: >-
-          A system entity with a predisposition to a fault, or created
-          specifically to model a fault.
-
   system to system association:
     is_a: association
     defining_slots:
@@ -8508,7 +8351,6 @@ classes:
       An association between a class and an expression site,
       possibly qualified by stage/timing info.
     notes: []
-    see_also: ''
     slots:
       - stage qualifier
       - quantifier qualifier
@@ -8565,7 +8407,7 @@ classes:
   assembly to operational activity association:
     description: >-
       A functional association between a assembly (class,
-      subclasses or complex) and a operational activity 
+      subclasses or complex) and a operational activity
       where the entity
       carries out the activity, or contributes to its execution.
     is_a: functional association
@@ -8622,111 +8464,6 @@ classes:
   ## -----------------
   ## SEQUENCE FEATURES
   ## -----------------
-
-  sequence association:
-    is_a: association
-    description: >-
-      An association between a sequence feature and a workload entity it is localized to.
-
-  workload sequence localization:
-    is_a: sequence association
-    description: >-
-      A relationship between a sequence feature and a workload entity
-      it is localized to. The reference entity may be a container,
-      named thing or information entity.
-    slot_usage:
-      subject:
-        aliases: ['sequence feature']
-        range: redundancy entity
-      object:
-        aliases: ['reference']
-        range: redundancy entity
-      predicate:
-        subproperty_of: has sequence location
-    slots:
-      - start coordinate
-      - end coordinate
-      - phase
-    broad_mappings: []
-    exact_mappings: []
-
-  sequence feature relationship:
-    is_a: association
-    defining_slots:
-      - subject
-      - object
-    description: >-
-      For example, a particular entity is part of a particular replica or class
-    slot_usage:
-      subject:
-        range: redundancy entity
-      object:
-        range: redundancy entity
-    exact_mappings: []
-
-  replica to class relationship:
-    is_a: sequence feature relationship
-    defining_slots:
-      - subject
-      - object
-    description: >-
-      A class is a collection of replicas
-    slot_usage:
-      subject:
-        range: replica
-      object:
-        range: class
-
-  class to subclasses relationship:
-    is_a: sequence feature relationship
-    defining_slots:
-      - subject
-      - object
-    description: >-
-      A class is replicated and potentially translated to a subclasses
-    slot_usage:
-      subject:
-        range: class
-      object:
-        range: subclasses mixin
-      predicate:
-        subproperty_of: has subclasses
-
-  control entity or class or subclasses regulates class association:
-    is_a: association
-    description: >-
-      A regulatory relationship between two classes
-    slots:
-      - object direction qualifier
-    slot_usage:
-      predicate:
-        description: >-
-          the direction is always from regulator to regulated
-        subproperty_of: regulates
-      subject:
-        range: control entity or class or subclasses
-        role: regulatory class
-      object:
-        range: class or subclasses
-        role: regulated class
-      object direction qualifier:
-        range: DirectionQualifierEnum
-
-  deployment entity to deployment entity association:
-    is_a: association
-    abstract: true
-    defining_slots:
-      - subject
-      - object
-    slot_usage:
-      subject:
-        range: deployment entity
-      object:
-        range: deployment entity
-        description: >-
-          the structure at an earlier time
-      predicate:
-        subproperty_of: develops from
 
   system taxon to entity association:
     mixin: true
